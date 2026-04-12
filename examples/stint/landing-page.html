@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stint — Ship what you said you'd ship.</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css">
+
+<style>
+  /* mockup polish — dead links don't fake broken flows */
+  .lp-nav a,
+  .lp-header .btn,
+  .lp-footer a,
+  .btn-primary,
+  .btn-ghost,
+  .btn-secondary,
+  .btn-hero,
+  .price-btn {
+    pointer-events: none;
+    cursor: default;
+  }
+  [data-theme-btn] {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+  /* ── PRIMITIVES ───────────────────────────────────────── */
+  :root {
+    --neutral-0:   #FFFFFF;
+    --neutral-50:  #F4F5F9;
+    --neutral-100: #E4E7EE;
+    --neutral-200: #C6CAD5;
+    --neutral-300: #929AAE;
+    --neutral-400: #646B80;
+    --neutral-500: #454B5E;
+    --neutral-600: #2C3142;
+    --neutral-700: #1B1F2C;
+    --neutral-800: #12141D;
+    --neutral-900: #0B0D14;
+    --neutral-950: #06070B;
+
+    --brand-50:  #EDEBFC;
+    --brand-100: #D8D4F8;
+    --brand-300: #9189E6;
+    --brand-400: #7B6FEA;
+    --brand-500: #6456E0;
+    --brand-600: #5142C4;
+    --brand-700: #4033A0;
+    --brand-900: #1F1756;
+
+    --mesh-a: #5142C4;
+    --mesh-b: #2C3142;
+    --mesh-c: #3A3375;
+    --mesh-d: #1B1F2C;
+
+    --sp-xs:  4px;
+    --sp-sm:  8px;
+    --sp-md:  16px;
+    --sp-lg:  24px;
+    --sp-xl:  32px;
+    --sp-2xl: 48px;
+    --sp-3xl: 64px;
+    --sp-4xl: 96px;
+    --sp-5xl: 128px;
+
+    --r-element: 4px;
+    --r-control: 6px;
+    --r-component: 8px;
+    --r-container: 12px;
+    --r-pill: 999px;
+
+    --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  }
+
+  [data-theme="dark"] {
+    --bg:            var(--neutral-900);
+    --surface1:      var(--neutral-800);
+    --surface2:      var(--neutral-700);
+    --surface3:      var(--neutral-600);
+    --border:        var(--neutral-700);
+    --border-vis:    var(--neutral-600);
+    --text1:         var(--neutral-50);
+    --text2:         var(--neutral-300);
+    --text3:         var(--neutral-400);
+    --text4:         var(--neutral-500);
+    --accent:        var(--brand-400);
+    --accent-hover:  var(--brand-300);
+    --accent-subtle: var(--brand-900);
+  }
+  [data-theme="light"] {
+    --bg:            var(--neutral-50);
+    --surface1:      var(--neutral-100);
+    --surface2:      var(--neutral-200);
+    --surface3:      var(--neutral-300);
+    --border:        var(--neutral-200);
+    --border-vis:    var(--neutral-300);
+    --text1:         var(--neutral-900);
+    --text2:         var(--neutral-500);
+    --text3:         var(--neutral-400);
+    --text4:         var(--neutral-300);
+    --accent:        var(--brand-500);
+    --accent-hover:  var(--brand-600);
+    --accent-subtle: var(--brand-50);
+  }
+
+  /* ── BASE ── */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text1);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    font-feature-settings: "ss01";
+    -webkit-font-smoothing: antialiased;
+    transition: background 300ms ease, color 300ms ease;
+  }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--sp-2xl);
+  }
+
+  /* ── HEADER ── */
+  .lp-header {
+    position: sticky;
+    top: 0; z-index: 100;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  }
+  .lp-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .lp-brand {
+    display: flex; align-items: center; gap: var(--sp-sm);
+    font-weight: 600; font-size: 15px; letter-spacing: -0.01em;
+    color: var(--text1);
+  }
+  .lp-brand-mark {
+    width: 22px; height: 22px;
+    border-radius: var(--r-control);
+    background: linear-gradient(135deg, var(--brand-400), var(--brand-700));
+    position: relative;
+  }
+  .lp-brand-mark::after {
+    content: ""; position: absolute;
+    inset: 5px 5px 5px 10px;
+    border-left: 2px solid rgba(255,255,255,0.85);
+    border-radius: 1px;
+  }
+  .lp-nav { display: flex; gap: var(--sp-xl); }
+  .lp-nav a {
+    color: var(--text2);
+    font-size: 14px; font-weight: 500;
+    transition: color 200ms ease;
+  }
+  .lp-nav a:hover { color: var(--text1); }
+  .btn {
+    display: inline-flex; align-items: center; gap: var(--sp-sm);
+    padding: 9px 16px;
+    border-radius: var(--r-control);
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 180ms ease;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #FFFFFF;
+  }
+  .btn-primary:hover {
+    background: var(--accent-hover);
+  }
+  .btn-secondary {
+    background: var(--surface1);
+    color: var(--text1);
+    border-color: var(--border-vis);
+  }
+  .btn-secondary:hover {
+    background: var(--surface2);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text2);
+  }
+  .btn-ghost:hover { color: var(--text1); }
+
+  /* ─────────────────────────────────────────────────────── */
+  /* HERO STAGE — device-on-mesh                             */
+  /* ─────────────────────────────────────────────────────── */
+  .lp-hero {
+    position: relative;
+    overflow: hidden;
+    padding: var(--sp-5xl) 0 var(--sp-4xl);
+    min-height: 680px;
+  }
+
+  /* Layer 1 — background medium: mesh (muted violet, subtle intensity) */
+  .hero-bg-mesh {
+    position: absolute; inset: -60px;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 55% 70% at 18% 22%, rgba(81, 66, 196, 0.42), transparent 72%),
+      radial-gradient(ellipse 50% 60% at 82% 30%, rgba(58, 51, 117, 0.48), transparent 68%),
+      radial-gradient(ellipse 60% 55% at 50% 85%, rgba(44, 49, 66, 0.5), transparent 70%),
+      radial-gradient(ellipse 40% 45% at 90% 92%, rgba(81, 66, 196, 0.22), transparent 65%);
+    filter: blur(70px);
+    opacity: 0.9;
+  }
+  /* safe_zone: masked-for-text — dim the left side so headline reads cleanly */
+  .hero-safe-mask {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 100% at 28% 50%,
+      rgba(11, 13, 20, 0.55) 0%,
+      rgba(11, 13, 20, 0.35) 35%,
+      transparent 70%);
+  }
+
+  /* Layer 5 — hero subject: device, off-center-right, balanced, flat relation */
+  .lp-hero .container {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: var(--sp-4xl);
+    align-items: center;
+  }
+
+  .hero-content {
+    max-width: 540px;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: var(--sp-sm);
+    padding: 5px 12px;
+    background: color-mix(in srgb, var(--surface1) 70%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border-vis) 50%, transparent);
+    border-radius: var(--r-pill);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text2);
+    letter-spacing: 0.02em;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    margin-bottom: var(--sp-lg);
+  }
+  .hero-eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+  }
+  .hero-content h1 {
+    font-family: var(--font-sans);
+    font-size: clamp(40px, 5.2vw, 60px);
+    font-weight: 500;
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+    margin: 0 0 var(--sp-lg);
+    color: var(--text1);
+  }
+  .hero-content p.sub {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--text2);
+    margin: 0 0 var(--sp-xl);
+    max-width: 480px;
+  }
+  .hero-ctas { display: flex; gap: var(--sp-md); }
+  .btn-hero { padding: 12px 18px; font-size: 14px; }
+  .kbd {
+    display: inline-flex; align-items: center;
+    padding: 2px 7px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--r-element);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text1);
+  }
+
+  /* Device mockup — a project tracker window. Flat relation = drop shadow only, no glow. */
+  .hero-device {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    background: var(--surface1);
+    border: 1px solid var(--border-vis);
+    border-radius: var(--r-container);
+    overflow: hidden;
+    box-shadow:
+      0 60px 120px rgba(0, 0, 0, 0.5),
+      0 20px 40px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(255,255,255,0.03) inset;
+  }
+  .device-topbar {
+    display: flex; align-items: center; gap: var(--sp-md);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface2) 50%, var(--surface1));
+  }
+  .device-dots { display: flex; gap: 6px; }
+  .device-dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--surface3);
+  }
+  .device-title {
+    font-size: 12px; font-weight: 500;
+    color: var(--text2);
+    flex: 1; text-align: center;
+    font-family: var(--font-mono);
+  }
+  .device-title .proj { color: var(--text1); }
+  .device-search {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-control);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+  }
+  .device-tabs {
+    display: flex;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface1);
+  }
+  .device-tabs .tab {
+    padding: 12px 14px;
+    font-size: 12px; font-weight: 500;
+    color: var(--text3);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .device-tabs .tab.active {
+    color: var(--text1);
+    border-bottom-color: var(--accent);
+  }
+  .device-tabs .tab .count {
+    margin-left: 4px;
+    padding: 0 5px;
+    background: var(--surface3);
+    border-radius: var(--r-pill);
+    font-size: 10px;
+    color: var(--text2);
+  }
+  .device-tabs .tab.active .count {
+    background: var(--accent-subtle);
+    color: var(--accent);
+  }
+  .device-list {
+    padding: 4px 0 12px;
+    background: var(--surface1);
+  }
+  .task-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 16px;
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+    font-size: 12px;
+  }
+  .task-row:last-child { border-bottom: none; }
+  .task-check {
+    width: 14px; height: 14px;
+    border: 1.5px solid var(--border-vis);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .task-row.done .task-check {
+    background: var(--accent);
+    border-color: var(--accent);
+    position: relative;
+  }
+  .task-row.done .task-check::after {
+    content: ""; position: absolute;
+    left: 3px; top: 0px;
+    width: 4px; height: 8px;
+    border-right: 1.5px solid #FFF;
+    border-bottom: 1.5px solid #FFF;
+    transform: rotate(45deg);
+  }
+  .task-title {
+    flex: 1;
+    color: var(--text1);
+    font-weight: 400;
+  }
+  .task-row.done .task-title {
+    color: var(--text3);
+    text-decoration: line-through;
+    text-decoration-color: var(--text4);
+  }
+  .task-tag {
+    padding: 1px 6px;
+    border-radius: var(--r-element);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+  }
+  .task-tag.in-progress { background: var(--accent-subtle); color: var(--accent); }
+  .task-tag.review { background: rgba(229, 167, 59, 0.12); color: #E5A73B; }
+  .task-tag.blocked { background: rgba(229, 72, 77, 0.12); color: #E5484D; }
+  .task-avatar {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand-400), var(--brand-700));
+    font-size: 9px; font-weight: 600;
+    color: #FFF;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .task-avatar.b { background: linear-gradient(135deg, #4AB66A, #1f7b3a); }
+  .task-avatar.c { background: linear-gradient(135deg, #E5A73B, #8b5a0f); }
+  .task-date {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+    min-width: 40px;
+    text-align: right;
+  }
+
+  /* ── FEATURES ── */
+  .lp-feature {
+    padding: var(--sp-4xl) 0;
+  }
+  .lp-feature .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-4xl);
+    align-items: center;
+  }
+  .lp-feature.reverse .feature-text { order: 2; }
+  .feature-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-md);
+  }
+  .feature-heading {
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.028em;
+    margin: 0 0 var(--sp-md);
+    color: var(--text1);
+  }
+  .feature-body {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text2);
+    margin: 0;
+    max-width: 440px;
+  }
+
+  .feature-visual {
+    position: relative;
+    min-height: 300px;
+    border-radius: var(--r-container);
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    padding: var(--sp-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Feature 1 — 14-day ring */
+  .visual-ring {
+    width: 200px; height: 200px;
+    position: relative;
+  }
+  .visual-ring svg {
+    width: 100%; height: 100%;
+    transform: rotate(-90deg);
+  }
+  .visual-ring circle { fill: none; stroke-width: 8; stroke-linecap: round; }
+  .ring-bg { stroke: var(--surface3); }
+  .ring-fg { stroke: var(--accent); }
+  .ring-label {
+    position: absolute;
+    inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-family: var(--font-mono);
+  }
+  .ring-label .day { font-size: 12px; color: var(--text3); letter-spacing: 0.04em; }
+  .ring-label .num { font-size: 40px; font-weight: 500; color: var(--text1); line-height: 1; margin: 4px 0; }
+  .ring-label .of { font-size: 12px; color: var(--text3); }
+
+  /* Feature 2 — queue */
+  .visual-queue {
+    display: flex; flex-direction: column; gap: 8px;
+    width: 100%; max-width: 360px;
+  }
+  .queue-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    font-size: 12px;
+  }
+  .queue-card.unassigned { border-style: dashed; opacity: 0.6; }
+  .queue-card .q-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+    min-width: 24px;
+  }
+  .queue-card .q-title {
+    flex: 1;
+    color: var(--text1);
+  }
+  .queue-card.unassigned .q-title { color: var(--text2); }
+  .queue-card .q-avatar {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand-400), var(--brand-700));
+  }
+  .queue-card.unassigned .q-avatar {
+    background: transparent;
+    border: 1px dashed var(--text4);
+  }
+
+  /* Feature 3 — retro doc */
+  .visual-retro {
+    width: 100%; max-width: 320px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    padding: var(--sp-lg);
+  }
+  .retro-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+  .retro-header .title {
+    font-size: 13px; font-weight: 500; color: var(--text1);
+  }
+  .retro-header .badge {
+    padding: 2px 8px;
+    background: var(--accent-subtle);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    border-radius: var(--r-element);
+    font-weight: 500;
+  }
+  .retro-row {
+    display: flex; justify-content: space-between;
+    padding: 6px 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .retro-row .k { color: var(--text3); }
+  .retro-row .v { color: var(--text1); }
+  .retro-row .v.good { color: #4AB66A; }
+  .retro-row .v.warn { color: #E5A73B; }
+
+  /* ── PULL QUOTE ── */
+  .lp-quote { padding: var(--sp-4xl) 0; }
+  .lp-quote blockquote {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: clamp(26px, 3.2vw, 38px);
+    font-weight: 400;
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    color: var(--text1);
+  }
+  .lp-quote blockquote::before { content: "\201C"; color: var(--accent); margin-right: 4px; }
+  .lp-quote blockquote::after  { content: "\201D"; color: var(--accent); margin-left: 4px; }
+  .lp-quote cite {
+    display: block;
+    margin-top: var(--sp-lg);
+    font-size: 13px;
+    font-style: normal;
+    color: var(--text3);
+  }
+
+  /* ── PRICING ── */
+  .lp-pricing { padding: var(--sp-4xl) 0 var(--sp-3xl); }
+  .lp-pricing .pricing-header { text-align: center; margin-bottom: var(--sp-3xl); }
+  .lp-pricing h2 {
+    font-size: 40px; font-weight: 500; line-height: 1.08; letter-spacing: -0.028em;
+    margin: 0 0 var(--sp-md); color: var(--text1);
+  }
+  .lp-pricing .sub { color: var(--text2); font-size: 16px; }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-lg);
+  }
+  .price-card {
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-container);
+    padding: var(--sp-xl);
+    position: relative;
+  }
+  .price-card.featured {
+    border-color: var(--accent);
+  }
+  .price-card.featured::before {
+    content: "RECOMMENDED";
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 10px;
+    background: var(--accent);
+    color: #FFF;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    border-radius: var(--r-pill);
+  }
+  .price-name {
+    font-size: 12px; font-weight: 500;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--sp-md);
+  }
+  .price-value {
+    display: flex; align-items: baseline; gap: 6px;
+    margin-bottom: var(--sp-md);
+  }
+  .price-value .amount {
+    font-size: 40px; font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--text1);
+  }
+  .price-value .per {
+    font-size: 13px; color: var(--text3);
+  }
+  .price-desc {
+    font-size: 13px; color: var(--text2); line-height: 1.5;
+    margin-bottom: var(--sp-xl);
+    min-height: 42px;
+  }
+  .price-btn {
+    width: 100%; justify-content: center;
+    padding: 11px 16px;
+  }
+  .price-features {
+    list-style: none;
+    margin: var(--sp-xl) 0 0;
+    padding: var(--sp-xl) 0 0;
+    border-top: 1px solid var(--border);
+  }
+  .price-features li {
+    display: flex; align-items: center; gap: var(--sp-sm);
+    font-size: 13px;
+    color: var(--text2);
+    padding: 4px 0;
+  }
+  .price-features i {
+    color: var(--accent);
+    font-size: 14px;
+  }
+
+  /* ── FINAL CTA ── */
+  .lp-cta-block {
+    padding: var(--sp-4xl) 0 var(--sp-5xl);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  /* echo of the mesh at reduced intensity, left-biased */
+  .lp-cta-block::before {
+    content: "";
+    position: absolute; inset: 0;
+    z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 50% 60% at 50% 50%, rgba(81, 66, 196, 0.18), transparent 70%);
+    filter: blur(40px);
+  }
+  .lp-cta-block .container {
+    position: relative; z-index: 1;
+    max-width: 640px;
+  }
+  .lp-cta-block h2 {
+    font-size: clamp(36px, 4.5vw, 52px);
+    font-weight: 500;
+    line-height: 1.06;
+    letter-spacing: -0.028em;
+    margin: 0 0 var(--sp-md);
+  }
+  .lp-cta-block p {
+    font-size: 17px;
+    color: var(--text2);
+    margin: 0 0 var(--sp-xl);
+  }
+
+  /* ── FOOTER ── */
+  .lp-footer {
+    border-top: 1px solid var(--border);
+    padding: var(--sp-3xl) 0 var(--sp-2xl);
+  }
+  .lp-footer .container {
+    display: grid;
+    grid-template-columns: 1.3fr repeat(3, 1fr);
+    gap: var(--sp-2xl);
+  }
+  .footer-brand {
+    display: flex; align-items: center; gap: var(--sp-sm);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text1);
+    margin-bottom: var(--sp-sm);
+  }
+  .footer-tag {
+    font-size: 13px;
+    color: var(--text3);
+    max-width: 280px;
+    line-height: 1.5;
+  }
+  .footer-col h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text3);
+    font-weight: 500;
+    margin: 0 0 var(--sp-md);
+  }
+  .footer-col ul { list-style: none; margin: 0; padding: 0; }
+  .footer-col li { padding: 4px 0; }
+  .footer-col a {
+    font-size: 13px;
+    color: var(--text2);
+    transition: color 180ms ease;
+  }
+  .footer-col a:hover { color: var(--text1); }
+  .footer-bottom {
+    max-width: 1200px;
+    margin: var(--sp-2xl) auto 0;
+    padding: var(--sp-lg) var(--sp-2xl) 0;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--text4);
+    font-family: var(--font-mono);
+  }
+
+  /* ── THEME TOGGLE BAR ── */
+  .theme-bar {
+    position: fixed;
+    bottom: var(--sp-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: color-mix(in srgb, var(--surface1) 85%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid var(--border-vis);
+    border-radius: var(--r-pill);
+    z-index: 1000;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  }
+  .theme-bar button {
+    padding: 7px 14px;
+    border: none;
+    background: transparent;
+    color: var(--text3);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    transition: all 180ms ease;
+  }
+  .theme-bar button.active {
+    background: var(--surface3);
+    color: var(--text1);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .lp-hero .container { grid-template-columns: 1fr; gap: var(--sp-2xl); }
+    .hero-device { margin-left: 0; }
+    .lp-feature .container { grid-template-columns: 1fr; gap: var(--sp-xl); }
+    .lp-feature.reverse .feature-text { order: 0; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .lp-footer .container { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="lp-header">
+  <div class="container">
+    <a href="#" class="lp-brand">
+      <div class="lp-brand-mark"></div>
+      Stint
+    </a>
+    <nav class="lp-nav">
+      <a href="#">Product</a>
+      <a href="#">Method</a>
+      <a href="#">Pricing</a>
+      <a href="#">Changelog</a>
+    </nav>
+    <div style="display:flex; gap: 8px;">
+      <button class="btn btn-ghost">Sign in</button>
+      <button class="btn btn-primary">Start a stint</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- HERO STAGE — device-on-mesh                      -->
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="lp-hero">
+    <!-- Layer 1: mesh background, muted, subtle -->
+    <div class="hero-bg-mesh"></div>
+    <!-- Layer 2: safe_zone mask — dims the left area so headline reads -->
+    <div class="hero-safe-mask"></div>
+    <!-- No vignette, no relation layer. Flat relation = drop shadow on device only. -->
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="dot"></span>
+          two-week cycles &nbsp;·&nbsp; no roadmap theater
+        </div>
+        <h1>Ship what you said you'd ship.</h1>
+        <p class="sub">
+          Stint works in fourteen-day units. No infinite backlog. No roadmap fiction. A fixed window, and what actually got done.
+        </p>
+        <div class="hero-ctas">
+          <button class="btn btn-primary btn-hero">
+            Start your first stint
+            <i class="ph ph-arrow-right"></i>
+          </button>
+          <button class="btn btn-secondary btn-hero">
+            See the method
+          </button>
+        </div>
+      </div>
+
+      <!-- Layer 5: hero subject — device, off-center-right, flat relation -->
+      <div class="hero-device">
+        <div class="device-topbar">
+          <div class="device-dots"><span></span><span></span><span></span></div>
+          <div class="device-title"><span class="proj">Design system</span> · stint 07</div>
+          <div class="device-search">⌘K &nbsp; find</div>
+        </div>
+        <div class="device-tabs">
+          <div class="tab active">Active <span class="count">8</span></div>
+          <div class="tab">Backlog <span class="count">23</span></div>
+          <div class="tab">Closed <span class="count">142</span></div>
+        </div>
+        <div class="device-list">
+          <div class="task-row done">
+            <div class="task-check"></div>
+            <div class="task-title">Migrate background_graphics to hero_stage</div>
+            <div class="task-avatar">DM</div>
+            <div class="task-date">Mon</div>
+          </div>
+          <div class="task-row">
+            <div class="task-check"></div>
+            <div class="task-title">Write hero-stage reference</div>
+            <div class="task-tag in-progress">in progress</div>
+            <div class="task-avatar b">KA</div>
+            <div class="task-date">Tue</div>
+          </div>
+          <div class="task-row">
+            <div class="task-check"></div>
+            <div class="task-title">Render Orivion orb-on-gradient proof</div>
+            <div class="task-tag review">review</div>
+            <div class="task-avatar c">JM</div>
+            <div class="task-date">Wed</div>
+          </div>
+          <div class="task-row">
+            <div class="task-check"></div>
+            <div class="task-title">Add shader uniforms to workhorse presets</div>
+            <div class="task-tag blocked">blocked</div>
+            <div class="task-avatar">DM</div>
+            <div class="task-date">Thu</div>
+          </div>
+          <div class="task-row">
+            <div class="task-check"></div>
+            <div class="task-title">Migrate Stashy, Haze, Linear to new schema</div>
+            <div class="task-avatar b">KA</div>
+            <div class="task-date">Fri</div>
+          </div>
+          <div class="task-row">
+            <div class="task-check"></div>
+            <div class="task-title">Phase 4 — App Screen template spike</div>
+            <div class="task-avatar c">JM</div>
+            <div class="task-date">Fri</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURE 1 ── -->
+  <section class="lp-feature">
+    <div class="container">
+      <div class="feature-text">
+        <div class="feature-eyebrow">01 &nbsp;·&nbsp; Fixed cycles</div>
+        <h2 class="feature-heading">The clock is the plan.</h2>
+        <p class="feature-body">
+          Every stint is exactly fourteen days. You pick what goes in on day one. You don't add work mid-stint. If something matters more, it goes in the next one. The window doesn't stretch.
+        </p>
+      </div>
+      <div class="feature-visual">
+        <div class="visual-ring">
+          <svg viewBox="0 0 200 200">
+            <circle class="ring-bg" cx="100" cy="100" r="84" />
+            <circle class="ring-fg" cx="100" cy="100" r="84"
+              stroke-dasharray="527.8" stroke-dashoffset="188.5" />
+          </svg>
+          <div class="ring-label">
+            <div class="day">DAY</div>
+            <div class="num">9</div>
+            <div class="of">of 14</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURE 2 ── -->
+  <section class="lp-feature reverse">
+    <div class="container">
+      <div class="feature-text">
+        <div class="feature-eyebrow">02 &nbsp;·&nbsp; Friction as feature</div>
+        <h2 class="feature-heading">Nothing auto-assigns.</h2>
+        <p class="feature-body">
+          Stint doesn't route tickets by last-seen or velocity. A human picks up the next thing. Teams that see their queue make better calls than teams whose tools pretend to.
+        </p>
+      </div>
+      <div class="feature-visual">
+        <div class="visual-queue">
+          <div class="queue-card unassigned">
+            <div class="q-tag">#412</div>
+            <div class="q-title">Writing hero copy for Stint landing</div>
+            <div class="q-avatar"></div>
+          </div>
+          <div class="queue-card unassigned">
+            <div class="q-tag">#413</div>
+            <div class="q-title">Review migration diff</div>
+            <div class="q-avatar"></div>
+          </div>
+          <div class="queue-card">
+            <div class="q-tag">#414</div>
+            <div class="q-title">Deploy preview to staging</div>
+            <div class="q-avatar"></div>
+          </div>
+          <div class="queue-card unassigned">
+            <div class="q-tag">#415</div>
+            <div class="q-title">Document the icon-kit fallback rules</div>
+            <div class="q-avatar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURE 3 ── -->
+  <section class="lp-feature">
+    <div class="container">
+      <div class="feature-text">
+        <div class="feature-eyebrow">03 &nbsp;·&nbsp; Cycle review</div>
+        <h2 class="feature-heading">The retro is already written.</h2>
+        <p class="feature-body">
+          When the stint closes, Stint writes the retro from what actually happened: completed versus carried over, who picked up what, where the time went. You edit. You don't draft.
+        </p>
+      </div>
+      <div class="feature-visual">
+        <div class="visual-retro">
+          <div class="retro-header">
+            <div class="title">Stint 07 — Retro</div>
+            <div class="badge">AUTO</div>
+          </div>
+          <div class="retro-row"><span class="k">completed</span><span class="v good">14 / 17</span></div>
+          <div class="retro-row"><span class="k">carried over</span><span class="v warn">3</span></div>
+          <div class="retro-row"><span class="k">blocked cycles</span><span class="v">1 (backend dep)</span></div>
+          <div class="retro-row"><span class="k">picked up by DM</span><span class="v">6</span></div>
+          <div class="retro-row"><span class="k">picked up by KA</span><span class="v">5</span></div>
+          <div class="retro-row"><span class="k">picked up by JM</span><span class="v">3</span></div>
+          <div class="retro-row"><span class="k">median cycle time</span><span class="v">1.2d</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PULL QUOTE ── -->
+  <section class="lp-quote">
+    <div class="container">
+      <blockquote>
+        We stopped lying to ourselves about what we'd get done.
+        <cite>— Priya Venkatesh, engineering lead</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ── PRICING ── -->
+  <section class="lp-pricing">
+    <div class="container">
+      <div class="pricing-header">
+        <h2>Fixed cycles. Fixed prices.</h2>
+        <p class="sub">No usage pricing. No per-seat surprise mid-quarter.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-name">Personal</div>
+          <div class="price-value"><span class="amount">Free</span></div>
+          <p class="price-desc">For solo work. One stint at a time, no archive limit.</p>
+          <button class="btn btn-secondary price-btn">Start personal</button>
+          <ul class="price-features">
+            <li><i class="ph ph-check"></i> 1 active stint</li>
+            <li><i class="ph ph-check"></i> Unlimited archive</li>
+            <li><i class="ph ph-check"></i> Auto-generated retros</li>
+            <li><i class="ph ph-check"></i> One workspace</li>
+          </ul>
+        </div>
+        <div class="price-card featured">
+          <div class="price-name">Team</div>
+          <div class="price-value"><span class="amount">$8</span><span class="per">/ seat / month</span></div>
+          <p class="price-desc">For teams that know the difference between a plan and a sprint.</p>
+          <button class="btn btn-primary price-btn">Start Team</button>
+          <ul class="price-features">
+            <li><i class="ph ph-check"></i> Everything in Personal</li>
+            <li><i class="ph ph-check"></i> Unlimited active stints</li>
+            <li><i class="ph ph-check"></i> Shared queue</li>
+            <li><i class="ph ph-check"></i> Cycle analytics</li>
+            <li><i class="ph ph-check"></i> Slack + GitHub integrations</li>
+          </ul>
+        </div>
+        <div class="price-card">
+          <div class="price-name">Enterprise</div>
+          <div class="price-value"><span class="amount">Custom</span></div>
+          <p class="price-desc">For companies that need SSO, audit, and a DPA on the wall.</p>
+          <button class="btn btn-secondary price-btn">Contact us</button>
+          <ul class="price-features">
+            <li><i class="ph ph-check"></i> Everything in Team</li>
+            <li><i class="ph ph-check"></i> SSO / SAML</li>
+            <li><i class="ph ph-check"></i> Audit logs</li>
+            <li><i class="ph ph-check"></i> DPA + custom deployment</li>
+            <li><i class="ph ph-check"></i> Dedicated CSM</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FINAL CTA ── -->
+  <section class="lp-cta-block">
+    <div class="container">
+      <h2>Two weeks.</h2>
+      <p>What do you actually want done by then?</p>
+      <button class="btn btn-primary btn-hero">
+        Start your first stint
+        <i class="ph ph-arrow-right"></i>
+      </button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="lp-footer">
+  <div class="container">
+    <div>
+      <div class="footer-brand">
+        <div class="lp-brand-mark"></div>
+        Stint
+      </div>
+      <p class="footer-tag">A tracker that doesn't pretend. Fourteen days at a time, for teams that prefer honest math.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#">Overview</a></li>
+        <li><a href="#">Method</a></li>
+        <li><a href="#">Integrations</a></li>
+        <li><a href="#">Changelog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">DPA</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>stint · fictional</span>
+    <span>device-on-mesh proof · hero_stage schema</span>
+  </div>
+</footer>
+
+<!-- Theme toggle -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="dark">Dark</button>
+  <button data-theme-btn="light">Light</button>
+</div>
+
+<script>
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  document.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+</script>
+</body>
+</html>

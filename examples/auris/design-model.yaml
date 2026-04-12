@@ -1,0 +1,169 @@
+name: "Auris"
+description: "Fictional premium hardware launch brand. Proves the object-on-spotlight preset: dark stage, tight top spotlight, contact shadow, reflection zone — with the hero subject rendered as a LABELED PLACEHOLDER FRAME. Concrete physical products are never CSS-simulated; the user drops in their own 3D render or product photography. The surrounding stage is fully composed so everything snaps together when the real asset arrives."
+philosophy: "A single object on a dark stage. Sparse voice, poetic, confident without noise. The product is the entire landing — one hero shot, everything else arranges itself around it. The skill provides the stage; the brand provides the asset."
+primary_mode: "dark"
+brand_source: "INVENTED — fictional brand for hero_stage proof library"
+brand_domain: "premium hardware launch (fictional)"
+brand_type: "content-rich"
+mono_for_data: false
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    neutral:            # warm-tinted black, Braun/Teenage-Engineering temperature
+      0:   "#FFFFFF"
+      50:  "#F6F4EE"
+      100: "#EAE6D9"
+      200: "#CFCABA"
+      300: "#9B9585"
+      400: "#6A6555"
+      500: "#4A4538"
+      600: "#2E2B22"
+      700: "#1C1A15"
+      800: "#14120E"
+      900: "#0E0F13"    # canvas
+      950: "#060608"
+    brand:              # metallic amber / gold
+      50:  "#FFF6E3"
+      100: "#FFE8B8"
+      200: "#F7D184"
+      300: "#F0B95A"
+      400: "#E8A547"
+      500: "#D28730"    # primary accent
+      600: "#A6661E"
+      700: "#744510"
+      800: "#472A08"
+      900: "#2A1804"
+    object:             # palette that the generic placeholder form inherits
+      spec:      "#FFF4D6"    # near-white specular top
+      highlight: "#F0D18C"    # warm upper body
+      mid:       "#8F6B2A"    # warm brushed middle
+      deep:      "#3B270C"    # shadowed bottom
+      edge:      "#0A0805"    # silhouette edges
+      shadow:    "#0E0F13"    # ground contact shadow base hue
+  spacing: [0, 2, 4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 128, 160]
+  radii:   [0, 2, 4, 8, 12, 16, 24, 999]
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    dark:
+      background:     "{neutral.900}"
+      surface1:       "{neutral.800}"
+      surface2:       "{neutral.700}"
+      surface3:       "{neutral.600}"
+      border:         "{neutral.700}"
+      border_visible: "{neutral.600}"
+      text1:          "{neutral.50}"
+      text2:          "{neutral.200}"
+      text3:          "{neutral.300}"
+      text4:          "{neutral.400}"
+      accent:         "{brand.400}"
+      accent_hover:   "{brand.300}"
+      accent_subtle:  "{brand.900}"
+    light:
+      background:     "{neutral.50}"
+      surface1:       "{neutral.100}"
+      surface2:       "{neutral.200}"
+      surface3:       "{neutral.300}"
+      border:         "{neutral.200}"
+      border_visible: "{neutral.300}"
+      text1:          "{neutral.900}"
+      text2:          "{neutral.500}"
+      text3:          "{neutral.400}"
+      text4:          "{neutral.300}"
+      accent:         "{brand.500}"
+      accent_hover:   "{brand.600}"
+      accent_subtle:  "{brand.50}"
+
+  radii:
+    element:   4
+    control:   8
+    component: 12
+    container: 16
+    pill:      999
+
+  typography:
+    display:
+      family: "Fraunces"         # editorial modern serif, high contrast
+      size:   "96px"
+      weight: 400
+      line_height: 1.0
+      letter_spacing: "-0.04em"
+      google_fonts: "Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500"
+    body:
+      family: "Inter"
+      size:   "16px"
+      weight: 400
+      line_height: 1.6
+      letter_spacing: "0em"
+      google_fonts: "Inter:wght@400;500"
+    mono:
+      family: null
+      note: "No mono — Auris uses no technical/data fonts anywhere."
+
+# ── HERO STAGE ─── object-on-spotlight preset
+# Demonstrates:
+#   background.medium: gradient + TOP light (not center) + monochrome + bold intensity
+#   hero.subject: object → rendered as a generic warm metallic form
+#                 (concrete products are NEVER CSS-simulated in this skill)
+#   relation.type: shadow-only (contact shadow directly under the form)
+#
+# Why this matters: when a user generates a design-system skill for their brand,
+# the one thing the skill cannot produce is the real product asset. For abstract
+# subjects (luminous, device, composition, sculptural bg) we render honestly in
+# CSS. For concrete products we render a decorative placeholder form (a warm
+# metallic vertical pill) that holds the slot on the stage. The user swaps the
+# form for their real 3D render / product photography before shipping. This
+# example proves the full stage composition around that form.
+hero_stage:
+  preset: "object-on-spotlight"
+  observed_style:
+    # Documentation of the intended final asset. NOT rendered on the page —
+    # it's context for whoever later swaps in the real 3D render.
+    description: "A turned aluminium cylinder, top-lit under a tight spotlight, grounded by a soft contact shadow."
+    where_used: ["hero", "final cta (background echo only, reduced intensity)"]
+    notes: "The placeholder form stays in place on the shipped landing page until the brand provides a real 3D render / product shot. All other stage elements are final."
+  background:
+    medium: "gradient"
+    color_mode: "monochrome"    # warm amber at the top fading into near-black
+    saturation: "muted"          # the stage is calm — the inserted asset carries the drama
+    light_source: "top"          # CRITICAL: top, not center. Objects are lit from above.
+    falloff: "radial"
+    vignette: "strong"           # strong vignette pulls attention to the center
+    texture: "clean"
+    motion: "static"
+    intensity: "bold"            # hardware launches are the rare bold exception
+    safe_zone: "edge-only"       # headline sits below the placeholder; content safe at the bottom of the stage
+    color_palette:
+      - "#F0D18C"   # warm top highlight
+      - "#8F6B2A"   # brushed mid amber
+      - "#3B270C"   # deep shadow amber
+      - "#0E0F13"   # warm stage black
+      - "#060608"   # canvas (vignette)
+  hero:
+    subject: "object"              # intent: concrete physical product → generic warm metallic form (placeholder)
+    # form: ignored for object — the placeholder form doesn't resemble the product
+    placement: "center"
+    scale: "dominant"               # frame size ~280 × aspect 3:4 on the stage
+    tint: "metallic"                # guides stage color temperature, not the placeholder itself
+  relation:
+    type: "shadow-only"             # canonical pairing for object in the compat matrix
+    bleed: 0                        # objects don't bleed light
+    notes: "Implemented as a wide diffuse contact shadow directly under the frame, plus a faint reflection zone fading below. The user's inserted asset inherits both."
+  disclaimer: "Hero subject renders as a generic warm metallic form (decorative placeholder). Replace the form with the final 3D render or product photography before shipping. Stage composition (spotlight, vignette, floor highlight, contact shadow) is finished and production-ready."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Fictional: minimal, thin, almost absent. Auris avoids iconography where possible."
+    stroke_weight: "thin"
+    corner_treatment: "sharp"
+    fill_style: "outline"
+    form_language: "geometric"
+    visual_density: "minimal"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "thin"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2/src/thin/style.css"
+    icon_class_prefix: "ph-thin ph-"

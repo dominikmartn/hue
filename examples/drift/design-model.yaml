@@ -1,0 +1,175 @@
+name: "Drift"
+description: "Fictional fashion marketplace for statement pieces. Instead of a centered product shot, the hero field is a diagonal stack of three huge display words — 'MADE.' / 'FOUND.' / 'SOLD.' — that together form the hero mass. Proves the composition preset: medium: gradient + subject: composition + relation: glow. The first example in the proof library where typography itself is the hero subject."
+philosophy: "Made. Found. Sold. Drift is the marketplace for people who buy clothes the way they buy records — with opinions. Hot-pink energy over near-black, the confidence of a gallery and the chaos of a flea market. Every drop is timestamped, every seller has a ledger, four words are enough."
+primary_mode: "dark"
+brand_source: "INVENTED — fictional brand for hero_stage v2 proof library, composition preset"
+brand_domain: "fashion marketplace / streetwear commerce (fictional)"
+brand_type: "ui-rich"
+mono_for_data: true
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    neutral:             # pure near-black with a very slight magenta bias
+      50:  "#F7F5F8"
+      100: "#EDEAF0"
+      200: "#D8D3DE"
+      300: "#B2ABBC"
+      400: "#78707E"
+      500: "#504752"
+      600: "#35303A"
+      700: "#221F26"
+      800: "#141118"
+      900: "#07040B"    # canvas — near pure black
+      950: "#030105"
+    brand:               # saturated hot-pink, fashion not neon
+      50:  "#FFEEF5"
+      100: "#FFD6E7"
+      200: "#FFA4C8"
+      300: "#FF6BA7"
+      400: "#FF3A8C"    # accent dark — primary hot-pink
+      500: "#E41874"    # accent light
+      600: "#B3105A"
+      700: "#7A0B3D"
+      800: "#420520"
+      900: "#1F0210"
+    electric:            # rare secondary, reserved for "new" badges + pricing flash
+      300: "#F8F06A"
+      500: "#E5D300"
+      700: "#8A7F00"
+    # composition-specific: the three display words each get a role.
+    # One line carries the full hot-pink load, the other two are bone-white.
+    composition:
+      pink_hot:   "#FF3A8C"    # the loud line
+      pink_deep:  "#E41874"    # shadow + glow spill
+      bone:       "#F7F5F8"    # the quiet lines
+      bone_dim:   "#B2ABBC"    # outer tracking echo
+      glow:       "#FF3A8C"    # outer-glow hue
+      shadow:     "#07040B"    # drop into canvas
+  spacing: [0, 2, 4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 128, 160]
+  radii:   [0, 2, 4, 6, 10, 16, 28, 999]
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    dark:
+      background:     "{neutral.900}"
+      surface1:       "{neutral.800}"
+      surface2:       "{neutral.700}"
+      surface3:       "{neutral.600}"
+      border:         "{neutral.700}"
+      border_visible: "{neutral.600}"
+      text1:          "{neutral.50}"
+      text2:          "{neutral.200}"
+      text3:          "{neutral.300}"
+      text4:          "{neutral.400}"
+      accent:         "{brand.400}"
+      accent_hover:   "{brand.300}"
+      accent_subtle:  "{brand.900}"
+    light:
+      background:     "{neutral.50}"
+      surface1:       "{neutral.100}"
+      surface2:       "{neutral.200}"
+      surface3:       "{neutral.300}"
+      border:         "{neutral.200}"
+      border_visible: "{neutral.300}"
+      text1:          "{neutral.900}"
+      text2:          "{neutral.500}"
+      text3:          "{neutral.400}"
+      text4:          "{neutral.300}"
+      accent:         "{brand.500}"
+      accent_hover:   "{brand.600}"
+      accent_subtle:  "{brand.50}"
+
+  radii:
+    element:   2
+    control:   4
+    component: 6
+    container: 10
+    pill:      999
+
+  typography:
+    display:
+      family: "Space Grotesk"        # geometric sans with attitude
+      size:   "64px"
+      weight: 700
+      line_height: 0.95
+      letter_spacing: "-0.04em"
+      google_fonts: "Space+Grotesk:wght@400;500;700"
+    body:
+      family: "Inter"
+      size:   "15px"
+      weight: 400
+      line_height: 1.55
+      letter_spacing: "0em"
+      google_fonts: "Inter:wght@400;500"
+    mono:
+      family: "JetBrains Mono"
+      size:   "12px"
+      weight: 400
+      google_fonts: "JetBrains+Mono:wght@400;500"
+
+# ── HERO STAGE ─── composition preset (NEW in v2)
+# Demonstrates:
+#   background.medium: gradient, manual (no preset)
+#   hero.subject: composition — the hero subject is a CSS-composed
+#     arrangement rather than a luminous disc or simulated object
+#   relation.type: glow — the composition has a soft hot-pink halo
+#
+# This is the first example in the proof library where typography
+# itself carries the hero mass. The three display words are stacked
+# diagonally with asymmetric offsets and together form the subject.
+hero_stage:
+  preset: "manual"
+  observed_style:
+    description: "INVENTED for testing: three huge display lines — MADE. / FOUND. / SOLD. — stacked with asymmetric horizontal offsets, each at ~140px Space Grotesk 700. Two lines render in bone-white, the middle line in hot-pink. Each line carries different tracking. The stack is framed by a hard top-left spotlight on dark-pink-tinted black, falling off into pure black at bottom-right. A strong vignette frames the mass. The typography IS the subject."
+    where_used: ["hero", "final cta (echo, reduced intensity)"]
+    notes: "Fictional composition. Demonstrates subject: composition — the hero mass is a typographic arrangement built in CSS, not a luminous disc (auris) and not a simulated object (orivion). Three stacked lines with asymmetric tracking and a dual-tone palette. Pure HTML/CSS, no imported assets."
+  background:
+    medium: "gradient"           # manual gradient, no preset
+    color_mode: "dual-tone"
+    saturation: "vibrant"
+    light_source: "top-l"
+    falloff: "hard"
+    vignette: "strong"
+    texture: "clean"
+    motion: "static"
+    intensity: "subtle"          # loud brand, subtle intensity per project rule
+    safe_zone: "bottom"
+    color_palette:
+      - "#FF3A8C"   # hot-pink accent
+      - "#E41874"   # deep pink
+      - "#07040B"   # canvas near-black
+      - "#141118"   # surface
+      - "#B3105A"   # shadow pink
+    recipe: "spotlight-dual-tone"
+    recipe_params:
+      origin: "14% 18%"
+      inner: "rgba(179, 16, 90, 0.55)"
+      mid:   "rgba(31, 2, 16, 0.85)"
+      outer: "#030105"
+  hero:
+    subject: "composition"         # NEW in hero-stage v2 — typographic stack
+    form: "three-line-stack"
+    placement: "center-offset"
+    scale: "dominant"
+    tint: "dual-tone"
+  relation:
+    type: "glow"                   # soft outer halo on the composition
+    bleed: 30
+  disclaimer: "Fictional brand created for the hero_stage v2 proof library. Not affiliated with any real marketplace. The composition preset uses only HTML + CSS — no imported fashion imagery. Product cards in feature sections are intentionally rendered as solid color blocks with text overlays; they are placeholders, not real product photography."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Fictional: thin geometric outlines, sharp corners, minimal. Icons are rarely used — Drift's identity is the type and the pink, not the glyphs."
+    stroke_weight: "regular"
+    corner_treatment: "sharp"
+    fill_style: "outline"
+    form_language: "geometric"
+    visual_density: "minimal"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "regular"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
+    icon_class_prefix: "ph ph-"

@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stint — Paper · stint 07 overview</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css">
+
+<style>
+  :root {
+    /* cool, blue-shifted neutrals — from Stint design-model.yaml */
+    --neutral-0:   #FFFFFF;
+    --neutral-50:  #F4F5F9;
+    --neutral-100: #E4E7EE;
+    --neutral-200: #C6CAD5;
+    --neutral-300: #929AAE;
+    --neutral-400: #646B80;
+    --neutral-500: #454B5E;
+    --neutral-600: #2C3142;
+    --neutral-700: #1B1F2C;
+    --neutral-800: #12141D;
+    --neutral-900: #0B0D14;
+    --neutral-950: #06070B;
+
+    /* muted violet brand — deliberately calm */
+    --brand-50:  #EDEBFC;
+    --brand-100: #D8D4F8;
+    --brand-200: #B4AEF0;
+    --brand-300: #9189E6;
+    --brand-400: #7B6FEA;
+    --brand-500: #6456E0;
+    --brand-600: #5142C4;
+    --brand-700: #4033A0;
+    --brand-800: #2F247A;
+    --brand-900: #1F1756;
+
+    /* status colors — borrowed from Stint landing task tags */
+    --status-amber:   #E5A73B;
+    --status-amber-2: #B67F1E;
+    --status-red:     #E5484D;
+    --status-red-2:   #B8272B;
+
+    /* mesh palette — the page backdrop tone */
+    --mesh-a: #5142C4;  /* violet */
+    --mesh-b: #2C3142;  /* slate */
+    --mesh-c: #3A3375;  /* deep indigo */
+    --mesh-d: #1B1F2C;  /* canvas shadow */
+
+    --sp-xs:  4px;
+    --sp-sm:  8px;
+    --sp-md:  16px;
+    --sp-lg:  24px;
+    --sp-xl:  32px;
+    --sp-2xl: 48px;
+    --sp-3xl: 64px;
+
+    --r-element:   4px;
+    --r-control:   6px;
+    --r-component: 8px;
+    --r-container: 12px;
+    --r-pill:      999px;
+
+    --font-display: 'Inter', -apple-system, system-ui, sans-serif;
+    --font-sans:    'Inter', -apple-system, system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  [data-theme="dark"] {
+    --bg:            var(--neutral-900);
+    --bg-2:          var(--neutral-950);
+    --surface1:      var(--neutral-800);
+    --surface2:      var(--neutral-700);
+    --surface3:      var(--neutral-600);
+    --border:        var(--neutral-700);
+    --border-vis:    var(--neutral-600);
+    --text1:         var(--neutral-50);
+    --text2:         var(--neutral-200);
+    --text3:         var(--neutral-300);
+    --text4:         var(--neutral-400);
+    --accent:        var(--brand-400);
+    --accent-hover:  var(--brand-300);
+    --accent-subtle: var(--brand-900);
+    --mesh-opacity:  0.9;
+    --window-shadow:
+      0 60px 140px rgba(6, 7, 11, 0.75),
+      0 24px 60px rgba(6, 7, 11, 0.55),
+      0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  }
+  [data-theme="light"] {
+    --bg:            var(--neutral-50);
+    --bg-2:          var(--neutral-100);
+    --surface1:      var(--neutral-100);
+    --surface2:      var(--neutral-200);
+    --surface3:      var(--neutral-300);
+    --border:        var(--neutral-200);
+    --border-vis:    var(--neutral-300);
+    --text1:         var(--neutral-900);
+    --text2:         var(--neutral-500);
+    --text3:         var(--neutral-400);
+    --text4:         var(--neutral-300);
+    --accent:        var(--brand-500);
+    --accent-hover:  var(--brand-600);
+    --accent-subtle: var(--brand-50);
+    --mesh-opacity:  0.55;
+    --window-shadow:
+      0 40px 100px rgba(15, 17, 28, 0.15),
+      0 12px 36px rgba(15, 17, 28, 0.10),
+      0 0 0 1px rgba(11, 13, 20, 0.04) inset;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text1);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    transition: background 300ms ease, color 300ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sp-2xl);
+    position: relative;
+  }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+  .mono { font-family: var(--font-mono); }
+
+  /* ─── page backdrop: muted violet mesh (subtle intensity) ─── */
+  /* Matches Stint's landing hero backdrop. Blurred radial fields of the
+     four mesh colors over a dark canvas. In light mode the mesh opacity
+     drops so the cream canvas stays the dominant tone. */
+  .page-bg {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .page-bg .mesh {
+    position: absolute; inset: -80px;
+    background:
+      radial-gradient(ellipse 55% 70% at 18% 22%, rgba(81, 66, 196, 0.45), transparent 72%),
+      radial-gradient(ellipse 50% 60% at 82% 30%, rgba(58, 51, 117, 0.48), transparent 68%),
+      radial-gradient(ellipse 60% 55% at 50% 88%, rgba(44, 49, 66, 0.50), transparent 70%),
+      radial-gradient(ellipse 40% 45% at 90% 92%, rgba(81, 66, 196, 0.24), transparent 65%);
+    filter: blur(80px);
+    opacity: var(--mesh-opacity);
+  }
+
+  /* ─── browser window frame ─── */
+  .window {
+    position: relative;
+    z-index: 1;
+    width: min(1320px, 100%);
+    max-width: 1320px;
+    border-radius: var(--r-container);
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    box-shadow: var(--window-shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* window title bar — traffic lights + tab + url */
+  .win-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--sp-md);
+    height: 36px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    gap: var(--sp-md);
+    flex-shrink: 0;
+  }
+  .win-lights { display: flex; gap: 6px; flex-shrink: 0; }
+  .win-lights span {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    display: block;
+  }
+  .win-lights .close  { background: #EF4F58; }
+  .win-lights .min    { background: #F5BD4F; }
+  .win-lights .max    { background: #61C454; }
+  .win-tabs {
+    display: flex;
+    flex: 1;
+    gap: 2px;
+    height: 100%;
+    align-items: end;
+    margin-left: var(--sp-md);
+  }
+  .win-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    padding: 7px 14px 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text2);
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .win-tab.active {
+    color: var(--text1);
+    background: var(--bg);
+  }
+  /* Stint favicon: rounded violet square — no triangle, no glyph */
+  .win-tab .favicon {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .win-tab .close {
+    color: var(--text3);
+    font-size: 13px;
+    line-height: 1;
+  }
+  .win-tab-new {
+    padding: 6px 8px;
+    color: var(--text3);
+    font-size: 14px;
+    align-self: center;
+  }
+
+  /* URL bar row */
+  .win-urlbar {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    padding: 0 var(--sp-md);
+    height: 40px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .win-urlbar .arrows {
+    display: flex;
+    gap: 2px;
+    color: var(--text3);
+  }
+  .win-urlbar .arrows i { font-size: 16px; }
+  .win-urlbar .url {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text2);
+    min-width: 0;
+  }
+  .win-urlbar .url .lock { color: var(--accent); font-size: 11px; }
+  .win-urlbar .url .domain { color: var(--text1); }
+  .win-urlbar .url .path { color: var(--text3); }
+  .win-urlbar .url-actions {
+    display: flex;
+    gap: var(--sp-sm);
+    color: var(--text3);
+  }
+  .win-urlbar .url-actions i { font-size: 16px; }
+
+  /* ─── app viewport inside the window ─── */
+  .app {
+    display: grid;
+    grid-template-columns: 236px 1fr;
+    grid-template-rows: 52px auto;
+    grid-template-areas:
+      "topbar topbar"
+      "sidebar main";
+    background: var(--bg);
+    color: var(--text1);
+  }
+
+  /* ─── app top bar ─── */
+  .app-topbar {
+    grid-area: topbar;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--sp-md);
+    border-bottom: 1px solid var(--border);
+    gap: var(--sp-lg);
+    background: color-mix(in srgb, var(--surface1) 60%, transparent);
+  }
+  /* Stint wordmark — Inter Medium, no icon glyph, just a small violet square */
+  .app-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.015em;
+    color: var(--text1);
+  }
+  .app-brand .mark {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 3px;
+  }
+  .app-breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text3);
+    margin-left: var(--sp-sm);
+  }
+  .app-breadcrumb .sep { color: var(--text4); }
+  .app-breadcrumb .current { color: var(--text1); }
+
+  .app-topnav {
+    display: flex;
+    gap: var(--sp-lg);
+    margin-left: var(--sp-lg);
+  }
+  .app-topnav a {
+    font-size: 13px;
+    color: var(--text2);
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 180ms ease, border-color 180ms ease;
+  }
+  .app-topnav a.active {
+    color: var(--text1);
+    border-bottom-color: var(--accent);
+    font-weight: 500;
+  }
+  .app-topnav a:hover { color: var(--text1); }
+
+  .app-topbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-md);
+  }
+  .workspace-selector {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px 5px 8px;
+    background: var(--surface1);
+    border: 1px solid var(--border-vis);
+    border-radius: var(--r-control);
+    font-size: 12px;
+    color: var(--text1);
+    cursor: pointer;
+  }
+  .workspace-selector::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .workspace-selector i { color: var(--text3); font-size: 12px; }
+
+  .app-search {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-control);
+    font-size: 12px;
+    color: var(--text3);
+    min-width: 220px;
+  }
+  .app-search i { font-size: 13px; }
+  .app-search .kbd {
+    margin-left: auto;
+    padding: 1px 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border-vis);
+    border-radius: var(--r-element);
+    color: var(--text4);
+    font-family: var(--font-mono);
+    font-size: 10px;
+  }
+
+  .app-avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand-400), var(--brand-700));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  /* ─── sidebar ─── */
+  .app-sidebar {
+    grid-area: sidebar;
+    background: color-mix(in srgb, var(--surface1) 50%, transparent);
+    border-right: 1px solid var(--border);
+    padding: var(--sp-md);
+    overflow-y: auto;
+  }
+  .sidebar-group-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text4);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0 var(--sp-sm) var(--sp-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sidebar-group-label .count {
+    color: var(--text3);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .sidebar-stint {
+    display: grid;
+    grid-template-columns: 10px 1fr auto;
+    align-items: center;
+    gap: var(--sp-sm);
+    padding: 8px var(--sp-sm);
+    border-radius: var(--r-control);
+    cursor: pointer;
+    position: relative;
+  }
+  .sidebar-stint:hover { background: var(--surface1); }
+  .sidebar-stint .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .sidebar-stint.closed .status-dot {
+    background: transparent;
+    border: 1px solid var(--text4);
+    width: 7px; height: 7px;
+  }
+  .sidebar-stint.amber .status-dot { background: var(--status-amber); }
+  .sidebar-stint.red   .status-dot { background: var(--status-red); }
+  .sidebar-stint .name {
+    font-size: 13px;
+    color: var(--text2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sidebar-stint .meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+  }
+  .sidebar-stint.amber .meta { color: var(--status-amber); }
+  .sidebar-stint.red   .meta { color: var(--status-red); }
+  .sidebar-stint.closed .meta { color: var(--text4); }
+  .sidebar-stint.active {
+    background: var(--surface2);
+  }
+  .sidebar-stint.active .name { color: var(--text1); font-weight: 500; }
+  .sidebar-stint.active .meta { color: var(--accent); }
+  .sidebar-stint.active::before {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 6px; bottom: 6px;
+    width: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .sidebar-sep {
+    margin: var(--sp-md) 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+  }
+  .sidebar-footer {
+    margin-top: var(--sp-lg);
+    padding: var(--sp-sm) var(--sp-sm) 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text4);
+    line-height: 1.7;
+  }
+  .sidebar-footer .row {
+    display: flex;
+    justify-content: space-between;
+  }
+  .sidebar-footer .row strong { color: var(--text2); font-weight: 500; }
+
+  /* ─── main canvas ─── */
+  .app-main {
+    grid-area: main;
+    padding: var(--sp-lg) var(--sp-xl) var(--sp-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-lg);
+  }
+
+  .main-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sp-lg);
+  }
+  .main-head-title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .main-head-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .main-head-name {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--text1);
+    letter-spacing: -0.025em;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-sm);
+  }
+  .stint-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: var(--accent-subtle);
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    border-radius: var(--r-pill);
+    letter-spacing: 0.04em;
+  }
+  .stint-pill::before {
+    content: "";
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .main-head-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 2px;
+  }
+  .main-head-meta .val { color: var(--text1); }
+  .main-head-actions {
+    display: flex;
+    gap: var(--sp-sm);
+    flex-shrink: 0;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-radius: var(--r-control);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border-vis);
+    background: var(--surface1);
+    color: var(--text1);
+    cursor: pointer;
+  }
+  .btn i { font-size: 14px; }
+  .btn-primary {
+    background: var(--accent);
+    color: #FFF;
+    border-color: var(--accent);
+  }
+
+  /* ─── KPI tile row ─── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-md);
+  }
+  .kpi {
+    padding: var(--sp-md);
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    background: color-mix(in srgb, var(--surface1) 55%, transparent);
+  }
+  .kpi-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--sp-sm);
+  }
+  .kpi-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .kpi-trend {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 6px;
+    border-radius: var(--r-element);
+  }
+  .kpi-trend.ok {
+    color: var(--accent);
+    background: var(--accent-subtle);
+  }
+  .kpi-trend.warn {
+    color: var(--status-amber);
+    background: color-mix(in srgb, var(--status-amber) 14%, transparent);
+  }
+  .kpi-trend.flat {
+    color: var(--text3);
+    background: var(--surface1);
+  }
+  .kpi-value {
+    font-family: var(--font-display);
+    font-size: 34px;
+    font-weight: 500;
+    color: var(--text1);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+  .kpi-value .unit {
+    font-size: 16px;
+    color: var(--text3);
+    margin-left: 4px;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .kpi-value .divider {
+    color: var(--text4);
+    font-weight: 400;
+    margin: 0 2px;
+  }
+  .kpi-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 4px;
+  }
+  .kpi-visual {
+    margin-top: var(--sp-sm);
+    height: 36px;
+  }
+
+  /* sparkline colors inside kpi */
+  .spark-line { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+  .spark-area { fill: url(#stint-spark-grad); }
+
+  /* KPI 2: cycle progress bar */
+  .cycle-bar {
+    position: relative;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: var(--r-pill);
+    margin-top: var(--sp-sm);
+    overflow: hidden;
+  }
+  .cycle-bar-fill {
+    position: absolute; inset: 0 auto 0 0;
+    width: 64.3%;
+    background: linear-gradient(90deg, var(--accent), var(--brand-500));
+    border-radius: var(--r-pill);
+  }
+
+  /* KPI 3: risk bar (amber tick at the carryover threshold) */
+  .risk-bar {
+    position: relative;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: var(--r-pill);
+    margin-top: var(--sp-sm);
+    overflow: hidden;
+  }
+  .risk-bar-fill {
+    position: absolute; inset: 0 auto 0 0;
+    width: 30%;
+    background: var(--status-amber);
+    border-radius: var(--r-pill);
+  }
+  .risk-bar-tick {
+    position: absolute;
+    top: -3px; bottom: -3px;
+    left: 40%;
+    width: 1px;
+    background: var(--status-red);
+  }
+
+  /* ─── chart panel (burn-down) ─── */
+  .chart-panel {
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    background: color-mix(in srgb, var(--surface1) 55%, transparent);
+    padding: var(--sp-md) var(--sp-md) var(--sp-sm);
+    display: flex;
+    flex-direction: column;
+  }
+  .chart-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--sp-sm);
+  }
+  .chart-title {
+    font-size: 13px;
+    color: var(--text2);
+    letter-spacing: -0.005em;
+  }
+  .chart-title strong { color: var(--text1); font-weight: 500; }
+  .chart-legend {
+    display: flex;
+    gap: var(--sp-md);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+  }
+  .chart-legend .k {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .chart-legend .k::before {
+    content: "";
+    width: 10px; height: 2px;
+    background: currentColor;
+  }
+  .chart-legend .k.actual { color: var(--accent); }
+  .chart-legend .k.ideal  { color: var(--text4); }
+  .chart-legend .k.ideal::before {
+    border-top: 1px dashed currentColor;
+    background: transparent;
+    height: 0;
+  }
+  .chart-svg {
+    width: 100%;
+    height: 160px;
+  }
+  .chart-grid-line { stroke: var(--border); stroke-width: 0.5; }
+  .chart-axis-label {
+    fill: var(--text4);
+    font-family: var(--font-mono);
+    font-size: 9px;
+  }
+  .chart-actual-line {
+    stroke: var(--accent);
+    stroke-width: 1.8;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .chart-actual-area { fill: url(#stint-chart-grad); }
+  .chart-ideal-line {
+    stroke: var(--text4);
+    stroke-width: 1;
+    stroke-dasharray: 4 3;
+    fill: none;
+  }
+  .chart-current-dot {
+    fill: var(--bg);
+    stroke: var(--accent);
+    stroke-width: 2;
+  }
+
+  /* ─── log stream ─── */
+  .log-panel {
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    background: color-mix(in srgb, var(--surface1) 55%, transparent);
+    overflow: hidden;
+  }
+  .log-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--sp-sm) var(--sp-md);
+    border-bottom: 1px solid var(--border);
+  }
+  .log-head .title {
+    font-size: 13px;
+    color: var(--text2);
+    letter-spacing: -0.005em;
+  }
+  .log-head .title strong { color: var(--text1); font-weight: 500; }
+  .log-head .filter {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .log-list {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .log-row {
+    display: grid;
+    grid-template-columns: 80px 100px 1fr auto;
+    gap: var(--sp-md);
+    padding: 8px var(--sp-md);
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .log-row:last-child { border-bottom: none; }
+  .log-row .ts { color: var(--text4); }
+  .log-row .kind {
+    color: var(--text3);
+    padding: 1px 6px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-element);
+    text-align: center;
+    width: fit-content;
+    background: var(--surface1);
+    font-size: 10px;
+  }
+  .log-row.k-close   .kind { color: var(--accent);       border-color: color-mix(in srgb, var(--accent)       40%, transparent); background: var(--accent-subtle); }
+  .log-row.k-add     .kind { color: var(--status-amber); border-color: color-mix(in srgb, var(--status-amber) 40%, transparent); background: color-mix(in srgb, var(--status-amber) 12%, transparent); }
+  .log-row.k-block   .kind { color: var(--status-red);   border-color: color-mix(in srgb, var(--status-red)   40%, transparent); background: color-mix(in srgb, var(--status-red)   12%, transparent); }
+  .log-row.k-claim   .kind { color: var(--text2); }
+  .log-row.k-review  .kind { color: var(--accent);       border-color: color-mix(in srgb, var(--accent)       30%, transparent); }
+  .log-row.k-note    .kind { color: var(--text2); }
+  .log-row .msg { color: var(--text1); }
+  .log-row .msg .dim { color: var(--text3); }
+  .log-row .msg .id  { color: var(--accent); }
+  .log-row .who { color: var(--text3); }
+  .log-row .who::before { content: "by "; color: var(--text4); }
+
+  /* ─── cursor indicator (the "mid-use" touch) ─── */
+  /* Positioned to hover over the selected `stint 07` row in the sidebar,
+     just past the stint name. Sells "someone is looking at this right now"
+     without forcing the user to hunt for it. Position is measured against
+     the .window element, not the viewport. */
+  .fake-cursor {
+    position: absolute;
+    top: 175px; left: 192px;
+    width: 16px; height: 18px;
+    pointer-events: none;
+    z-index: 5;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  }
+
+  /* ─── theme toggle bar ─── */
+  .theme-bar {
+    position: fixed;
+    bottom: var(--sp-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: color-mix(in srgb, var(--surface1) 88%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--border-vis);
+    border-radius: var(--r-pill);
+    z-index: 1000;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+  .theme-bar button {
+    padding: 7px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text3);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    transition: all 200ms ease;
+    letter-spacing: 0.04em;
+  }
+  .theme-bar button.active {
+    background: var(--surface3);
+    color: var(--text1);
+  }
+
+  /* responsive: below 1100px collapse sidebar width */
+  @media (max-width: 1100px) {
+    .app { grid-template-columns: 200px 1fr; }
+    .kpi-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- page backdrop: muted violet mesh -->
+<div class="page-bg">
+  <div class="mesh"></div>
+</div>
+
+<!-- browser window -->
+<div class="window">
+
+  <!-- titlebar: traffic lights + tab strip -->
+  <div class="win-titlebar">
+    <div class="win-lights">
+      <span class="close"></span><span class="min"></span><span class="max"></span>
+    </div>
+    <div class="win-tabs">
+      <div class="win-tab active">
+        <span class="favicon"></span>
+        Stint — Paper · stint 07
+        <span class="close">×</span>
+      </div>
+      <div class="win-tab">
+        <span class="favicon" style="background: var(--status-amber); border-radius: 2px;"></span>
+        Retro · stint 06 (draft)
+        <span class="close">×</span>
+      </div>
+      <div class="win-tab-new">+</div>
+    </div>
+  </div>
+
+  <!-- url bar -->
+  <div class="win-urlbar">
+    <div class="arrows">
+      <i class="ph ph-arrow-left"></i>
+      <i class="ph ph-arrow-right"></i>
+      <i class="ph ph-arrow-clockwise"></i>
+    </div>
+    <div class="url">
+      <i class="ph ph-lock lock"></i>
+      <span class="domain">app.stint.co</span><span class="path">/workspaces/paper/stints/07</span>
+    </div>
+    <div class="url-actions">
+      <i class="ph ph-bookmark-simple"></i>
+      <i class="ph ph-dots-three-vertical"></i>
+    </div>
+  </div>
+
+  <!-- app viewport -->
+  <div class="app">
+
+    <!-- ─── TOP BAR ─── -->
+    <div class="app-topbar">
+      <a class="app-brand"><span class="mark"></span>Stint</a>
+      <div class="app-breadcrumb">
+        <span>paper</span>
+        <span class="sep">/</span>
+        <span>stint 07</span>
+        <span class="sep">/</span>
+        <span class="current">overview</span>
+      </div>
+      <nav class="app-topnav">
+        <a class="active">Overview</a>
+        <a>Tasks</a>
+        <a>Members</a>
+        <a>Retro</a>
+        <a>History</a>
+      </nav>
+      <div class="app-topbar-right">
+        <div class="workspace-selector">paper <i class="ph ph-caret-down"></i></div>
+        <div class="app-search">
+          <i class="ph ph-magnifying-glass"></i>
+          <span>search stints, tasks…</span>
+          <span class="kbd">⌘K</span>
+        </div>
+        <div class="app-avatar">DM</div>
+      </div>
+    </div>
+
+    <!-- ─── SIDEBAR: recent stints ─── -->
+    <aside class="app-sidebar">
+      <div class="sidebar-group-label">
+        <span>Recent stints</span>
+        <span class="count">6</span>
+      </div>
+      <div class="sidebar-stint active">
+        <span class="status-dot"></span>
+        <span class="name">stint 07</span>
+        <span class="meta">day 9 / 14</span>
+      </div>
+      <div class="sidebar-stint closed">
+        <span class="status-dot"></span>
+        <span class="name">stint 06</span>
+        <span class="meta">closed</span>
+      </div>
+      <div class="sidebar-stint closed">
+        <span class="status-dot"></span>
+        <span class="name">stint 05</span>
+        <span class="meta">closed</span>
+      </div>
+      <div class="sidebar-stint amber">
+        <span class="status-dot"></span>
+        <span class="name">stint 04</span>
+        <span class="meta">carried 3</span>
+      </div>
+      <div class="sidebar-stint closed">
+        <span class="status-dot"></span>
+        <span class="name">stint 03</span>
+        <span class="meta">closed</span>
+      </div>
+      <div class="sidebar-stint red">
+        <span class="status-dot"></span>
+        <span class="name">stint 02</span>
+        <span class="meta">blocked 2</span>
+      </div>
+
+      <hr class="sidebar-sep">
+
+      <div class="sidebar-group-label">
+        <span>Upcoming</span>
+      </div>
+      <div class="sidebar-stint closed">
+        <span class="status-dot"></span>
+        <span class="name">stint 08</span>
+        <span class="meta">plans</span>
+      </div>
+
+      <hr class="sidebar-sep">
+
+      <div class="sidebar-group-label">
+        <span>Workspace</span>
+      </div>
+      <div class="sidebar-footer">
+        <div class="row"><span>total stints</span><strong>7</strong></div>
+        <div class="row"><span>on pace</span><strong>1</strong></div>
+        <div class="row"><span>closed</span><strong>4</strong></div>
+        <div class="row"><span>carried over</span><strong>1</strong></div>
+        <div class="row"><span>window</span><strong>14 d</strong></div>
+      </div>
+    </aside>
+
+    <!-- ─── MAIN CANVAS ─── -->
+    <main class="app-main">
+
+      <!-- header -->
+      <div class="main-head">
+        <div class="main-head-title">
+          <span class="main-head-eyebrow">stint overview</span>
+          <div class="main-head-name">
+            stint 07
+            <span class="stint-pill">on pace · day 9 / 14</span>
+          </div>
+          <div class="main-head-meta">
+            owner <span class="val">paper · design system</span>
+            &nbsp;·&nbsp; objective <span class="val">close 24 tasks</span>
+            &nbsp;·&nbsp; window <span class="val">14 d fixed</span>
+            &nbsp;·&nbsp; closes <span class="val">2026-04-15</span>
+          </div>
+        </div>
+        <div class="main-head-actions">
+          <button class="btn"><i class="ph ph-tray"></i>backlog</button>
+          <button class="btn"><i class="ph ph-users-three"></i>members</button>
+          <button class="btn btn-primary"><i class="ph ph-plus"></i>add task</button>
+        </div>
+      </div>
+
+      <!-- KPI row -->
+      <div class="kpi-row">
+
+        <!-- KPI 1: completion -->
+        <div class="kpi">
+          <div class="kpi-head">
+            <span class="kpi-label">completion</span>
+            <span class="kpi-trend ok">on pace</span>
+          </div>
+          <div class="kpi-value">15<span class="divider"> / </span><span class="unit">24</span></div>
+          <div class="kpi-sub">62.5% closed &nbsp;·&nbsp; last daily close 14:42</div>
+          <svg class="kpi-visual" viewBox="0 0 300 36" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="stint-spark-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stop-color="var(--accent)" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- daily cumulative closes, days 1 → 9: 0,0,1,3,5,7,9,12,15 -->
+            <path class="spark-area" d="M0,34 L33,34 L66,32 L100,28 L133,24 L166,20 L200,16 L233,10 L266,6 L300,6 L300,36 L0,36 Z"/>
+            <path class="spark-line" d="M0,34 L33,34 L66,32 L100,28 L133,24 L166,20 L200,16 L233,10 L266,6 L300,6"/>
+          </svg>
+        </div>
+
+        <!-- KPI 2: days left -->
+        <div class="kpi">
+          <div class="kpi-head">
+            <span class="kpi-label">days left</span>
+            <span class="kpi-trend flat">day 9 / 14</span>
+          </div>
+          <div class="kpi-value">5<span class="unit">of 14</span></div>
+          <div class="kpi-sub">closes apr 15 &nbsp;·&nbsp; no extension</div>
+          <div class="cycle-bar">
+            <div class="cycle-bar-fill"></div>
+          </div>
+        </div>
+
+        <!-- KPI 3: carryover risk -->
+        <div class="kpi">
+          <div class="kpi-head">
+            <span class="kpi-label">at risk</span>
+            <span class="kpi-trend warn">watch</span>
+          </div>
+          <div class="kpi-value">3<span class="unit">tasks</span></div>
+          <div class="kpi-sub">likely to carry to stint 08</div>
+          <div class="risk-bar">
+            <div class="risk-bar-fill"></div>
+            <div class="risk-bar-tick" title="carryover threshold"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- chart panel: 14-day burn-down -->
+      <div class="chart-panel">
+        <div class="chart-head">
+          <div class="chart-title">tasks remaining · <strong>14-day burn-down</strong></div>
+          <div class="chart-legend">
+            <span class="k actual">actual</span>
+            <span class="k ideal">ideal</span>
+          </div>
+        </div>
+        <svg class="chart-svg" viewBox="0 0 860 160" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="stint-chart-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="var(--accent)" stop-opacity="0.26"/>
+              <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+
+          <!-- grid lines (horizontal) -->
+          <line class="chart-grid-line" x1="40"  y1="20"  x2="840" y2="20"/>
+          <line class="chart-grid-line" x1="40"  y1="50"  x2="840" y2="50"/>
+          <line class="chart-grid-line" x1="40"  y1="80"  x2="840" y2="80"/>
+          <line class="chart-grid-line" x1="40"  y1="110" x2="840" y2="110"/>
+          <line class="chart-grid-line" x1="40"  y1="140" x2="840" y2="140"/>
+
+          <!-- Y axis labels (remaining tasks: 24, 18, 12, 6, 0) -->
+          <text class="chart-axis-label" x="32" y="23"  text-anchor="end">24</text>
+          <text class="chart-axis-label" x="32" y="53"  text-anchor="end">18</text>
+          <text class="chart-axis-label" x="32" y="83"  text-anchor="end">12</text>
+          <text class="chart-axis-label" x="32" y="113" text-anchor="end">6</text>
+          <text class="chart-axis-label" x="32" y="143" text-anchor="end">0</text>
+
+          <!-- ideal burn-down line: (day 0, 24) → (day 14, 0) as straight dashed -->
+          <line class="chart-ideal-line" x1="40" y1="20" x2="840" y2="140"/>
+
+          <!--
+            actual remaining path, days 0 → 9:
+            day 0:24, day 1:24, day 2:23, day 3:21, day 4:19, day 5:17,
+            day 6:15, day 7:13, day 8:11, day 9:9 (current)
+            y = 20 + (24 - remaining) * 5
+            x = 40 + day * (800/14) ≈ 40 + day * 57.14
+          -->
+          <path class="chart-actual-area"
+                d="M40,20 L97,20 L154,25 L211,35 L269,45 L326,55 L383,65 L440,75 L497,85 L554,95 L554,140 L40,140 Z"/>
+          <path class="chart-actual-line"
+                d="M40,20 L97,20 L154,25 L211,35 L269,45 L326,55 L383,65 L440,75 L497,85 L554,95"/>
+
+          <!-- current position dot at day 9 -->
+          <circle class="chart-current-dot" cx="554" cy="95" r="4"/>
+
+          <!-- X axis labels (days) -->
+          <text class="chart-axis-label" x="40"  y="158" text-anchor="start">day 1</text>
+          <text class="chart-axis-label" x="211" y="158" text-anchor="middle">day 4</text>
+          <text class="chart-axis-label" x="440" y="158" text-anchor="middle">day 7</text>
+          <text class="chart-axis-label" x="611" y="158" text-anchor="middle">day 10</text>
+          <text class="chart-axis-label" x="840" y="158" text-anchor="end">day 14</text>
+        </svg>
+      </div>
+
+      <!-- log stream -->
+      <div class="log-panel">
+        <div class="log-head">
+          <div class="title">recent activity · <strong>stint 07</strong></div>
+          <div class="filter">filter <i class="ph ph-funnel-simple"></i></div>
+        </div>
+        <div class="log-list">
+          <div class="log-row k-close">
+            <span class="ts">14:42:07</span>
+            <span class="kind">close</span>
+            <span class="msg"><span class="id">T-172</span> <span class="dim">·</span> Migrate Stashy tokens to v2 schema</span>
+            <span class="who">dmartin</span>
+          </div>
+          <div class="log-row k-add">
+            <span class="ts">14:18:33</span>
+            <span class="kind">add</span>
+            <span class="msg"><span class="id">T-182</span> <span class="dim">·</span> Add Phase 4 template to SKILL.md <span class="dim">(late add · objective + 1)</span></span>
+            <span class="who">kavila</span>
+          </div>
+          <div class="log-row k-close">
+            <span class="ts">13:55:02</span>
+            <span class="kind">close</span>
+            <span class="msg"><span class="id">T-171</span> <span class="dim">·</span> Render grainy-mesh fallback at low intensity</span>
+            <span class="who">jmora</span>
+          </div>
+          <div class="log-row k-note">
+            <span class="ts">13:21:44</span>
+            <span class="kind">note</span>
+            <span class="msg">daily standup posted <span class="dim">·</span> 3 blocked <span class="dim">·</span> 5 in review <span class="dim">·</span> 1 escalated</span>
+            <span class="who">stint-bot</span>
+          </div>
+          <div class="log-row k-claim">
+            <span class="ts">12:58:12</span>
+            <span class="kind">claim</span>
+            <span class="msg"><span class="id">T-180</span> <span class="dim">·</span> Write hero-stage v2 migration guide <span class="dim">claimed</span></span>
+            <span class="who">dmartin</span>
+          </div>
+          <div class="log-row k-block">
+            <span class="ts">12:30:19</span>
+            <span class="kind">block</span>
+            <span class="msg"><span class="id">T-168</span> <span class="dim">·</span> Deploy caustics fix to prod demos <span class="dim">·</span> waiting on review</span>
+            <span class="who">jmora</span>
+          </div>
+          <div class="log-row k-close">
+            <span class="ts">11:45:00</span>
+            <span class="kind">close</span>
+            <span class="msg"><span class="id">T-170</span> <span class="dim">·</span> Fix cursor drift on app-screen template</span>
+            <span class="who">kavila</span>
+          </div>
+          <div class="log-row k-review">
+            <span class="ts">11:02:27</span>
+            <span class="kind">review</span>
+            <span class="msg"><span class="id">T-167</span> <span class="dim">·</span> Audit 5 template files for v1 drift <span class="dim">moved to review</span></span>
+            <span class="who">dmartin</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- the "mid-use" touch: fake cursor hovering on the selected stint row -->
+  <svg class="fake-cursor" viewBox="0 0 16 18" fill="none">
+    <path d="M1 1 L1 15 L5 11 L8 17 L10.5 15.8 L7.5 9.8 L13 9.8 Z"
+          fill="#F4F5F9" stroke="#0B0D14" stroke-width="1" stroke-linejoin="round"/>
+  </svg>
+
+</div>
+
+<!-- theme toggle -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="dark">dark</button>
+  <button data-theme-btn="light">light</button>
+</div>
+
+<script>
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  // click-disabled: everything inside the frame is a static mockup
+  document.querySelectorAll('a').forEach(a => a.addEventListener('click', e => e.preventDefault()));
+</script>
+</body>
+</html>

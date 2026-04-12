@@ -1,0 +1,175 @@
+name: "Halcyon"
+description: "Fictional reasoning platform for engineering teams. Instead of a centered subject, the hero field is a diagonal stack of 3D glass bars in cool blue-teal — the geometric mass IS the hero. Proves the sculptural-field preset: medium: sculptural (glass-bars) + subject: none + relation: flat. The first example in the proof library where the background alone carries the whole identity."
+philosophy: "Think in quiet motion. Halcyon is a reasoning platform that lets engineering teams trace how decisions propagate across a codebase — where a change started, what it touched, and where it settled. The identity is architectural rather than product-shot: the landing doesn't center a thing, it centers a space."
+primary_mode: "dark"
+brand_source: "INVENTED — fictional brand for hero_stage v2 proof library, sculptural-field preset"
+brand_domain: "developer reasoning / decision tracing (fictional)"
+brand_type: "content-rich"
+mono_for_data: true
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    neutral:             # cool near-black with a teal bias, not pure gray
+      50:  "#F2F5F8"
+      100: "#E0E6EE"
+      200: "#C3CCD8"
+      300: "#8E9AA9"
+      400: "#61707F"
+      500: "#3F4C59"
+      600: "#29333D"
+      700: "#1B242E"
+      800: "#121A23"
+      900: "#0A1019"    # canvas
+      950: "#05090F"
+    brand:               # blue-teal ramp, cool not icy
+      50:  "#E8F4FF"
+      100: "#CFE0FF"
+      200: "#A1C2FF"
+      300: "#6D9DFF"
+      400: "#4680F5"
+      500: "#2E66DE"    # primary accent
+      600: "#1F4BB0"
+      700: "#163777"
+      800: "#0E2249"
+      900: "#07162F"
+    teal:                # sculptural highlight hue — sits between brand and the canvas
+      100: "#C6F1F0"
+      300: "#6DD5D3"
+      500: "#2FA7A3"
+      700: "#11605F"
+      900: "#052928"
+    # sculptural-specific: the glass bars use these as their vertical stops.
+    # Top of each bar is bright/cool, bottom falls into the canvas.
+    sculptural:
+      top:        "#CFE0FF"    # bright cool top
+      upper:      "#6D9DFF"    # brand mid-light
+      body:       "#2E66DE"    # brand primary
+      lower:      "#163777"    # dark blue
+      bottom:     "#07162F"    # near-canvas
+      edge:       "#A1C2FF"    # 1px silhouette rim light
+      glow:       "#4680F5"    # outer glow spill hue
+  spacing: [0, 2, 4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 128, 160]
+  radii:   [0, 4, 8, 12, 20, 28, 40, 999]
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    dark:
+      background:     "{neutral.900}"
+      surface1:       "{neutral.800}"
+      surface2:       "{neutral.700}"
+      surface3:       "{neutral.600}"
+      border:         "{neutral.700}"
+      border_visible: "{neutral.600}"
+      text1:          "{neutral.50}"
+      text2:          "{neutral.200}"
+      text3:          "{neutral.300}"
+      text4:          "{neutral.400}"
+      accent:         "{brand.400}"
+      accent_hover:   "{brand.300}"
+      accent_subtle:  "{brand.900}"
+    light:
+      background:     "{neutral.50}"
+      surface1:       "{neutral.100}"
+      surface2:       "{neutral.200}"
+      surface3:       "{neutral.300}"
+      border:         "{neutral.200}"
+      border_visible: "{neutral.300}"
+      text1:          "{neutral.900}"
+      text2:          "{neutral.500}"
+      text3:          "{neutral.400}"
+      text4:          "{neutral.300}"
+      accent:         "{brand.500}"
+      accent_hover:   "{brand.600}"
+      accent_subtle:  "{brand.50}"
+
+  radii:
+    element:   4
+    control:   8
+    component: 12
+    container: 20
+    pill:      999
+
+  typography:
+    display:
+      family: "Manrope"          # geometric humanist sans, architectural feel
+      size:   "64px"
+      weight: 500
+      line_height: 1.05
+      letter_spacing: "-0.03em"
+      google_fonts: "Manrope:wght@400;500;600;700"
+    body:
+      family: "Inter"
+      size:   "15px"
+      weight: 400
+      line_height: 1.6
+      letter_spacing: "0em"
+      google_fonts: "Inter:wght@400;500"
+    mono:
+      family: "JetBrains Mono"
+      size:   "13px"
+      weight: 400
+      google_fonts: "JetBrains+Mono:wght@400;500"
+
+# ── HERO STAGE ─── sculptural-field preset (NEW in v2)
+# Demonstrates:
+#   background.medium: sculptural, glass-bars recipe
+#   hero.subject: none — the sculptural mass IS the hero
+#   relation.type: flat — no subject, no relation layer
+#
+# This is the first example in the proof library where the background
+# alone carries the identity. No centered subject at all. The diagonal
+# glass-bars stack is the hero. Pairs with subject: none per compat matrix.
+hero_stage:
+  preset: "sculptural-field"
+  observed_style:
+    description: "INVENTED for testing: a diagonal stack of five translucent 3D glass bars fills the viewport, rotated ~22° across the vertical. Each bar has a vertical gradient from cool blue-white at the top to deep blue at the bottom, with a sharp edge-rim and an outer glow. The bars overlap in depth, giving the field sculptural mass. No subject sits in front of it — the mass is the hero."
+    where_used: ["hero", "final cta (background echo, reduced intensity)"]
+    notes: "Fictional composition inspired by the idea of geometric 3D fields as hero identity (not a copy of any specific site). Uses pure CSS transforms and linear-gradients — no WebGL, no imported assets. Proves that medium: sculptural + subject: none can be hero-worthy."
+  background:
+    medium: "sculptural"         # NEW medium in hero-stage v2
+    color_mode: "palette"
+    saturation: "vibrant"
+    light_source: "center"       # the brightest point of the stack sits near the visual center
+    falloff: "radial"
+    vignette: "subtle"           # subtle frames the mass against the canvas edges
+    texture: "clean"
+    motion: "static"
+    intensity: "bold"            # sculptural fields earn bold; they're meant to carry the identity
+    safe_zone: "masked-for-text" # content sits below the bar stack with its own dimmed scrim
+    color_palette:
+      - "#CFE0FF"   # top of the bars (bright cool)
+      - "#6D9DFF"   # upper body
+      - "#2E66DE"   # brand primary
+      - "#163777"   # lower stops
+      - "#07162F"   # near-canvas
+      - "#0A1019"   # canvas
+    recipe: "glass-bars"         # glass-bars / crystal-cluster / geometric-drift
+    recipe_params:
+      bar_count: 5
+      bar_width: "180px"
+      stack_rotation: "-22deg"
+      per_bar_yaw: [18, 12, 6, 0, -6]
+  hero:
+    subject: "none"                # sculptural fields pair with subject: none (compat-matrix rule)
+    # form, placement, scale, tint all ignored
+  relation:
+    type: "flat"                   # no subject, nothing to relate
+    bleed: 0
+  disclaimer: "Fictional brand created for the hero_stage v2 proof library. Not affiliated with any real company. The sculptural glass-bars recipe is a pure-CSS approximation of 3D geometric fields — real implementations often use WebGL or rendered imagery we cannot redistribute."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Fictional: thin geometric outlines, minimal. Rarely used — Halcyon's identity is the field, not the glyphs."
+    stroke_weight: "regular"
+    corner_treatment: "sharp"
+    fill_style: "outline"
+    form_language: "geometric"
+    visual_density: "minimal"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "regular"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
+    icon_class_prefix: "ph ph-"

@@ -1,0 +1,178 @@
+name: "Solvent"
+description: "Fictional creative tool for generative video and AI art, maker-focused. The hero is a warm amber liquid-flow shader — the canvas is literally alive, drifting under centered editorial type. Proves the shader-ambient preset: medium: shader (liquid-flow) + subject: none + motion: drift, tuned subtle so hero copy stays dominant. Warm umber neutrals and gold amber instead of the usual cool dev-tool palette — this is the warmth + craft variant."
+philosophy: "Render what you imagined, not what you typed. Solvent is a creative tool for people making moving images with AI — brush-based prompt editing instead of text input, where strokes map to motion vectors and the canvas previews every frame in real time. The identity is warmth and craft, the opposite of sterile SaaS. Playful but disciplined: maker voice, direct copy, tactile chrome. No corporate polish, no hedged claims."
+primary_mode: "dark"
+brand_source: "INVENTED — fictional brand for the shader-ambient proof library, liquid-flow preset with warm amber palette"
+brand_domain: "creative tools / generative video / AI art (fictional)"
+brand_type: "ui-rich"
+mono_for_data: true
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    neutral:             # warm umber near-black, not cool — this is the differentiator
+      50:  "#FBF6EF"     # warm cream
+      100: "#F2E9DA"
+      200: "#E4D4BA"
+      300: "#B89F7A"
+      400: "#7C6848"
+      500: "#4E4029"
+      600: "#362B19"
+      700: "#241C10"
+      800: "#17110A"
+      900: "#0D0905"     # canvas dark
+      950: "#060300"
+    brand:               # warm gold amber ramp, saturated but not neon
+      50:  "#FFF6E0"
+      100: "#FFE7A8"
+      200: "#FFD566"
+      300: "#FFC024"
+      400: "#F5A623"     # accent dark mode
+      500: "#DC8A0C"     # accent light mode
+      600: "#A8670A"
+      700: "#744807"
+      800: "#432A05"
+      900: "#1E1300"
+    magenta:             # secondary accent — used very sparingly for hot spots
+      300: "#FF6BB5"
+      500: "#E03A8E"
+      700: "#92214F"
+    # shader-specific: the liquid-flow field samples these three as u_color1/2/3
+    # over the warm dark canvas. Muted saturation, subtle intensity.
+    shader:
+      color1:  "#FFC024"   # brand.300 — brightest amber highlight
+      color2:  "#F5A623"   # brand.400 — mid amber body
+      color3:  "#A8670A"   # brand.600 — deep amber shadow
+      canvas:  "#0D0905"   # warm dark floor
+  spacing: [0, 2, 4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 128, 160]
+  radii:   [0, 4, 8, 12, 20, 28, 40, 999]
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    dark:
+      background:     "{neutral.900}"
+      surface1:       "{neutral.800}"
+      surface2:       "{neutral.700}"
+      surface3:       "{neutral.600}"
+      border:         "{neutral.700}"
+      border_visible: "{neutral.600}"
+      text1:          "{neutral.50}"
+      text2:          "{neutral.200}"
+      text3:          "{neutral.300}"
+      text4:          "{neutral.400}"
+      accent:         "{brand.400}"
+      accent_hover:   "{brand.300}"
+      accent_subtle:  "{brand.900}"
+    light:
+      background:     "{neutral.50}"
+      surface1:       "{neutral.100}"
+      surface2:       "{neutral.200}"
+      surface3:       "{neutral.300}"
+      border:         "{neutral.200}"
+      border_visible: "{neutral.300}"
+      text1:          "{neutral.900}"
+      text2:          "{neutral.500}"
+      text3:          "{neutral.400}"
+      text4:          "{neutral.300}"
+      accent:         "{brand.500}"
+      accent_hover:   "{brand.600}"
+      accent_subtle:  "{brand.50}"
+
+  radii:
+    element:   4
+    control:   8
+    component: 12
+    container: 20
+    pill:      999
+
+  typography:
+    display:
+      family: "Fraunces"            # variable serif — creative/editorial warmth, opposite of dev-tool sans
+      size:   "64px"
+      weight: 400
+      line_height: 1.02
+      letter_spacing: "-0.03em"
+      google_fonts: "Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500"
+    body:
+      family: "Inter"
+      size:   "15px"
+      weight: 400
+      line_height: 1.6
+      letter_spacing: "0em"
+      google_fonts: "Inter:wght@400;500"
+    mono:
+      family: "JetBrains Mono"
+      size:   "13px"
+      weight: 400
+      google_fonts: "JetBrains+Mono:wght@400;500"
+
+# ── HERO STAGE ─── shader-ambient preset (liquid-flow)
+# Demonstrates:
+#   background.medium: shader, liquid-flow preset
+#   hero.subject: none — the shader field IS the hero
+#   relation.type: flat
+#
+# This is the warm-palette variant of the shader-ambient preset. Where most
+# shader hero brands are cool blue/purple (Linear, Runway, etc.), Solvent
+# runs the same liquid-flow preset tuned to warm amber over warm umber
+# dark — proving the preset handles palette inversion cleanly.
+hero_stage:
+  preset: "shader-ambient"
+  observed_style:
+    description: "INVENTED for testing: a slow amber liquid-flow mesh drifts under centered editorial serif type. The shader runs at subtle defaults — the field is clearly alive but never louder than the copy. Three warm gold stops (#FFC024, #F5A623, #A8670A) displaced by a two-octave simplex noise field over a warm dark canvas (#0D0905). Vignette subtle, intensity subtle, contrast muted. Reads as liquid brass or candlelight at the edges — warm and tactile, not corporate dark SaaS."
+    where_used: ["hero", "final cta (reduced-intensity echo)"]
+    notes: "Fictional composition for the shader-ambient preset proof. Tests that the liquid-flow preset reads warm + editorial when fed gold over warm dark, and that the shader stays subtle enough for Fraunces display type to dominate the frame."
+  background:
+    medium: "shader"
+    color_mode: "brand-tinted-neutral"
+    saturation: "muted"
+    light_source: "center"
+    falloff: "radial"
+    vignette: "subtle"
+    texture: "clean"
+    motion: "drift"                 # shader always animates; drift reads slow and meditative
+    intensity: "subtle"             # hero copy must dominate, shader is atmosphere
+    contrast: 0.7
+    safe_zone: "full-canvas"        # subtle intensity makes a scrim unnecessary, copy reads directly
+    color_palette:
+      - "#FFC024"   # brand.300 — u_color1
+      - "#F5A623"   # brand.400 — u_color2
+      - "#A8670A"   # brand.600 — u_color3
+      - "#0D0905"   # canvas dark
+    shader:
+      preset: "liquid-flow"
+      match_score: "high"
+      match_reasoning: "liquid-flow's warped radial gradient field reads as brushed amber under drift, matching Solvent's brush-based-editing metaphor. Runs beautifully subtle with warm palette."
+      color_uniforms:
+        u_color1: "{brand.300}"   # #FFC024
+        u_color2: "{brand.400}"   # #F5A623
+        u_color3: "{brand.600}"   # #A8670A
+      dials:
+        speed:     0.6    # slow drift — the canvas breathes, doesn't pulse
+        intensity: 0.55   # just above subtle default — warm palette needs a touch more
+        contrast:  0.70   # preset default — keeps the amber stops distinct
+        vignette:  0.40   # slight frame, focuses center
+        base:      0.04   # warm near-black floor
+  hero:
+    subject: "none"                 # shader field IS the hero
+    # form, placement, scale, tint all ignored
+  relation:
+    type: "flat"
+    bleed: 0
+  disclaimer: "Fictional brand created for the shader-ambient proof library. Not affiliated with any real company. The liquid-flow fragment shader is a curated preset from the hero-stage references — real creative-tool brands use custom GLSL or rendered video that we cannot redistribute."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Fictional: soft geometric outlines, rounded corners, medium weight. Used in feature-card affordances and the brush/timeline UI mocks. Solvent's icons feel hand-drawn-adjacent, not technical-precise."
+    stroke_weight: "regular"
+    corner_treatment: "rounded"
+    fill_style: "outline"
+    form_language: "organic"
+    visual_density: "balanced"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "regular"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
+    icon_class_prefix: "ph ph-"

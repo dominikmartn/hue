@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero Stage — Proof Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0B14;
+    --surface1: #13141D;
+    --surface2: #1E2030;
+    --border: #1E2030;
+    --border-vis: #2F3144;
+    --text1: #F4F5FA;
+    --text2: #9599AD;
+    --text3: #6A6D82;
+    --text4: #494C60;
+    --accent: #7B6FEA;
+    --sp-sm: 8px;
+    --sp-md: 16px;
+    --sp-lg: 24px;
+    --sp-xl: 32px;
+    --sp-2xl: 48px;
+    --sp-3xl: 64px;
+    --sp-4xl: 96px;
+    --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text1);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--sp-2xl);
+  }
+
+  header {
+    padding: var(--sp-4xl) 0 var(--sp-3xl);
+    border-bottom: 1px solid var(--border);
+  }
+  header .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-md);
+  }
+  header h1 {
+    font-size: clamp(44px, 6vw, 72px);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    margin: 0 0 var(--sp-lg);
+    max-width: 800px;
+  }
+  header p.lede {
+    font-size: 18px;
+    color: var(--text2);
+    max-width: 680px;
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* Schema summary */
+  .schema {
+    padding: var(--sp-3xl) 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .schema h2 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 var(--sp-lg);
+    font-weight: 500;
+  }
+  .schema-code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text2);
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: var(--sp-lg) var(--sp-xl);
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .schema-code .k { color: #9189E6; }
+  .schema-code .v { color: #F0B95A; }
+  .schema-code .c { color: var(--text4); }
+
+  /* Cards */
+  .library {
+    padding: var(--sp-4xl) 0 var(--sp-3xl);
+  }
+  .library h2 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 var(--sp-xl);
+    font-weight: 500;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-lg);
+  }
+  .card {
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 240ms ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .card:hover {
+    border-color: var(--border-vis);
+    transform: translateY(-2px);
+  }
+
+  /* Live iframe preview at scale */
+  .card-preview {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    background: #000;
+  }
+  .card-preview iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 1400px;
+    height: 900px;
+    border: none;
+    transform: scale(0.28);
+    transform-origin: 0 0;
+    pointer-events: none;
+  }
+  .card-preview::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 70%, color-mix(in srgb, var(--surface1) 40%, transparent));
+    pointer-events: none;
+  }
+
+  .card-body {
+    padding: var(--sp-lg) var(--sp-xl) var(--sp-xl);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-preset {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    border-radius: 999px;
+    margin-bottom: var(--sp-md);
+    width: fit-content;
+  }
+  .card-name {
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--sp-sm);
+    color: var(--text1);
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.55;
+    margin: 0 0 var(--sp-lg);
+    min-height: 60px;
+  }
+  .card-dials {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 6px var(--sp-md);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    margin-bottom: var(--sp-lg);
+    padding-top: var(--sp-md);
+    border-top: 1px solid var(--border);
+  }
+  .card-dials dt { color: var(--text3); }
+  .card-dials dd { color: var(--text1); margin: 0; }
+  .card-actions {
+    display: flex;
+    gap: var(--sp-sm);
+    margin-top: auto;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-vis);
+    background: var(--surface2);
+    color: var(--text1);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 180ms ease;
+  }
+  .btn:hover {
+    background: var(--border-vis);
+    border-color: var(--text4);
+  }
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #FFF;
+  }
+  .btn-primary:hover {
+    background: #9189E6;
+    border-color: #9189E6;
+  }
+
+  /* Meta footer */
+  footer {
+    padding: var(--sp-2xl) 0;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text4);
+    display: flex;
+    justify-content: space-between;
+    letter-spacing: 0.06em;
+  }
+  footer .container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1280px;
+  }
+
+  @media (max-width: 960px) {
+    .cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="eyebrow">design-skill-generator · examples</div>
+    <h1>Hero Stage — Proof Library</h1>
+    <p class="lede">
+      Six brands, each rendered against a different <code style="font-family: var(--font-mono); color: var(--text1);">hero_stage</code> preset from the <strong>v2 schema</strong>. Five are fictional proofs, one is Meadow — the real mymind-design skill serving as the calm pole. Together they prove the layered composition model: background field, optional hero subject (categorized by <em>intent</em>, not form), and relation.
+    </p>
+  </div>
+</header>
+
+<section class="schema">
+  <div class="container">
+    <h2>Schema shape</h2>
+<div class="schema-code"><span class="k">hero_stage:</span>
+  <span class="k">preset:</span>              <span class="v">luminous-on-gradient</span>  <span class="c"># one of 9 v2 presets, or null</span>
+  <span class="k">background:</span>
+    <span class="k">medium:</span>            <span class="v">gradient</span>          <span class="c"># gradient / mesh / painterly / shader / pattern / bokeh / sculptural / noise / photo / absent</span>
+    <span class="k">color_mode:</span>        <span class="v">palette</span>           <span class="c"># monochrome / dual-tone / palette / brand-tinted-neutral</span>
+    <span class="k">saturation:</span>        <span class="v">vibrant</span>           <span class="c"># flat / muted / vibrant / neon</span>
+    <span class="k">light_source:</span>      <span class="v">center</span>            <span class="c"># top / bottom / tl..br / center / ambient / none</span>
+    <span class="k">vignette:</span>          <span class="v">subtle</span>            <span class="c"># off / subtle / strong</span>
+    <span class="k">intensity:</span>         <span class="v">bold</span>              <span class="c"># subtle / bold / blown-out — default subtle</span>
+    <span class="k">motion:</span>            <span class="v">static</span>            <span class="c"># static / drift / pulse / reactive</span>
+    <span class="k">color_palette:</span>     <span class="v">[...]</span>             <span class="c"># 3-5 hues</span>
+  <span class="k">hero:</span>
+    <span class="k">subject:</span>           <span class="v">luminous</span>          <span class="c"># none / luminous / object / device / composition / photo-cutout  ← by intent</span>
+    <span class="k">form:</span>              <span class="v">sphere</span>            <span class="c"># sphere / disc / ring / torus — ONLY for luminous. Ignored for everything else.</span>
+    <span class="k">placement:</span>         <span class="v">center</span>            <span class="c"># center / off-center-l/r / bottom / top-corner-l/r</span>
+    <span class="k">scale:</span>             <span class="v">balanced</span>          <span class="c"># dominant / balanced / accent</span>
+    <span class="k">tint:</span>              <span class="v">gradient-from-palette</span>  <span class="c"># brand / neutral / gradient-from-palette / metallic</span>
+  <span class="k">relation:</span>
+    <span class="k">type:</span>              <span class="v">glow</span>              <span class="c"># flat / glow / halo / reflection / emissive / shadow-only  (see compat matrix)</span>
+    <span class="k">bleed:</span>             <span class="v">60</span>                <span class="c"># 0-100 — luminous bleeds light, object does not</span>
+<span class="c"># Honesty rule: luminous/device/composition render in CSS. object = generic warm metallic form</span>
+<span class="c"># (decorative placeholder; user swaps for real 3D render). photo-cutout = prose placeholder.</span></div>
+  </div>
+</section>
+
+<section class="library">
+  <div class="container">
+    <h2>Examples · 6 / 9 presets covered</h2>
+    <div class="cards">
+
+      <!-- ── Orivion ── -->
+      <div class="card">
+        <div class="card-preview">
+          <iframe src="orivion/landing-page.html" loading="lazy"></iframe>
+        </div>
+        <div class="card-body">
+          <span class="card-preset">luminous-on-gradient</span>
+          <h3 class="card-name">Orivion</h3>
+          <p class="card-desc">
+            A glowing command-bar product. Magenta light-ball centered on a vibrant red-violet gradient, warm halo bleeding behind it. A lightbulb — no gravity, no floor.
+          </p>
+          <dl class="card-dials">
+            <dt>medium</dt><dd>gradient</dd>
+            <dt>subject</dt><dd>luminous · form: sphere</dd>
+            <dt>relation</dt><dd>glow, bleed 60</dd>
+            <dt>intensity</dt><dd>bold</dd>
+          </dl>
+          <div class="card-actions">
+            <a class="btn btn-primary" href="orivion/landing-page.html" target="_blank">
+              Open landing page →
+            </a>
+            <a class="btn" href="orivion/design-model.yaml" target="_blank">
+              yaml
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Stint (device-on-mesh — project tracker) ── -->
+      <div class="card">
+        <div class="card-preview">
+          <iframe src="stint/landing-page.html" loading="lazy"></iframe>
+        </div>
+        <div class="card-body">
+          <span class="card-preset">device-on-mesh <span style="color: var(--text3); font-weight: 400;">· + app screen</span></span>
+          <h3 class="card-name">Stint</h3>
+          <p class="card-desc">
+            Fictional project tracker with fixed two-week cycles. App-window mockup floating off-center over a muted violet mesh. Device sits on the stage — no light interaction, drop shadow only. Also has a <strong style="color: var(--text1); font-weight: 500;">Phase 4 app screen</strong> — same mesh tokens rendering inside a stint detail view with a 14-day burn-down chart and activity feed, proving the language carries from landing page to product.
+          </p>
+          <dl class="card-dials">
+            <dt>medium</dt><dd>mesh</dd>
+            <dt>subject</dt><dd>device · off-center-right</dd>
+            <dt>relation</dt><dd>flat (shadow only)</dd>
+            <dt>intensity</dt><dd>subtle</dd>
+          </dl>
+          <div class="card-actions">
+            <a class="btn btn-primary" href="stint/landing-page.html" target="_blank">
+              Open landing page →
+            </a>
+            <a class="btn" href="stint/app-screen.html" target="_blank">
+              App screen →
+            </a>
+            <a class="btn" href="stint/design-model.yaml" target="_blank">
+              yaml
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Auris (object = placeholder) ── -->
+      <div class="card">
+        <div class="card-preview">
+          <iframe src="auris/landing-page.html" loading="lazy"></iframe>
+        </div>
+        <div class="card-body">
+          <span class="card-preset">object-on-spotlight</span>
+          <h3 class="card-name">Auris</h3>
+          <p class="card-desc">
+            Fictional premium audio launch. The stage is fully composed — dark canvas, tight top spotlight, contact shadow — and the hero subject renders as a generic warm metallic form that holds the slot. Concrete products are never CSS-simulated here; the form is a decorative placeholder the user swaps for their own 3D render or product photography before shipping. Same honesty rule as <code class="mono">medium: photo</code>.
+          </p>
+          <dl class="card-dials">
+            <dt>medium</dt><dd>gradient, top light</dd>
+            <dt>subject</dt><dd>object → metallic form</dd>
+            <dt>relation</dt><dd>shadow-only</dd>
+            <dt>intensity</dt><dd>bold + strong vignette</dd>
+          </dl>
+          <div class="card-actions">
+            <a class="btn btn-primary" href="auris/landing-page.html" target="_blank">
+              Open landing page →
+            </a>
+            <a class="btn" href="auris/design-model.yaml" target="_blank">
+              yaml
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Halcyon (new in v2) ── -->
+      <div class="card">
+        <div class="card-preview">
+          <iframe src="halcyon/landing-page.html" loading="lazy"></iframe>
+        </div>
+        <div class="card-body">
+          <span class="card-preset">sculptural-field</span>
+          <h3 class="card-name">Halcyon</h3>
+          <p class="card-desc">
+            A fictional reasoning graph for engineering teams. Diagonal stack of 3D glass bars in cool blue-teal fills the field — no centered subject. The sculptural mass IS the hero. Proves <code class="mono">subject: none</code> + <code class="mono">medium: sculptural</code>.
+          </p>
+          <dl class="card-dials">
+            <dt>medium</dt><dd>sculptural · glass-bars</dd>
+            <dt>subject</dt><dd>none</dd>
+            <dt>relation</dt><dd>flat</dd>
+            <dt>intensity</dt><dd>bold + subtle vignette</dd>
+          </dl>
+          <div class="card-actions">
+            <a class="btn btn-primary" href="halcyon/landing-page.html" target="_blank">
+              Open landing page →
+            </a>
+            <a class="btn" href="halcyon/design-model.yaml" target="_blank">
+              yaml
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Ridge (grid-on-dark — developer platform) ── -->
+      <!-- First brand with a Phase 4 app-screen proof: same design tokens
+           rendered inside a browser-framed dashboard (SLO overview for
+           checkout-api). Validates that the tokens survive composition
+           into a real product flow, not just a marketing hero. -->
+      <div class="card">
+        <div class="card-preview">
+          <iframe src="ridge/landing-page.html" loading="lazy"></iframe>
+        </div>
+        <div class="card-body">
+          <span class="card-preset">grid-on-dark <span style="color: var(--text3); font-weight: 400;">· + app screen</span></span>
+          <h3 class="card-name">Ridge</h3>
+          <p class="card-desc">
+            Fictional SLO monitoring platform. Dark slate canvas with a faint dot-grid field, a centered dashboard device showing burn-rate metrics and an SLO chart approaching the threshold. Shadow-only relation — the device sits on the grid, no light interaction. Classic developer-platform composition. Also has the library's <strong style="color: var(--text1); font-weight: 500;">first Phase 4 app screen</strong> — the same tokens rendered inside a real product flow.
+          </p>
+          <dl class="card-dials">
+            <dt>medium</dt><dd>pattern · dot-grid</dd>
+            <dt>subject</dt><dd>device · SLO dashboard</dd>
+            <dt>relation</dt><dd>shadow-only</dd>
+            <dt>intensity</dt><dd>subtle + corner glow</dd>
+          </dl>
+          <div class="card-actions">
+            <a class="btn btn-primary" href="ridge/landing-page.html" target="_blank">
+              Landing →
+            </a>
+            <a class="btn" href="ridge/app-screen.html" target="_blank">
+              App screen →
+            </a>
+            <a class="btn" href="ridge/design-model.yaml" target="_blank">
+              yaml
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Meadow (the calm pole — real skill, mymind-design) ── -->
+      <div class="card">
+        <div class="card-preview">
+          <iframe src="../../mymind-design/landing-page.html" loading="lazy"></iframe>
+        </div>
+        <div class="card-body">
+          <span class="card-preset">painterly-no-hero</span>
+          <h3 class="card-name">Meadow</h3>
+          <p class="card-desc">
+            The calmest pole of the spectrum. A hand-painted warm landscape fills the hero with no foreground subject — the painterly field IS the hero. Validated against mymind.com: feTurbulence-displaced gradient field in brand coral + cream. Lives as a standalone skill in <code class="mono">~/.claude/skills/mymind-design/</code>.
+          </p>
+          <dl class="card-dials">
+            <dt>medium</dt><dd>painterly · feTurbulence</dd>
+            <dt>subject</dt><dd>none</dd>
+            <dt>relation</dt><dd>flat</dd>
+            <dt>intensity</dt><dd>subtle (the default)</dd>
+          </dl>
+          <div class="card-actions">
+            <a class="btn btn-primary" href="../../mymind-design/landing-page.html" target="_blank">
+              Open landing page →
+            </a>
+            <a class="btn" href="../../mymind-design/design-model.yaml" target="_blank">
+              yaml
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <span>HERO_STAGE v2 · PROOF LIBRARY</span>
+    <span>6 / 9 PRESETS COVERED · 5 / 6 RELATIONS TESTED · 2 APP SCREENS</span>
+  </div>
+</footer>
+
+</body>
+</html>

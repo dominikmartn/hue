@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thrive — Small steps, tracked honestly.</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400;1,9..144,500&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css">
+
+<style>
+  /* mockup polish — dead links don't fake broken flows */
+  .lp-nav a,
+  .lp-header .btn,
+  .lp-footer a,
+  .btn-primary,
+  .btn-ghost,
+  .btn-secondary,
+  .btn-hero,
+  .price-btn {
+    pointer-events: none;
+    cursor: default;
+  }
+  [data-theme-btn] {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+  :root {
+    /* neutrals — warm off-white ramp, parchment with faint olive bias */
+    --neutral-50:  #FAF8F4;
+    --neutral-100: #F2EFE8;
+    --neutral-200: #E5E0D4;
+    --neutral-300: #C9C2B2;
+    --neutral-400: #9A9284;
+    --neutral-500: #6B645A;
+    --neutral-600: #4A453D;
+    --neutral-700: #332F29;
+    --neutral-800: #221F1B;
+    --neutral-900: #14110E;
+    --neutral-950: #0A0805;
+
+    /* sage — muted herbal, never saturated */
+    --brand-50:  #F0F4EE;
+    --brand-100: #DCE5D7;
+    --brand-200: #BDCBB5;
+    --brand-300: #96AC8C;
+    --brand-400: #7A9370;
+    --brand-500: #5E7855;
+    --brand-600: #465C3F;
+    --brand-700: #30412C;
+    --brand-800: #1D2919;
+    --brand-900: #0E1508;
+
+    /* rose — soft warm pink, used sparingly */
+    --rose-100: #FCE7E0;
+    --rose-300: #F2B8A8;
+    --rose-500: #D9806B;
+    --rose-700: #8E3F2C;
+
+    /* painterly wash stops */
+    --p-wash-1: #DCE5D7;  /* sage base */
+    --p-wash-2: #F2B8A8;  /* rose warmth */
+    --p-wash-3: #BDCBB5;  /* sage secondary */
+    --p-wash-4: #FCE7E0;  /* rose softest */
+    --p-wash-5: #96AC8C;  /* sage shadow */
+    --p-canvas: #FAF8F4;
+
+    --sp-xs:  4px;
+    --sp-sm:  8px;
+    --sp-md:  16px;
+    --sp-lg:  24px;
+    --sp-xl:  32px;
+    --sp-2xl: 48px;
+    --sp-3xl: 64px;
+    --sp-4xl: 96px;
+    --sp-5xl: 128px;
+    --sp-6xl: 160px;
+
+    /* softer radii than halcyon — thrive feels gentle */
+    --r-element:   6px;
+    --r-control:   10px;
+    --r-component: 16px;
+    --r-container: 24px;
+    --r-pill:      999px;
+
+    --font-display: 'Fraunces', 'Times New Roman', Georgia, serif;
+    --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  [data-theme="light"] {
+    --bg:            var(--neutral-50);
+    --surface1:      var(--neutral-100);
+    --surface2:      var(--neutral-200);
+    --surface3:      var(--neutral-300);
+    --border:        var(--neutral-200);
+    --border-vis:    var(--neutral-300);
+    --text1:         var(--neutral-900);
+    --text2:         var(--neutral-600);
+    --text3:         var(--neutral-500);
+    --text4:         var(--neutral-400);
+    --accent:        var(--brand-500);
+    --accent-hover:  var(--brand-600);
+    --accent-subtle: var(--brand-100);
+  }
+  [data-theme="dark"] {
+    --bg:            var(--neutral-900);
+    --surface1:      var(--neutral-800);
+    --surface2:      var(--neutral-700);
+    --surface3:      var(--neutral-600);
+    --border:        var(--neutral-700);
+    --border-vis:    var(--neutral-600);
+    --text1:         var(--neutral-50);
+    --text2:         var(--neutral-200);
+    --text3:         var(--neutral-300);
+    --text4:         var(--neutral-400);
+    --accent:        var(--brand-400);
+    --accent-hover:  var(--brand-300);
+    --accent-subtle: var(--brand-900);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text1);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background 300ms ease, color 300ms ease;
+  }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 var(--sp-2xl);
+  }
+  .mono { font-family: var(--font-mono); }
+
+  /* ── HEADER ── */
+  .lp-header {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+  }
+  .lp-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+  }
+  .lp-brand {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--text1);
+  }
+  .lp-brand-mark {
+    width: 22px; height: 22px;
+    border-radius: 7px;
+    background: linear-gradient(160deg, var(--brand-300), var(--brand-600));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+  }
+  .lp-nav { display: flex; gap: var(--sp-xl); }
+  .lp-nav a {
+    color: var(--text2);
+    font-size: 14px; font-weight: 400;
+    transition: color 200ms ease;
+  }
+  .lp-nav a:hover { color: var(--text1); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: var(--sp-sm);
+    padding: 12px 22px;
+    border-radius: var(--r-pill);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 220ms ease;
+    line-height: 1;
+  }
+  .btn-primary {
+    background: var(--text1);
+    color: var(--bg);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    background: var(--neutral-700);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text2);
+    border-color: var(--border-vis);
+  }
+  .btn-ghost:hover {
+    color: var(--text1);
+    border-color: var(--text3);
+  }
+  .btn-sm {
+    padding: 9px 16px;
+    font-size: 13px;
+  }
+
+  /* ─────────────────────────────────────────────────────── */
+  /* HERO STAGE — painterly-no-hero                           */
+  /* medium: painterly (watercolor-wash recipe)              */
+  /* subject: none (the field IS the hero)                   */
+  /* relation: flat                                          */
+  /* ─────────────────────────────────────────────────────── */
+  .lp-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    padding: var(--sp-5xl) 0 var(--sp-4xl);
+    display: flex;
+    align-items: center;
+    background: var(--bg);
+  }
+
+  /* Layer 1 — painterly wash field.
+     Five overlapping radial gradients blended with multiply over the
+     warm off-white canvas. No hard edges. The field IS the hero. */
+  .bg-painterly {
+    position: absolute; inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .bg-painterly .wash {
+    position: absolute;
+    mix-blend-mode: multiply;
+    filter: blur(60px);
+    border-radius: 50%;
+  }
+  /* wash 1 — sage base, large, upper-left */
+  .bg-painterly .w1 {
+    top: -10%; left: -10%;
+    width: 70%; height: 75%;
+    background: radial-gradient(ellipse at 50% 50%,
+      rgba(220, 229, 215, 0.95) 0%,
+      rgba(220, 229, 215, 0.55) 40%,
+      rgba(220, 229, 215, 0.00) 75%);
+  }
+  /* wash 2 — rose warmth, medium, upper-right bloom (the brightest moment) */
+  .bg-painterly .w2 {
+    top: 5%; right: -5%;
+    width: 55%; height: 65%;
+    background: radial-gradient(ellipse at 45% 55%,
+      rgba(242, 184, 168, 0.72) 0%,
+      rgba(242, 184, 168, 0.38) 45%,
+      rgba(242, 184, 168, 0.00) 78%);
+  }
+  /* wash 3 — secondary sage, mid-lower, anchors the field */
+  .bg-painterly .w3 {
+    bottom: -15%; left: 15%;
+    width: 65%; height: 70%;
+    background: radial-gradient(ellipse at 50% 40%,
+      rgba(189, 203, 181, 0.82) 0%,
+      rgba(189, 203, 181, 0.42) 45%,
+      rgba(189, 203, 181, 0.00) 78%);
+  }
+  /* wash 4 — softest rose, tiny bloom near center-right */
+  .bg-painterly .w4 {
+    top: 30%; right: 8%;
+    width: 38%; height: 45%;
+    background: radial-gradient(ellipse at 50% 50%,
+      rgba(252, 231, 224, 0.85) 0%,
+      rgba(252, 231, 224, 0.45) 50%,
+      rgba(252, 231, 224, 0.00) 80%);
+  }
+  /* wash 5 — sage shadow pool, bottom-right, grounds the field */
+  .bg-painterly .w5 {
+    bottom: -20%; right: -15%;
+    width: 55%; height: 60%;
+    background: radial-gradient(ellipse at 45% 45%,
+      rgba(150, 172, 140, 0.55) 0%,
+      rgba(150, 172, 140, 0.25) 50%,
+      rgba(150, 172, 140, 0.00) 80%);
+  }
+  /* paint texture — very subtle grain on top of the wash */
+  .bg-painterly::after {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 17% 23%, rgba(74, 69, 61, 0.025) 0.8px, transparent 1.2px),
+      radial-gradient(circle at 62% 41%, rgba(74, 69, 61, 0.02) 0.6px, transparent 1px),
+      radial-gradient(circle at 81% 77%, rgba(74, 69, 61, 0.025) 0.7px, transparent 1.1px),
+      radial-gradient(circle at 34% 84%, rgba(74, 69, 61, 0.02) 0.5px, transparent 0.9px);
+    background-size: 120px 120px, 90px 90px, 110px 110px, 80px 80px;
+    mix-blend-mode: multiply;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  /* the safe zone — a very faint lighter pool behind the headline,
+     keeps Fraunces readable without using a scrim card */
+  .bg-painterly .safe-zone {
+    position: absolute;
+    left: 50%; top: 48%;
+    transform: translate(-50%, -50%);
+    width: 780px; height: 540px;
+    background: radial-gradient(ellipse at 50% 50%,
+      rgba(250, 248, 244, 0.55) 0%,
+      rgba(250, 248, 244, 0.25) 45%,
+      rgba(250, 248, 244, 0.00) 75%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  /* Layer 10 — hero content. No card, no scrim — the field is calm
+     enough to carry text directly. Typography IS the identity. */
+  .hero-content-wrap {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+  }
+  .hero-content {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hero-wordmark {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(56px, 8vw, 92px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--text1);
+    margin: 0 0 var(--sp-md);
+    font-variation-settings: "opsz" 144;
+  }
+  .hero-content h1 {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5.2vw, 64px);
+    font-weight: 500;
+    font-style: normal;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    margin: 0 auto var(--sp-lg);
+    color: var(--text1);
+    max-width: 680px;
+    font-variation-settings: "opsz" 72;
+  }
+  .hero-content p.sub {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--text2);
+    max-width: 520px;
+    margin: 0 auto var(--sp-2xl);
+  }
+  .hero-ctas {
+    display: flex;
+    gap: var(--sp-md);
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-footnote {
+    margin-top: var(--sp-2xl);
+    font-size: 13px;
+    color: var(--text3);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-sm);
+  }
+  .hero-footnote::before {
+    content: "";
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--brand-500);
+  }
+
+  /* ── SECTION INTRO ── */
+  .lp-intro {
+    padding: var(--sp-5xl) 0 var(--sp-4xl);
+    text-align: center;
+  }
+  .intro-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-md);
+    font-weight: 500;
+  }
+  .intro-heading {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0 auto var(--sp-lg);
+    max-width: 780px;
+    color: var(--text1);
+  }
+  .intro-heading em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text1);
+  }
+  .intro-body {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text2);
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  /* ── FEATURE ROW — alternating text/visual ── */
+  .lp-feature {
+    padding: var(--sp-4xl) 0;
+  }
+  .feature-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-4xl);
+    align-items: center;
+  }
+  .feature-row.reverse {
+    direction: rtl;
+  }
+  .feature-row.reverse > * {
+    direction: ltr;
+  }
+  .feature-copy h3 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.2vw, 40px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--sp-md);
+    color: var(--text1);
+  }
+  .feature-copy h3 em {
+    font-style: italic;
+  }
+  .feature-copy .kicker {
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: var(--sp-md);
+  }
+  .feature-copy p {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text2);
+    max-width: 440px;
+    margin-bottom: var(--sp-lg);
+  }
+  .feature-copy .note {
+    font-size: 13px;
+    color: var(--text3);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-sm);
+  }
+  .feature-copy .note i {
+    color: var(--brand-500);
+  }
+
+  /* feature visual — card shell shared by all three features */
+  .feature-visual {
+    border: 1px solid var(--border);
+    border-radius: var(--r-container);
+    background: color-mix(in srgb, var(--surface1) 40%, var(--bg));
+    padding: var(--sp-xl);
+    box-shadow: 0 2px 20px rgba(50, 47, 41, 0.03);
+  }
+
+  /* feature 1 — weekly habit chart */
+  .habit-chart {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-md);
+  }
+  .habit-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: var(--sp-md);
+    border-bottom: 1px solid var(--border);
+  }
+  .habit-chart-header .title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text1);
+  }
+  .habit-chart-header .meta {
+    font-size: 12px;
+    color: var(--text3);
+  }
+  .habit-chart-bars {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    align-items: end;
+    height: 140px;
+    padding: var(--sp-sm) 0;
+  }
+  .habit-bar {
+    position: relative;
+    background: var(--brand-100);
+    border-radius: 6px 6px 2px 2px;
+    border: 1px solid var(--brand-200);
+  }
+  .habit-bar.filled {
+    background: linear-gradient(180deg, var(--brand-300), var(--brand-500));
+    border-color: var(--brand-600);
+  }
+  .habit-bar.partial {
+    background: linear-gradient(180deg, var(--brand-200), var(--brand-400));
+    border-color: var(--brand-500);
+  }
+  .habit-chart-labels {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    font-size: 11px;
+    color: var(--text3);
+    text-align: center;
+    font-family: var(--font-sans);
+  }
+  .habit-chart-footer {
+    display: flex;
+    justify-content: space-between;
+    padding-top: var(--sp-md);
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .habit-chart-footer strong {
+    color: var(--text1);
+    font-weight: 500;
+  }
+
+  /* feature 2 — mood journal card */
+  .journal-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-md);
+  }
+  .journal-date {
+    font-size: 12px;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .journal-mood-row {
+    display: flex;
+    gap: var(--sp-sm);
+    align-items: center;
+  }
+  .journal-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+  }
+  .journal-dot.d1 { background: var(--brand-100); }
+  .journal-dot.d2 { background: var(--brand-200); }
+  .journal-dot.d3 { background: var(--brand-300); border-color: var(--brand-400); }
+  .journal-dot.d4 { background: var(--brand-400); border-color: var(--brand-500); }
+  .journal-dot.d5 { background: var(--brand-500); border-color: var(--brand-600); }
+  .journal-dot.selected {
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--brand-500);
+  }
+  .journal-label {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text1);
+    margin-left: auto;
+  }
+  .journal-body {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--text1);
+    padding: var(--sp-md) 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .journal-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .journal-tag {
+    font-size: 12px;
+    padding: 5px 11px;
+    border-radius: var(--r-pill);
+    background: var(--brand-50);
+    color: var(--brand-700);
+    border: 1px solid var(--brand-100);
+  }
+  .journal-tag.rose {
+    background: var(--rose-100);
+    color: var(--rose-700);
+    border-color: var(--rose-100);
+  }
+
+  /* feature 3 — small comparison chart */
+  .compare-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-md);
+  }
+  .compare-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: var(--sp-md);
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-header .title {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--text1);
+  }
+  .compare-header .meta {
+    font-size: 12px;
+    color: var(--text3);
+  }
+  .compare-rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-md);
+  }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 48px;
+    gap: var(--sp-md);
+    align-items: center;
+    font-size: 14px;
+  }
+  .compare-row .label {
+    color: var(--text2);
+  }
+  .compare-row .bar-track {
+    height: 8px;
+    background: var(--surface1);
+    border-radius: var(--r-pill);
+    overflow: hidden;
+    position: relative;
+  }
+  .compare-row .bar-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--brand-300), var(--brand-500));
+    border-radius: var(--r-pill);
+  }
+  .compare-row .value {
+    text-align: right;
+    color: var(--text1);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .compare-footer {
+    padding-top: var(--sp-md);
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text2);
+    font-style: italic;
+    font-family: var(--font-display);
+  }
+
+  /* ── PULL QUOTE ── */
+  .lp-quote { padding: var(--sp-5xl) 0; }
+  .lp-quote blockquote {
+    max-width: 820px;
+    margin: 0 auto;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3.2vw, 38px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    color: var(--text1);
+  }
+  .lp-quote cite {
+    display: block;
+    margin-top: var(--sp-lg);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-style: normal;
+    color: var(--text3);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── FINAL CTA — echoes painterly field at very reduced intensity ── */
+  .lp-cta-block {
+    padding: var(--sp-5xl) 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  /* reduced painterly echo — just the rose bloom, very subtle */
+  .lp-cta-block::before {
+    content: "";
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 80%; height: 220%;
+    transform: translate(-50%, -50%);
+    background:
+      radial-gradient(ellipse 40% 30% at 30% 50%,
+        rgba(220, 229, 215, 0.45) 0%,
+        rgba(220, 229, 215, 0.00) 70%),
+      radial-gradient(ellipse 40% 30% at 70% 50%,
+        rgba(242, 184, 168, 0.35) 0%,
+        rgba(242, 184, 168, 0.00) 70%);
+    filter: blur(40px);
+    mix-blend-mode: multiply;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .lp-cta-block .container {
+    position: relative; z-index: 1;
+    max-width: 640px;
+  }
+  .lp-cta-block h2 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    margin: 0 0 var(--sp-md);
+  }
+  .lp-cta-block h2 em {
+    font-style: italic;
+  }
+  .lp-cta-block p {
+    font-size: 17px;
+    color: var(--text2);
+    margin: 0 auto var(--sp-xl);
+    max-width: 480px;
+  }
+
+  /* ── FOOTER ── */
+  .lp-footer {
+    border-top: 1px solid var(--border);
+    padding: var(--sp-3xl) 0 var(--sp-2xl);
+  }
+  .lp-footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: var(--sp-xl);
+  }
+  .footer-brand {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text1);
+    letter-spacing: -0.01em;
+  }
+  .footer-tag {
+    font-size: 14px;
+    color: var(--text3);
+    max-width: 320px;
+    margin-top: var(--sp-sm);
+    line-height: 1.55;
+  }
+  .footer-nav {
+    display: flex;
+    gap: var(--sp-xl);
+  }
+  .footer-nav a {
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .footer-nav a:hover { color: var(--text1); }
+  .footer-bottom {
+    max-width: 1120px;
+    margin: var(--sp-2xl) auto 0;
+    padding: var(--sp-lg) var(--sp-2xl) 0;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--text4);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── THEME TOGGLE BAR ── */
+  .theme-bar {
+    position: fixed;
+    bottom: var(--sp-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: color-mix(in srgb, var(--surface1) 85%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--border-vis);
+    border-radius: var(--r-pill);
+    z-index: 1000;
+    box-shadow: 0 2px 20px rgba(50, 47, 41, 0.06);
+  }
+  .theme-bar button {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text3);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    transition: all 200ms ease;
+  }
+  .theme-bar button.active {
+    background: var(--text1);
+    color: var(--bg);
+  }
+
+  /* Dark mode: the painterly field deepens to umber and olive.
+     The washes stay, but over near-black canvas they read as
+     a warm night field rather than a daylight one. */
+  [data-theme="dark"] .lp-hero { background: var(--bg); }
+  [data-theme="dark"] .bg-painterly .wash { mix-blend-mode: screen; }
+  [data-theme="dark"] .bg-painterly .w1 {
+    background: radial-gradient(ellipse at 50% 50%,
+      rgba(70, 92, 63, 0.55) 0%,
+      rgba(70, 92, 63, 0.22) 40%,
+      rgba(70, 92, 63, 0.00) 75%);
+  }
+  [data-theme="dark"] .bg-painterly .w2 {
+    background: radial-gradient(ellipse at 45% 55%,
+      rgba(142, 63, 44, 0.40) 0%,
+      rgba(142, 63, 44, 0.18) 45%,
+      rgba(142, 63, 44, 0.00) 78%);
+  }
+  [data-theme="dark"] .bg-painterly .w3 {
+    background: radial-gradient(ellipse at 50% 40%,
+      rgba(48, 65, 44, 0.58) 0%,
+      rgba(48, 65, 44, 0.22) 45%,
+      rgba(48, 65, 44, 0.00) 78%);
+  }
+  [data-theme="dark"] .bg-painterly .w4 {
+    background: radial-gradient(ellipse at 50% 50%,
+      rgba(217, 128, 107, 0.32) 0%,
+      rgba(217, 128, 107, 0.14) 50%,
+      rgba(217, 128, 107, 0.00) 80%);
+  }
+  [data-theme="dark"] .bg-painterly .w5 {
+    background: radial-gradient(ellipse at 45% 45%,
+      rgba(90, 110, 75, 0.35) 0%,
+      rgba(90, 110, 75, 0.15) 50%,
+      rgba(90, 110, 75, 0.00) 80%);
+  }
+  [data-theme="dark"] .bg-painterly::after { opacity: 0.35; }
+  [data-theme="dark"] .bg-painterly .safe-zone {
+    background: radial-gradient(ellipse at 50% 50%,
+      rgba(20, 17, 14, 0.45) 0%,
+      rgba(20, 17, 14, 0.22) 45%,
+      rgba(20, 17, 14, 0.00) 75%);
+  }
+
+  @media (max-width: 860px) {
+    .feature-row { grid-template-columns: 1fr; gap: var(--sp-xl); }
+    .feature-row.reverse { direction: ltr; }
+    .lp-hero { min-height: auto; padding: 140px 0 96px; }
+    .hero-content h1 { font-size: 36px; }
+    .hero-wordmark { font-size: 60px; }
+    .lp-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="lp-header">
+  <div class="container">
+    <a href="#" class="lp-brand">
+      <span class="lp-brand-mark"></span>
+      thrive
+    </a>
+    <nav class="lp-nav">
+      <a href="#">product</a>
+      <a href="#">science</a>
+      <a href="#">pricing</a>
+    </nav>
+    <button class="btn btn-ghost btn-sm">start free</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- HERO STAGE — painterly-no-hero                  -->
+  <!-- medium: painterly (watercolor-wash), subject: none -->
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="lp-hero">
+    <!-- Layer 1: painterly wash field -->
+    <div class="bg-painterly">
+      <div class="wash w1"></div>
+      <div class="wash w2"></div>
+      <div class="wash w3"></div>
+      <div class="wash w4"></div>
+      <div class="wash w5"></div>
+      <div class="safe-zone"></div>
+    </div>
+
+    <div class="container">
+      <div class="hero-content-wrap">
+        <div class="hero-content">
+          <div class="hero-wordmark">thrive</div>
+          <h1>small steps, tracked honestly.</h1>
+          <p class="sub">
+            a habit and mood tracker for adults who want a tool, not a cheerleader. no streaks, no guilt, no confetti. the gentlest tracker that still counts.
+          </p>
+          <div class="hero-ctas">
+            <button class="btn btn-primary">start free</button>
+            <button class="btn btn-ghost">read the science</button>
+          </div>
+          <div class="hero-footnote">free forever for one habit at a time</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INTRO ── -->
+  <section class="lp-intro">
+    <div class="container">
+      <div class="intro-eyebrow">what it is</div>
+      <h2 class="intro-heading">a quiet place to note <em>how the week actually went</em>, without turning it into a game.</h2>
+      <p class="intro-body">
+        thrive is built around one idea: the most useful thing a tracker can do is stay out of your way. no badges, no rewards, no notifications that nudge. you log what happened, thrive keeps the record, and over time small patterns become visible on their own.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── FEATURE 1 — text left, visual right ── -->
+  <section class="lp-feature">
+    <div class="container">
+      <div class="feature-row">
+        <div class="feature-copy">
+          <div class="kicker">sleep</div>
+          <h3>one week of sleep, <em>logged as it is.</em></h3>
+          <p>
+            enter the hours, not a score. thrive plots the week in plain bars and nothing else — no "sleep quality", no color-coded verdict. your week, shown back to you.
+          </p>
+          <div class="note"><i class="ph ph-info"></i> bars show logged hours, empty means you didn't log</div>
+        </div>
+
+        <div class="feature-visual">
+          <div class="habit-chart">
+            <div class="habit-chart-header">
+              <div class="title">sleep · this week</div>
+              <div class="meta">mar 31 — apr 06</div>
+            </div>
+            <div class="habit-chart-bars">
+              <div class="habit-bar filled" style="height: 78%;"></div>
+              <div class="habit-bar partial" style="height: 62%;"></div>
+              <div class="habit-bar filled" style="height: 85%;"></div>
+              <div class="habit-bar filled" style="height: 71%;"></div>
+              <div class="habit-bar" style="height: 34%;"></div>
+              <div class="habit-bar filled" style="height: 92%;"></div>
+              <div class="habit-bar partial" style="height: 58%;"></div>
+            </div>
+            <div class="habit-chart-labels">
+              <span>mon</span>
+              <span>tue</span>
+              <span>wed</span>
+              <span>thu</span>
+              <span>fri</span>
+              <span>sat</span>
+              <span>sun</span>
+            </div>
+            <div class="habit-chart-footer">
+              <span>six nights logged</span>
+              <span><strong>7h 12m</strong> average</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURE 2 — text right, visual left ── -->
+  <section class="lp-feature">
+    <div class="container">
+      <div class="feature-row reverse">
+        <div class="feature-copy">
+          <div class="kicker">mood</div>
+          <h3>habits stay yours — <em>no streaks, no guilt.</em></h3>
+          <p>
+            miss a day and nothing breaks. there is no streak to lose, no character to disappoint. thrive keeps the week whole whether you logged three days or seven.
+          </p>
+          <div class="note"><i class="ph ph-heart"></i> a mood is five dots wide — anything more is pretending</div>
+        </div>
+
+        <div class="feature-visual">
+          <div class="journal-card">
+            <div class="journal-date">tuesday · april 2</div>
+            <div class="journal-mood-row">
+              <div class="journal-dot d1"></div>
+              <div class="journal-dot d2"></div>
+              <div class="journal-dot d3 selected"></div>
+              <div class="journal-dot d4"></div>
+              <div class="journal-dot d5"></div>
+              <div class="journal-label">steady</div>
+            </div>
+            <div class="journal-body">
+              slept fine. walked to the market. the afternoon got long but the evening settled back down. nothing to report, which is the report.
+            </div>
+            <div class="journal-tags">
+              <span class="journal-tag">walked</span>
+              <span class="journal-tag">read</span>
+              <span class="journal-tag rose">saw a friend</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PULL QUOTE ── -->
+  <section class="lp-quote">
+    <div class="container">
+      <blockquote>
+        the first tracker that didn't make me feel like i owed it something. i just kept writing, and the weeks added up.
+        <cite>— leah okafor, thrive user since the beta</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ── FEATURE 3 — text left, visual right ── -->
+  <section class="lp-feature">
+    <div class="container">
+      <div class="feature-row">
+        <div class="feature-copy">
+          <div class="kicker">patterns</div>
+          <h3>the gentlest tracker <em>that still counts.</em></h3>
+          <p>
+            once a month, thrive shows you how the pieces fit. not a verdict — just the shape of the last four weeks, so you can notice what you want to notice.
+          </p>
+          <div class="note"><i class="ph ph-chart-line"></i> bars are logged frequency, not judgment</div>
+        </div>
+
+        <div class="feature-visual">
+          <div class="compare-card">
+            <div class="compare-header">
+              <div class="title">last four weeks</div>
+              <div class="meta">mar 10 — apr 06</div>
+            </div>
+            <div class="compare-rows">
+              <div class="compare-row">
+                <div class="label">sleep</div>
+                <div class="bar-track"><div class="bar-fill" style="width: 82%;"></div></div>
+                <div class="value">24×</div>
+              </div>
+              <div class="compare-row">
+                <div class="label">walked</div>
+                <div class="bar-track"><div class="bar-fill" style="width: 65%;"></div></div>
+                <div class="value">19×</div>
+              </div>
+              <div class="compare-row">
+                <div class="label">read</div>
+                <div class="bar-track"><div class="bar-fill" style="width: 48%;"></div></div>
+                <div class="value">14×</div>
+              </div>
+              <div class="compare-row">
+                <div class="label">mood</div>
+                <div class="bar-track"><div class="bar-fill" style="width: 72%;"></div></div>
+                <div class="value">21×</div>
+              </div>
+            </div>
+            <div class="compare-footer">
+              a month of small notes, laid next to each other.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FINAL CTA ── -->
+  <section class="lp-cta-block">
+    <div class="container">
+      <h2><em>start free.</em> stay as long as it helps.</h2>
+      <p>one habit is free forever. no account required to try. we don't sell your data, and there is nothing to sell — thrive is a tool, not a feed.</p>
+      <button class="btn btn-primary">start free</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="lp-footer">
+  <div class="container">
+    <div>
+      <div class="footer-brand">thrive</div>
+      <p class="footer-tag">a gentle tracker for the adults who want a tool, not a cheerleader.</p>
+    </div>
+    <nav class="footer-nav">
+      <a href="#">product</a>
+      <a href="#">science</a>
+      <a href="#">pricing</a>
+      <a href="#">privacy</a>
+      <a href="#">contact</a>
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    <span>THRIVE · FICTIONAL</span>
+    <span>PAINTERLY-NO-HERO PROOF · HERO_STAGE v2</span>
+  </div>
+</footer>
+
+<!-- Theme toggle -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="light">Light</button>
+  <button data-theme-btn="dark">Dark</button>
+</div>
+
+<script>
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  document.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+</script>
+</body>
+</html>

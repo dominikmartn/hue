@@ -1,0 +1,177 @@
+name: "Thrive"
+description: "Fictional health & wellness brand for adults who want a tool, not a cheerleader. The hero has no centered subject — a soft painterly field of sage and rose washes carries the identity on a warm off-white canvas. Proves the painterly-no-hero preset: medium: painterly + subject: none + relation: flat, in a LIGHT-FIRST typographic brand where restraint and Fraunces italic do all the work."
+philosophy: "Small steps, tracked honestly. Thrive is a habit and mood tracker for people who don't want to be cheered on. No streaks, no guilt, no confetti. A daylight brand that treats wellness like keeping a journal, not finishing a game. The identity lives in typography and air — Fraunces for warmth, Inter for calm, plenty of white space, and a hand-painted field that never pushes."
+primary_mode: "light"
+brand_source: "INVENTED — fictional brand for hero_stage v2 proof library, painterly-no-hero preset (light-first variant)"
+brand_domain: "health & wellness / habits / mood tracking (fictional)"
+brand_type: "content-rich"
+mono_for_data: false
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    neutral:             # warm off-white ramp — NOT cream, not grey. Parchment with a faint olive bias.
+      50:  "#FAF8F4"    # canvas light mode
+      100: "#F2EFE8"
+      200: "#E5E0D4"
+      300: "#C9C2B2"
+      400: "#9A9284"
+      500: "#6B645A"
+      600: "#4A453D"
+      700: "#332F29"
+      800: "#221F1B"
+      900: "#14110E"    # canvas dark mode
+      950: "#0A0805"
+    brand:               # sage green — muted, herbal, never the saturated "wellness app" green
+      50:  "#F0F4EE"
+      100: "#DCE5D7"
+      200: "#BDCBB5"
+      300: "#96AC8C"
+      400: "#7A9370"    # accent dark mode
+      500: "#5E7855"    # accent light mode (primary)
+      600: "#465C3F"
+      700: "#30412C"
+      800: "#1D2919"
+      900: "#0E1508"
+    rose:                # soft warm pink — warmth accent, used in tiny amounts (never a CTA)
+      100: "#FCE7E0"
+      300: "#F2B8A8"
+      500: "#D9806B"
+      700: "#8E3F2C"
+    # painterly-specific: the wash stops used to build the hero field.
+    # These are the exact hues the radial washes blend from, in order of layering.
+    painterly:
+      wash_1:   "#DCE5D7"   # sage 100 — base wash
+      wash_2:   "#F2B8A8"   # rose 300 — warmth bloom
+      wash_3:   "#BDCBB5"   # sage 200 — secondary field
+      wash_4:   "#FCE7E0"   # rose 100 — softest warmth
+      wash_5:   "#96AC8C"   # sage 300 — shadow pool
+      canvas:   "#FAF8F4"   # canvas — what the washes sit on
+  spacing: [0, 2, 4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 128, 160]
+  # softer radii than halcyon — thrive should feel gentle to the eye
+  radii:   [0, 6, 10, 16, 24, 32, 48, 999]
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    light:
+      background:     "{neutral.50}"
+      surface1:       "{neutral.100}"
+      surface2:       "{neutral.200}"
+      surface3:       "{neutral.300}"
+      border:         "{neutral.200}"
+      border_visible: "{neutral.300}"
+      text1:          "{neutral.900}"
+      text2:          "{neutral.600}"
+      text3:          "{neutral.500}"
+      text4:          "{neutral.400}"
+      accent:         "{brand.500}"
+      accent_hover:   "{brand.600}"
+      accent_subtle:  "{brand.100}"
+    dark:
+      background:     "{neutral.900}"
+      surface1:       "{neutral.800}"
+      surface2:       "{neutral.700}"
+      surface3:       "{neutral.600}"
+      border:         "{neutral.700}"
+      border_visible: "{neutral.600}"
+      text1:          "{neutral.50}"
+      text2:          "{neutral.200}"
+      text3:          "{neutral.300}"
+      text4:          "{neutral.400}"
+      accent:         "{brand.400}"
+      accent_hover:   "{brand.300}"
+      accent_subtle:  "{brand.900}"
+
+  radii:
+    element:   6      # softer than halcyon's 4
+    control:   10     # softer than halcyon's 8
+    component: 16     # softer than halcyon's 12
+    container: 24     # softer than halcyon's 20
+    pill:      999
+
+  typography:
+    display:
+      family: "Fraunces"          # warm serif with variable optical size and italic — IS the identity
+      size:   "64px"
+      weight: 500
+      line_height: 1.05
+      letter_spacing: "-0.02em"
+      italic_available: true
+      google_fonts: "Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400;1,9..144,500"
+    body:
+      family: "Inter"
+      size:   "16px"
+      weight: 400
+      line_height: 1.65
+      letter_spacing: "0em"
+      google_fonts: "Inter:wght@400;500"
+    mono:
+      family: "JetBrains Mono"
+      size:   "12px"
+      weight: 400
+      google_fonts: "JetBrains+Mono:wght@400"
+      usage: "rare — thrive is content-rich, body font carries data"
+
+# ── HERO STAGE ─── painterly-no-hero preset
+# Demonstrates:
+#   background.medium: painterly, watercolor-wash recipe
+#   hero.subject: none — the painterly field IS the hero
+#   relation.type: flat — no subject, nothing to relate
+#
+# A LIGHT-FIRST variant of the subject-less hero. Where halcyon proves
+# sculptural mass can carry identity, thrive proves that soft atmospheric
+# color alone can carry it — no geometry, no subject, just hand-painted
+# washes and typography.
+hero_stage:
+  preset: "painterly-no-hero"
+  observed_style:
+    description: "INVENTED for testing: a soft watercolor field of muted sage and warm rose washes layered with multiply blend modes over a warm off-white canvas. No hard edges anywhere. The brightest bloom sits slightly above center, the field falls off gently toward the edges. No subject sits in front — the field is the whole thing. Typography (Fraunces italic wordmark, Fraunces roman headline) sits directly on the wash with no scrim, because the field is calm enough to carry text at 1280×800."
+    where_used: ["hero", "final cta (background echo, further reduced intensity)"]
+    notes: "Fictional composition inspired by the idea of atmospheric light fields as hero identity (not a copy of any specific site). Uses pure CSS radial-gradients with mix-blend-mode: multiply — no SVG, no imported assets, no WebGL. Proves that medium: painterly + subject: none can be hero-worthy in a light-mode typographic brand."
+  background:
+    medium: "painterly"          # painterly medium, watercolor recipe
+    color_mode: "palette"
+    saturation: "muted"          # thrive is muted — the wellness saturation would betray the voice
+    light_source: "upper-center" # the warm bloom sits slightly above center
+    falloff: "radial"
+    vignette: "off"              # no vignette — the canvas edges fade naturally via the wash
+    texture: "paint"             # watercolor texture, not clean
+    motion: "static"
+    intensity: "subtle"          # MUST be subtle — Fraunces has to stay readable over it
+    safe_zone: "masked-for-text" # the center-upper area is kept slightly lighter so the headline breathes
+    color_palette:
+      - "#DCE5D7"   # sage 100 — base wash
+      - "#F2B8A8"   # rose 300 — warmth bloom
+      - "#BDCBB5"   # sage 200 — secondary field
+      - "#FCE7E0"   # rose 100 — softest warmth
+      - "#96AC8C"   # sage 300 — shadow pool
+    recipe: "watercolor-wash"
+    recipe_params:
+      layer_count: 5
+      blend_mode: "multiply"
+      dominant_hue: "sage"         # sage leads, rose is the secondary warmth
+      secondary_hue: "rose"
+      wash_softness: "very-soft"   # blur radius generous, edges never crisp
+  hero:
+    subject: "none"                # painterly-no-hero pairs with subject: none
+    # form, placement, scale, tint all ignored
+  relation:
+    type: "flat"                   # no subject, nothing to relate
+    bleed: 0
+  disclaimer: "Fictional brand created for the hero_stage v2 proof library. Not affiliated with any real health, wellness, or habit-tracking company. The watercolor-wash recipe is a pure-CSS approximation of hand-painted atmospheric fields — real watercolor art cannot be redistributed and the goal here is only to prove the preset."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Fictional: rounded, gentle, slightly hand-drawn in feeling. Used sparingly — thrive's identity is typography, not glyphs. Icons only appear in feature visuals and the final CTA, never decoratively."
+    stroke_weight: "regular"
+    corner_treatment: "rounded"
+    fill_style: "outline"
+    form_language: "organic"
+    visual_density: "minimal"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "regular"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
+    icon_class_prefix: "ph ph-"

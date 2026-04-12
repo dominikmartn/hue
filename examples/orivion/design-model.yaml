@@ -1,0 +1,172 @@
+name: "Orivion"
+description: "Fictional test brand for the hero_stage composition model. Dark command-bar product aesthetic with a glowing center orb on a vibrant gradient field. Used to prove the orb-on-gradient preset end-to-end."
+philosophy: "A command bar for the second thought. Dark, confident, slightly mysterious. One glowing orb as the sole hero object, centered on a soft radial gradient that bleeds its light into the field."
+primary_mode: "dark"
+brand_source: "INVENTED — not a real company, do not copy as reference for real brand work"
+brand_domain: "AI launcher / command bar (fictional)"
+brand_type: "ui-rich"
+mono_for_data: true
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    neutral:
+      0:   "#FFFFFF"
+      50:  "#F4F5FA"
+      100: "#E5E7F0"
+      200: "#C9CCDB"
+      300: "#9599AD"
+      400: "#6A6D82"
+      500: "#494C60"
+      600: "#2F3144"
+      700: "#1E2030"
+      800: "#13141D"
+      900: "#0A0B14"
+      950: "#05060C"
+    brand:
+      50:  "#FFEBEF"
+      100: "#FFCCD6"
+      200: "#FF9FAE"
+      300: "#FF6B85"
+      400: "#FF4A6C"
+      500: "#FF3366"   # primary accent
+      600: "#E01E4E"
+      700: "#B0143C"
+      800: "#7F0E2B"
+      900: "#500719"
+    orb:                # distinct gradient ramp for the hero orb
+      highlight: "#FFC6AB"
+      warm:      "#FF7B4A"
+      core:      "#FF3366"
+      deep:      "#6B2FBA"
+      deepest:   "#3A1B6B"
+      shadow:    "#190632"
+  spacing: [0, 2, 4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 128]
+  radii:   [0, 4, 8, 12, 16, 24, 999]
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    dark:
+      background:     "{neutral.900}"
+      surface1:       "{neutral.800}"
+      surface2:       "{neutral.700}"
+      surface3:       "{neutral.600}"
+      border:         "{neutral.700}"
+      border_visible: "{neutral.600}"
+      text1:          "{neutral.50}"
+      text2:          "{neutral.300}"
+      text3:          "{neutral.400}"
+      text4:          "{neutral.500}"
+      accent:         "{brand.500}"
+      accent_subtle:  "{brand.900}"
+    light:
+      background:     "{neutral.50}"
+      surface1:       "{neutral.100}"
+      surface2:       "{neutral.200}"
+      surface3:       "{neutral.300}"
+      border:         "{neutral.200}"
+      border_visible: "{neutral.300}"
+      text1:          "{neutral.900}"
+      text2:          "{neutral.500}"
+      text3:          "{neutral.400}"
+      text4:          "{neutral.300}"
+      accent:         "{brand.500}"
+      accent_subtle:  "{brand.50}"
+
+  spacing:
+    2xs: 2
+    xs:  4
+    sm:  8
+    md:  16
+    lg:  24
+    xl:  32
+    2xl: 48
+    3xl: 64
+    4xl: 96
+    5xl: 128
+
+  radii:
+    element:   4
+    control:   8
+    component: 12
+    container: 16
+    pill:      999
+
+  typography:
+    display:
+      family: "Inter"
+      size:   "64px"
+      weight: 500
+      line_height: 1.02
+      letter_spacing: "-0.04em"
+      google_fonts: "Inter:wght@400;500;600;700"
+    body:
+      family: "Inter"
+      size:   "16px"
+      weight: 400
+      line_height: 1.55
+      letter_spacing: "-0.003em"
+    mono:
+      family: "JetBrains Mono"
+      size:   "13px"
+      weight: 400
+      google_fonts: "JetBrains+Mono:wght@400;500"
+
+# ── HERO STAGE ─── the point of this test brand
+# Uses the `luminous-on-gradient` preset. Demonstrates:
+#   background.medium: gradient + center light + vibrant saturation
+#   hero.subject: luminous (form: sphere), center, balanced, gradient-from-palette
+#   relation.type: glow, bleed 60
+hero_stage:
+  preset: "luminous-on-gradient"
+  observed_style:
+    description: "INVENTED for testing: a centered glowing light-ball over a soft radial gradient in deep indigo → violet → magenta → coral. The ball has specular highlights on its upper-left and an inner shadow on its lower-right, and bleeds warm magenta light into the field behind it via a screen-blended halo. It floats — no ground contact, no drop shadow."
+    where_used: ["hero"]
+    notes: "Fictional composition — proves the layered hero stage (background + luminous subject + glow relation) renders correctly from the hero_stage v2 schema."
+  background:
+    medium: "gradient"
+    color_mode: "palette"
+    saturation: "vibrant"
+    light_source: "center"
+    falloff: "radial"
+    vignette: "subtle"
+    texture: "clean"
+    motion: "static"
+    intensity: "bold"       # luminous-on-gradient is one of the rare cases where bold is correct
+    safe_zone: "full-bleed"
+    color_palette:
+      - "#FF7B4A"   # warm coral (near center)
+      - "#FF3366"   # magenta (middle)
+      - "#6B2FBA"   # violet (outer)
+      - "#3A1B6B"   # deep indigo (edge)
+      - "#0A0B14"   # canvas (vignette)
+  hero:
+    subject: "luminous"             # intent: light-emitting abstract body
+    form: "sphere"                  # sphere is the canonical default for luminous
+    placement: "center"
+    scale: "balanced"       # ~280px
+    tint: "gradient-from-palette"
+  relation:
+    type: "glow"
+    bleed: 60
+  disclaimer: "Fictional brand created for testing the hero_stage schema. Not affiliated with any real product."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Fictional: thin, rounded, mostly outline. Command-bar tool aesthetic."
+    stroke_weight: "regular"
+    corner_treatment: "soft"
+    fill_style: "outline"
+    form_language: "geometric-humanist"
+    visual_density: "minimal"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "regular"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
+    icon_class_prefix: "ph ph-"
+  sizes:
+    inline: "16px"
+    button: "18px"
+    nav: "20px"

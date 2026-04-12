@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auris — A new way to listen.</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2/src/thin/style.css">
+
+<style>
+  /* mockup polish — dead links don't fake broken flows */
+  .lp-nav a,
+  .lp-header .btn,
+  .lp-footer a,
+  .btn-primary,
+  .btn-ghost,
+  .btn-secondary,
+  .btn-hero,
+  .price-btn {
+    pointer-events: none;
+    cursor: default;
+  }
+  [data-theme-btn] {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+  :root {
+    /* neutrals — warm-tinted black */
+    --neutral-50:  #F6F4EE;
+    --neutral-100: #EAE6D9;
+    --neutral-200: #CFCABA;
+    --neutral-300: #9B9585;
+    --neutral-400: #6A6555;
+    --neutral-500: #4A4538;
+    --neutral-600: #2E2B22;
+    --neutral-700: #1C1A15;
+    --neutral-800: #14120E;
+    --neutral-900: #0E0F13;
+    --neutral-950: #060608;
+
+    --brand-50:  #FFF6E3;
+    --brand-100: #FFE8B8;
+    --brand-300: #F0B95A;
+    --brand-400: #E8A547;
+    --brand-500: #D28730;
+    --brand-600: #A6661E;
+    --brand-900: #2A1804;
+
+    /* object stage — the palette the placeholder form inherits */
+    --obj-spec:      #FFF4D6;   /* near-white for stage specular */
+    --obj-highlight: #F0D18C;   /* warm spotlight tint */
+    --obj-mid:       #8F6B2A;   /* warm mid amber */
+    --obj-deep:      #3B270C;   /* deep amber shadow */
+    --obj-edge:      #0A0805;   /* near-canvas edge */
+
+    --sp-xs:  4px;
+    --sp-sm:  8px;
+    --sp-md:  16px;
+    --sp-lg:  24px;
+    --sp-xl:  32px;
+    --sp-2xl: 48px;
+    --sp-3xl: 64px;
+    --sp-4xl: 96px;
+    --sp-5xl: 128px;
+    --sp-6xl: 160px;
+
+    --r-element: 4px;
+    --r-control: 8px;
+    --r-component: 12px;
+    --r-container: 16px;
+    --r-pill: 999px;
+
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+  }
+
+  [data-theme="dark"] {
+    --bg:            var(--neutral-900);
+    --surface1:      var(--neutral-800);
+    --surface2:      var(--neutral-700);
+    --surface3:      var(--neutral-600);
+    --border:        var(--neutral-700);
+    --border-vis:    var(--neutral-600);
+    --text1:         var(--neutral-50);
+    --text2:         var(--neutral-200);
+    --text3:         var(--neutral-300);
+    --text4:         var(--neutral-400);
+    --accent:        var(--brand-400);
+    --accent-hover:  var(--brand-300);
+    --accent-subtle: var(--brand-900);
+  }
+  [data-theme="light"] {
+    --bg:            var(--neutral-50);
+    --surface1:      var(--neutral-100);
+    --surface2:      var(--neutral-200);
+    --surface3:      var(--neutral-300);
+    --border:        var(--neutral-200);
+    --border-vis:    var(--neutral-300);
+    --text1:         var(--neutral-900);
+    --text2:         var(--neutral-500);
+    --text3:         var(--neutral-400);
+    --text4:         var(--neutral-300);
+    --accent:        var(--brand-500);
+    --accent-hover:  var(--brand-600);
+    --accent-subtle: var(--brand-50);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text1);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    font-feature-settings: "ss01";
+    -webkit-font-smoothing: antialiased;
+    transition: background 300ms ease, color 300ms ease;
+  }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 var(--sp-2xl);
+  }
+
+  /* ── HEADER ── */
+  .lp-header {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+  }
+  .lp-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+  }
+  .lp-brand {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--text1);
+  }
+  .lp-nav { display: flex; gap: var(--sp-2xl); }
+  .lp-nav a {
+    color: var(--text2);
+    font-size: 13px; font-weight: 400;
+    transition: color 200ms ease;
+    letter-spacing: 0.02em;
+  }
+  .lp-nav a:hover { color: var(--text1); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: var(--sp-sm);
+    padding: 12px 22px;
+    border-radius: var(--r-pill);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 220ms ease;
+    letter-spacing: 0.02em;
+  }
+  .btn-primary {
+    background: var(--text1);
+    color: var(--bg);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text2);
+    border-color: var(--border-vis);
+  }
+  .btn-ghost:hover {
+    color: var(--text1);
+    border-color: var(--text3);
+  }
+
+  /* ─────────────────────────────────────────────────────── */
+  /* HERO STAGE — object-on-spotlight                         */
+  /* subject: object → generic warm metallic form             */
+  /*   (concrete products are never CSS-simulated. We render  */
+  /*    a decorative placeholder form that holds the slot;    */
+  /*    the user swaps it for their real 3D render / product  */
+  /*    photography before shipping. Same honesty rule as     */
+  /*    medium: photo.)                                       */
+  /* relation: shadow-only (contact shadow under the form)    */
+  /* Physics: gravity, sits on implied stage, top light.      */
+  /* ─────────────────────────────────────────────────────── */
+  .lp-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    padding: var(--sp-6xl) 0 var(--sp-5xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Layer 1 — background: a tight TOP spotlight (not center),
+     warm amber fading fast into the stage black. Light comes from above. */
+  .hero-bg-gradient {
+    position: absolute; inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 55% 44% at 50% 12%,
+        rgba(240, 209, 140, 0.30) 0%,
+        rgba(143, 107, 42, 0.20) 24%,
+        rgba(46, 43, 34, 0.10) 52%,
+        transparent 80%);
+  }
+
+  /* Layer 2 — vignette: STRONG, darkens the stage edges */
+  .hero-vignette {
+    position: absolute; inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 70% at 50% 40%,
+      transparent 30%,
+      rgba(6, 6, 8, 0.55) 72%,
+      rgba(6, 6, 8, 0.95) 100%);
+  }
+
+  /* Layer 3 — implied stage floor: a subtle horizontal gradient
+     that reads as a ground plane catching the spotlight.
+     Includes a bright center highlight right where the spotlight hits. */
+  .hero-floor {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 0; height: 55%;
+    z-index: 3;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 24% 50% at 50% 92%,
+        rgba(240, 209, 140, 0.18) 0%,
+        rgba(143, 107, 42, 0.08) 45%,
+        transparent 80%),
+      linear-gradient(180deg,
+        transparent 0%,
+        rgba(6, 6, 8, 0.25) 35%,
+        rgba(6, 6, 8, 0.55) 75%,
+        rgba(0, 0, 0, 0.75) 100%);
+  }
+
+  /* ─── Hero subject: object (generic placeholder form) ───
+     We never CSS-simulate specific physical products. Instead we
+     render a generic warm metallic form that holds the slot on the
+     stage, reads as intentional, and is trivially replaceable with
+     the user's real 3D render / product photography before shipping.
+     The form is DECORATIVE — it makes no attempt to represent the
+     actual product. See `references/hero-stage.md` for the rule. */
+  .hero-object {
+    position: relative;
+    width: 180px;
+    aspect-ratio: 9 / 16;
+    margin: 0 auto var(--sp-xl);
+    z-index: 5;
+  }
+
+  /* Warm metallic vertical pill — top-lit, soft wrap light on the sides,
+     deep shadow at the base. Uses the brand's object palette. */
+  .obj-form {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: linear-gradient(180deg,
+      var(--obj-spec) 0%,
+      var(--obj-highlight) 18%,
+      var(--obj-mid) 52%,
+      var(--obj-deep) 86%,
+      var(--obj-edge) 100%);
+    box-shadow:
+      inset 0 30px 60px rgba(255, 244, 214, 0.18),
+      inset 0 -60px 120px rgba(10, 8, 5, 0.70),
+      inset -14px 0 30px rgba(10, 8, 5, 0.50),
+      inset  14px 0 30px rgba(10, 8, 5, 0.50),
+      0 0 60px rgba(240, 209, 140, 0.12);
+  }
+  /* Soft top specular wash — catches the implied spotlight */
+  .obj-form::before {
+    content: "";
+    position: absolute;
+    top: 8%; left: 22%; right: 22%;
+    height: 18%;
+    background: radial-gradient(ellipse at 50% 30%,
+      rgba(255, 244, 214, 0.55) 0%,
+      rgba(255, 244, 214, 0.15) 45%,
+      transparent 75%);
+    filter: blur(4px);
+    border-radius: 50%;
+  }
+
+  /* Contact shadow — wide diffuse ellipse directly under the form.
+     Grounds the placeholder on the implied floor. When the user swaps
+     in their real render, it inherits the same shadow position. */
+  .obj-contact-shadow {
+    position: absolute;
+    left: -35%; right: -35%;
+    bottom: -6px; height: 70px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 35%,
+      rgba(0, 0, 0, 0.60) 0%,
+      rgba(0, 0, 0, 0.30) 30%,
+      rgba(0, 0, 0, 0.12) 60%,
+      rgba(0, 0, 0, 0.03) 80%,
+      transparent 94%);
+    filter: blur(12px);
+    pointer-events: none;
+  }
+
+
+  /* Layer 10 — content */
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    padding: 6px 14px;
+    border: 1px solid var(--border-vis);
+    border-radius: var(--r-pill);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-2xl);
+  }
+  .hero-content h1 {
+    font-family: var(--font-display);
+    font-size: clamp(56px, 9vw, 112px);
+    font-weight: 300;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    margin: 0 0 var(--sp-lg);
+    color: var(--text1);
+    font-variation-settings: "opsz" 144;
+  }
+  .hero-content p.sub {
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--text2);
+    max-width: 480px;
+    margin: 0 auto var(--sp-2xl);
+  }
+  .hero-ctas { display: flex; gap: var(--sp-md); justify-content: center; }
+
+  /* ── FEATURES — editorial layout, text-only or centered visuals ── */
+  .lp-feature {
+    padding: var(--sp-5xl) 0;
+    text-align: center;
+  }
+  .lp-feature .container {
+    max-width: 760px;
+  }
+  .feature-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-lg);
+  }
+  .feature-heading {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin: 0 0 var(--sp-lg);
+    color: var(--text1);
+  }
+  .feature-body {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text2);
+    margin: 0 auto var(--sp-3xl);
+    max-width: 520px;
+  }
+
+  .feature-visual {
+    margin: var(--sp-2xl) auto 0;
+    max-width: 520px;
+    padding: var(--sp-3xl);
+    border: 1px solid var(--border);
+    border-radius: var(--r-container);
+    background: color-mix(in srgb, var(--surface1) 50%, transparent);
+  }
+
+  /* Feature 1: close-up detail — vertical metallic strokes in the brand palette */
+  .visual-detail {
+    display: flex; gap: 4px; justify-content: center;
+  }
+  .visual-detail div {
+    width: 8px; height: 80px;
+    background: linear-gradient(180deg, var(--obj-highlight), var(--obj-deep));
+    opacity: 0.4;
+  }
+  .visual-detail div:nth-child(4),
+  .visual-detail div:nth-child(5),
+  .visual-detail div:nth-child(6) {
+    opacity: 1;
+    height: 120px;
+    background: linear-gradient(180deg, var(--obj-spec), var(--obj-highlight), var(--obj-mid), var(--obj-deep));
+  }
+
+  /* Feature 2: directional field — rings and dot */
+  .visual-field {
+    position: relative;
+    width: 220px; height: 220px;
+    margin: 0 auto;
+  }
+  .visual-field .ring {
+    position: absolute;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    opacity: 0.35;
+  }
+  .visual-field .r1 { inset: 0; }
+  .visual-field .r2 { inset: 20px; opacity: 0.5; }
+  .visual-field .r3 { inset: 40px; opacity: 0.65; }
+  .visual-field .r4 { inset: 60px; opacity: 0.85; }
+  .visual-field .dot {
+    position: absolute;
+    top: calc(50% + 14px); left: calc(50% + 40px);
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 16px var(--accent);
+    transform: translate(-50%, -50%);
+  }
+
+  /* Feature 3: presence dot */
+  .visual-presence {
+    display: flex; flex-direction: column; align-items: center; gap: var(--sp-md);
+  }
+  .presence-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+  .presence-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* ── SPECS ── */
+  .lp-specs {
+    padding: var(--sp-4xl) 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .lp-specs .container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-xl);
+    max-width: 1000px;
+  }
+  .spec {
+    padding-right: var(--sp-lg);
+    border-right: 1px solid var(--border);
+  }
+  .spec:last-child { border-right: none; }
+  .spec .label {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text3);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-sm);
+  }
+  .spec .value {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--text1);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .spec .unit {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--text3);
+    margin-left: 4px;
+  }
+
+  /* ── PULL QUOTE ── */
+  .lp-quote { padding: var(--sp-5xl) 0; }
+  .lp-quote blockquote {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--text1);
+  }
+  .lp-quote cite {
+    display: block;
+    margin-top: var(--sp-xl);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-style: normal;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ── PRICING (single tier) ── */
+  .lp-pricing {
+    padding: var(--sp-4xl) 0;
+    text-align: center;
+  }
+  .lp-pricing .price-single {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--sp-3xl) var(--sp-4xl);
+    border: 1px solid var(--border-vis);
+    border-radius: var(--r-container);
+    background: color-mix(in srgb, var(--surface1) 40%, transparent);
+    max-width: 520px;
+  }
+  .price-single .label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text3);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-md);
+  }
+  .price-single .amount {
+    font-family: var(--font-display);
+    font-size: 72px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--text1);
+    margin-bottom: var(--sp-md);
+  }
+  .price-single .ship {
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: var(--sp-xl);
+  }
+  .price-single .btn { padding: 14px 32px; }
+
+  /* ── FINAL CTA ── */
+  /* Echoes only the background layer — a subtle top light on the stage.
+     Never repeats the hero placeholder. Reduced intensity. */
+  .lp-cta-block {
+    padding: var(--sp-5xl) 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .lp-cta-block::before {
+    content: "";
+    position: absolute; inset: 0;
+    z-index: 0; pointer-events: none;
+    background: radial-gradient(ellipse 60% 50% at 50% 10%,
+      rgba(240, 209, 140, 0.15) 0%,
+      rgba(143, 107, 42, 0.08) 35%,
+      transparent 72%);
+  }
+  .lp-cta-block .container {
+    position: relative; z-index: 1;
+    max-width: 640px;
+  }
+  .lp-cta-block h2 {
+    font-family: var(--font-display);
+    font-size: clamp(44px, 6vw, 72px);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin: 0 0 var(--sp-md);
+  }
+  .lp-cta-block p {
+    font-size: 16px;
+    color: var(--text2);
+    margin: 0 0 var(--sp-xl);
+  }
+
+  /* ── FOOTER ── */
+  .lp-footer {
+    border-top: 1px solid var(--border);
+    padding: var(--sp-3xl) 0 var(--sp-2xl);
+  }
+  .lp-footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: var(--sp-xl);
+  }
+  .footer-brand {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--text1);
+  }
+  .footer-tag {
+    font-size: 13px;
+    color: var(--text3);
+    max-width: 300px;
+    margin-top: var(--sp-sm);
+  }
+  .footer-nav {
+    display: flex;
+    gap: var(--sp-2xl);
+  }
+  .footer-nav a {
+    font-size: 12px;
+    color: var(--text2);
+    letter-spacing: 0.06em;
+  }
+  .footer-nav a:hover { color: var(--text1); }
+  .footer-bottom {
+    max-width: 1100px;
+    margin: var(--sp-2xl) auto 0;
+    padding: var(--sp-lg) var(--sp-2xl) 0;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--text4);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── THEME TOGGLE BAR ── */
+  .theme-bar {
+    position: fixed;
+    bottom: var(--sp-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: color-mix(in srgb, var(--surface1) 85%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--border-vis);
+    border-radius: var(--r-pill);
+    z-index: 1000;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+  .theme-bar button {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text3);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    transition: all 200ms ease;
+    letter-spacing: 0.04em;
+  }
+  .theme-bar button.active {
+    background: var(--surface3);
+    color: var(--text1);
+  }
+
+  /* Dark-mode is the canonical stage for Auris. Light-mode keeps the
+     frame accent tint but softens the stage. */
+  [data-theme="light"] .hero-bg-gradient {
+    background:
+      radial-gradient(ellipse 60% 48% at 50% 10%,
+        rgba(210, 135, 48, 0.18) 0%,
+        rgba(143, 107, 42, 0.10) 28%,
+        transparent 70%);
+  }
+  [data-theme="light"] .hero-vignette {
+    background: radial-gradient(ellipse 75% 75% at 50% 40%,
+      transparent 40%,
+      rgba(155, 149, 133, 0.18) 80%,
+      rgba(155, 149, 133, 0.30) 100%);
+  }
+  [data-theme="light"] .hero-floor {
+    background: linear-gradient(180deg,
+      transparent 0%,
+      rgba(155, 149, 133, 0.12) 50%,
+      rgba(106, 101, 85, 0.18) 100%);
+  }
+  [data-theme="light"] .obj-contact-shadow {
+    background: radial-gradient(ellipse at 50% 30%,
+      rgba(20, 18, 14, 0.45) 0%,
+      rgba(20, 18, 14, 0.22) 40%,
+      rgba(20, 18, 14, 0.08) 70%,
+      transparent 88%);
+  }
+
+  @media (max-width: 860px) {
+    .lp-specs .container { grid-template-columns: repeat(2, 1fr); }
+    .spec { border-right: none; border-bottom: 1px solid var(--border); padding: var(--sp-md) 0; }
+    .hero-object { width: 140px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="lp-header">
+  <div class="container">
+    <a href="#" class="lp-brand">Auris</a>
+    <nav class="lp-nav">
+      <a href="#">Object</a>
+      <a href="#">Sound</a>
+      <a href="#">Reserve</a>
+    </nav>
+    <button class="btn btn-ghost">Sign in</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- HERO STAGE — object-on-spotlight                 -->
+  <!-- subject: object → generic warm metallic form     -->
+  <!-- relation: shadow-only + vertical reflection      -->
+  <!-- ─────────────────────────────────────────────── -->
+  <section class="lp-hero">
+    <!-- Layer 1: background gradient, TOP-light, monochrome warm amber -->
+    <div class="hero-bg-gradient"></div>
+    <!-- Layer 2: strong vignette -->
+    <div class="hero-vignette"></div>
+    <!-- Layer 3: implied stage floor -->
+    <div class="hero-floor"></div>
+
+    <div class="container">
+      <div class="hero-content">
+        <!-- Layer 5: hero subject — object (generic placeholder form).
+             This is a DECORATIVE form that holds the slot on the stage.
+             It makes no attempt to represent the actual product.
+             Replace with the brand's real 3D render or product shot
+             before shipping. See references/hero-stage.md. -->
+        <div class="hero-object">
+          <div class="obj-form"></div>
+          <div class="obj-contact-shadow"></div>
+        </div>
+
+        <div class="hero-eyebrow">Coming spring · reserve now</div>
+        <h1>A new way to listen.</h1>
+        <p class="sub">
+          Auris is a single object. Place it anywhere. It does one thing. Press to begin.
+        </p>
+        <div class="hero-ctas">
+          <button class="btn btn-primary">Reserve yours</button>
+          <button class="btn btn-ghost">See it in motion</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SPECS ── -->
+  <section class="lp-specs">
+    <div class="container">
+      <div class="spec">
+        <div class="label">Form</div>
+        <div class="value">Cylinder<span class="unit"> · aluminium</span></div>
+      </div>
+      <div class="spec">
+        <div class="label">Height</div>
+        <div class="value">240<span class="unit">mm</span></div>
+      </div>
+      <div class="spec">
+        <div class="label">Drivers</div>
+        <div class="value">12<span class="unit"> directional</span></div>
+      </div>
+      <div class="spec">
+        <div class="label">Battery</div>
+        <div class="value">22<span class="unit"> hours</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURE 1 ── -->
+  <section class="lp-feature">
+    <div class="container">
+      <div class="feature-eyebrow">01 · Form</div>
+      <h2 class="feature-heading">Turned from a single piece.</h2>
+      <p class="feature-body">
+        Auris has no seams. No ports you can see. No buttons except one. The surface is the interface — press anywhere, and the world gets quieter.
+      </p>
+      <div class="feature-visual">
+        <div class="visual-detail">
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURE 2 ── -->
+  <section class="lp-feature">
+    <div class="container">
+      <div class="feature-eyebrow">02 · Field</div>
+      <h2 class="feature-heading">Sound follows you.</h2>
+      <p class="feature-body">
+        Twelve directional drivers find where you are and bring the sound to you. Move across the room. The sound moves with you.
+      </p>
+      <div class="feature-visual">
+        <div class="visual-field">
+          <div class="ring r1"></div>
+          <div class="ring r2"></div>
+          <div class="ring r3"></div>
+          <div class="ring r4"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURE 3 ── -->
+  <section class="lp-feature">
+    <div class="container">
+      <div class="feature-eyebrow">03 · Presence</div>
+      <h2 class="feature-heading">No app. No pairing. No wake word.</h2>
+      <p class="feature-body">
+        Auris doesn't want your attention. No screen, no notifications, no accounts. Press once to begin, press once to end. It never announces itself.
+      </p>
+      <div class="feature-visual">
+        <div class="visual-presence">
+          <div class="presence-dot"></div>
+          <div class="presence-label">listening</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PULL QUOTE ── -->
+  <section class="lp-quote">
+    <div class="container">
+      <blockquote>
+        It's the first device that doesn't ask anything of you.
+        <cite>— Asha Bergström, industrial designer</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ── PRICING — single tier ── -->
+  <section class="lp-pricing">
+    <div class="container">
+      <div class="price-single">
+        <div class="label">Auris</div>
+        <div class="amount">$1,490</div>
+        <div class="ship">The first 500 ship in spring. Reserve with no payment.</div>
+        <button class="btn btn-primary">Reserve yours</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FINAL CTA ── -->
+  <section class="lp-cta-block">
+    <div class="container">
+      <h2>One object. One press.</h2>
+      <p>Decide when you see it.</p>
+      <button class="btn btn-primary">Reserve yours</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="lp-footer">
+  <div class="container">
+    <div>
+      <div class="footer-brand">Auris</div>
+      <p class="footer-tag">A single object that listens to the room and brings the sound to you.</p>
+    </div>
+    <nav class="footer-nav">
+      <a href="#">Object</a>
+      <a href="#">Sound</a>
+      <a href="#">Support</a>
+      <a href="#">Press</a>
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    <span>AURIS · FICTIONAL</span>
+    <span>OBJECT-ON-SPOTLIGHT PROOF · HERO_STAGE v2</span>
+  </div>
+</footer>
+
+<!-- Theme toggle -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="dark">Dark</button>
+  <button data-theme-btn="light">Light</button>
+</div>
+
+<script>
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  document.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+</script>
+</body>
+</html>

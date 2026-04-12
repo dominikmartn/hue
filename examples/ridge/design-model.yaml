@@ -1,0 +1,157 @@
+name: "Ridge"
+description: "Fictional SLO monitoring platform for ops teams. Dark slate canvas with a faint dot-grid background, an abstracted dashboard device centered in the hero. Proves the grid-on-dark preset: pattern medium + device subject + shadow-only relation. Classic developer-platform composition — the calmest end of the 'device on a pattern' spectrum next to Stint's mesh."
+philosophy: "The line you don't cross. Ridge watches service-level objectives and pages the right person before the customer notices. Engineering voice, monospace-heavy, no marketing fluff. The product is the dashboard; the copy gets out of the way."
+primary_mode: "dark"
+brand_source: "INVENTED — fictional brand for hero_stage v2 proof library, grid-on-dark preset"
+brand_domain: "observability / SLO monitoring (fictional)"
+brand_type: "ui-rich"
+mono_for_data: true
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    neutral:             # cool slate, near-black canvas
+      50:  "#F8FAFC"
+      100: "#F1F5F9"
+      200: "#E2E8F0"
+      300: "#CBD5E1"
+      400: "#94A3B8"
+      500: "#64748B"
+      600: "#475569"
+      700: "#334155"
+      800: "#1E293B"
+      900: "#0F172A"    # canvas
+      950: "#020617"
+    brand:               # emerald — the "in the green" / "passing SLO" hue
+      50:  "#ECFDF5"
+      100: "#D1FAE5"
+      200: "#A7F3D0"
+      300: "#6EE7B7"
+      400: "#34D399"
+      500: "#10B981"    # primary
+      600: "#059669"
+      700: "#047857"
+      800: "#065F46"
+      900: "#064E3B"
+    status:              # error / warning hues used in dashboard widgets
+      red:    "#EF4444"
+      amber:  "#F59E0B"
+  spacing: [0, 2, 4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 128]
+  radii:   [0, 2, 4, 6, 8, 12, 16, 999]
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    dark:
+      background:     "{neutral.900}"
+      surface1:       "{neutral.800}"
+      surface2:       "{neutral.700}"
+      surface3:       "{neutral.600}"
+      border:         "{neutral.700}"
+      border_visible: "{neutral.600}"
+      text1:          "{neutral.50}"
+      text2:          "{neutral.300}"
+      text3:          "{neutral.400}"
+      text4:          "{neutral.500}"
+      accent:         "{brand.400}"
+      accent_hover:   "{brand.300}"
+      accent_subtle:  "{brand.900}"
+    light:
+      background:     "{neutral.50}"
+      surface1:       "{neutral.100}"
+      surface2:       "{neutral.200}"
+      surface3:       "{neutral.300}"
+      border:         "{neutral.200}"
+      border_visible: "{neutral.300}"
+      text1:          "{neutral.900}"
+      text2:          "{neutral.500}"
+      text3:          "{neutral.400}"
+      text4:          "{neutral.300}"
+      accent:         "{brand.600}"
+      accent_hover:   "{brand.700}"
+      accent_subtle:  "{brand.50}"
+
+  radii:
+    element:   4
+    control:   6
+    component: 8
+    container: 12
+    pill:      999
+
+  typography:
+    display:
+      family: "JetBrains Mono"
+      size:   "56px"
+      weight: 500
+      line_height: 1.05
+      letter_spacing: "-0.02em"
+      google_fonts: "JetBrains+Mono:wght@400;500;600;700"
+    body:
+      family: "Inter"
+      size:   "15px"
+      weight: 400
+      line_height: 1.55
+      letter_spacing: "0em"
+      google_fonts: "Inter:wght@400;500"
+    mono:
+      family: "JetBrains Mono"
+      size:   "12px"
+      weight: 400
+
+# ── HERO STAGE ─── grid-on-dark preset
+# Demonstrates:
+#   background.medium: pattern (dot grid) + corner light + subtle intensity
+#   hero.subject: device (abstracted SLO dashboard), center, dominant
+#   relation.type: shadow-only (classic developer-platform framing)
+hero_stage:
+  preset: "grid-on-dark"
+  observed_style:
+    description: "Faint cool slate dot-grid behind a centered dashboard device. A soft top-left corner glow reads as an implied light source; the rest of the field stays calm. The device has a drop shadow but no other interaction with the grid — it sits on top, no emission."
+    where_used: ["hero", "feature visuals (echoed grid at reduced intensity)"]
+    notes: "Canonical Vercel / GitHub / Linear docs-site composition. Validates the grid-on-dark preset for developer platforms where the product IS the dashboard."
+  background:
+    medium: "pattern"
+    color_mode: "monochrome"
+    saturation: "flat"
+    light_source: "top-left"
+    falloff: "soft"
+    vignette: "subtle"
+    texture: "clean"
+    motion: "static"
+    intensity: "subtle"
+    safe_zone: "masked-for-text"
+    color_palette:
+      - "#0F172A"   # canvas
+      - "#1E293B"   # surface1
+      - "#334155"   # surface2
+      - "#64748B"   # muted
+      - "#10B981"   # accent (for the corner glow)
+    pattern_recipe: "dot-grid"
+    pattern_params:
+      dot_size: "1.4px"
+      cell_size: "28px"
+      dot_color: "rgba(148, 163, 184, 0.28)"
+  hero:
+    subject: "device"              # abstracted product window — an SLO dashboard
+    placement: "center"
+    scale: "dominant"
+    tint: "neutral"
+  relation:
+    type: "shadow-only"
+    bleed: 0
+  disclaimer: "Fictional brand for the hero_stage v2 proof library. The dashboard device is an abstraction — not a copy of any specific observability tool."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Fictional: thin geometric line icons matching the monospace register. Used sparingly — labels and numbers do most of the work."
+    stroke_weight: "regular"
+    corner_treatment: "sharp"
+    fill_style: "outline"
+    form_language: "geometric"
+    visual_density: "balanced"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "regular"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
+    icon_class_prefix: "ph ph-"

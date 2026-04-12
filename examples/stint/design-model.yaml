@@ -1,0 +1,154 @@
+name: "Stint"
+description: "Fictional project tracker for teams that work in fixed cycles. Dark cool canvas, muted violet mesh background, floating app-window mockup as the hero subject. Proves the device-on-mesh preset: mesh medium + device subject + flat relation."
+philosophy: "A tracker that doesn't pretend. Fixed-cycle work units (two-week stints), clinical voice, deadpan directness. The hero is the product window, not a glowing object — the work is the star."
+primary_mode: "dark"
+brand_source: "INVENTED — fictional brand for hero_stage proof library"
+brand_domain: "project / task management (fictional)"
+brand_type: "ui-rich"
+mono_for_data: true
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    neutral:            # cool, slightly blue-shifted grays
+      0:   "#FFFFFF"
+      50:  "#F4F5F9"
+      100: "#E4E7EE"
+      200: "#C6CAD5"
+      300: "#929AAE"
+      400: "#646B80"
+      500: "#454B5E"
+      600: "#2C3142"
+      700: "#1B1F2C"
+      800: "#12141D"
+      900: "#0B0D14"
+      950: "#06070B"
+    brand:              # muted violet, deliberately not as loud as Orivion
+      50:  "#EDEBFC"
+      100: "#D8D4F8"
+      200: "#B4AEF0"
+      300: "#9189E6"
+      400: "#7B6FEA"
+      500: "#6456E0"    # primary accent — muted, professional
+      600: "#5142C4"
+      700: "#4033A0"
+      800: "#2F247A"
+      900: "#1F1756"
+    mesh:               # the background mesh palette — muted, cool, layered
+      a: "#5142C4"      # violet
+      b: "#2C3142"      # slate
+      c: "#3A3375"      # deep indigo
+      d: "#1B1F2C"      # canvas shadow
+  spacing: [0, 2, 4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 128]
+  radii:   [0, 2, 4, 6, 8, 12, 16, 999]
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    dark:
+      background:     "{neutral.900}"
+      surface1:       "{neutral.800}"
+      surface2:       "{neutral.700}"
+      surface3:       "{neutral.600}"
+      border:         "{neutral.700}"
+      border_visible: "{neutral.600}"
+      text1:          "{neutral.50}"
+      text2:          "{neutral.300}"
+      text3:          "{neutral.400}"
+      text4:          "{neutral.500}"
+      accent:         "{brand.400}"
+      accent_hover:   "{brand.300}"
+      accent_subtle:  "{brand.900}"
+    light:
+      background:     "{neutral.50}"
+      surface1:       "{neutral.100}"
+      surface2:       "{neutral.200}"
+      surface3:       "{neutral.300}"
+      border:         "{neutral.200}"
+      border_visible: "{neutral.300}"
+      text1:          "{neutral.900}"
+      text2:          "{neutral.500}"
+      text3:          "{neutral.400}"
+      text4:          "{neutral.300}"
+      accent:         "{brand.500}"
+      accent_hover:   "{brand.600}"
+      accent_subtle:  "{brand.50}"
+
+  radii:
+    element:   4
+    control:   6
+    component: 8
+    container: 12
+    pill:      999
+
+  typography:
+    display:
+      family: "Inter"
+      size:   "56px"
+      weight: 500
+      line_height: 1.04
+      letter_spacing: "-0.035em"
+      google_fonts: "Inter:wght@400;500;600"
+    body:
+      family: "Inter"
+      size:   "15px"
+      weight: 400
+      line_height: 1.55
+      letter_spacing: "0em"
+    mono:
+      family: "JetBrains Mono"
+      size:   "12px"
+      weight: 400
+      google_fonts: "JetBrains+Mono:wght@400;500"
+
+# ── HERO STAGE ─── device-on-mesh preset
+# Demonstrates:
+#   background.medium: mesh + muted saturation + subtle intensity
+#   hero.subject: device, off-center-right, balanced
+#   relation.type: flat (the device sits on the mesh, no light interaction)
+hero_stage:
+  preset: "device-on-mesh"
+  observed_style:
+    description: "INVENTED for testing: an app-window mockup floating off-center to the right over a muted violet mesh. The device has a subtle drop shadow but no glow or halo — it is a physical object sitting on a background, not a source of light."
+    where_used: ["hero"]
+    notes: "Fictional composition — proves mesh medium + device subject + flat relation render cleanly from the v2 schema."
+  background:
+    medium: "mesh"
+    color_mode: "dual-tone"
+    saturation: "muted"
+    light_source: "top"
+    falloff: "soft"
+    vignette: "off"
+    texture: "clean"
+    motion: "static"
+    intensity: "subtle"
+    safe_zone: "masked-for-text"
+    color_palette:
+      - "#5142C4"   # violet
+      - "#3A3375"   # deep indigo
+      - "#2C3142"   # slate
+      - "#1B1F2C"   # canvas shadow
+  hero:
+    subject: "device"               # intent: product window (form is ignored for device)
+    placement: "off-center-right"
+    scale: "balanced"
+    tint: "neutral"
+  relation:
+    type: "flat"
+    bleed: 0
+  disclaimer: "Fictional brand created for the hero_stage proof library. Not affiliated with any real product."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Fictional: thin, geometric, mostly outline. Dev-tool aesthetic."
+    stroke_weight: "regular"
+    corner_treatment: "sharp"
+    fill_style: "outline"
+    form_language: "geometric"
+    visual_density: "balanced"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "regular"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
+    icon_class_prefix: "ph ph-"

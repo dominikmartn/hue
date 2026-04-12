@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ridge — checkout-api · SLO overview</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css">
+
+<style>
+  :root {
+    --neutral-50:  #F8FAFC;
+    --neutral-100: #F1F5F9;
+    --neutral-200: #E2E8F0;
+    --neutral-300: #CBD5E1;
+    --neutral-400: #94A3B8;
+    --neutral-500: #64748B;
+    --neutral-600: #475569;
+    --neutral-700: #334155;
+    --neutral-800: #1E293B;
+    --neutral-900: #0F172A;
+    --neutral-950: #020617;
+
+    --brand-50:  #ECFDF5;
+    --brand-100: #D1FAE5;
+    --brand-200: #A7F3D0;
+    --brand-300: #6EE7B7;
+    --brand-400: #34D399;
+    --brand-500: #10B981;
+    --brand-600: #059669;
+    --brand-700: #047857;
+    --brand-900: #064E3B;
+
+    --status-red:    #EF4444;
+    --status-red-2:  #DC2626;
+    --status-amber:  #F59E0B;
+    --status-amber-2:#D97706;
+
+    --sp-xs:  4px;
+    --sp-sm:  8px;
+    --sp-md:  16px;
+    --sp-lg:  24px;
+    --sp-xl:  32px;
+    --sp-2xl: 48px;
+    --sp-3xl: 64px;
+
+    --r-element:   4px;
+    --r-control:   6px;
+    --r-component: 8px;
+    --r-container: 12px;
+    --r-pill:      999px;
+
+    --font-display: 'JetBrains Mono', ui-monospace, monospace;
+    --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  [data-theme="dark"] {
+    --bg:            var(--neutral-900);
+    --bg-2:          var(--neutral-950);
+    --surface1:      var(--neutral-800);
+    --surface2:      var(--neutral-700);
+    --surface3:      var(--neutral-600);
+    --border:        var(--neutral-700);
+    --border-vis:    var(--neutral-600);
+    --text1:         var(--neutral-50);
+    --text2:         var(--neutral-300);
+    --text3:         var(--neutral-400);
+    --text4:         var(--neutral-500);
+    --accent:        var(--brand-400);
+    --accent-hover:  var(--brand-300);
+    --accent-subtle: var(--brand-900);
+    --grid-dot:      rgba(148, 163, 184, 0.22);
+    --window-shadow: 0 60px 140px rgba(2, 6, 23, 0.75), 0 24px 60px rgba(2, 6, 23, 0.55);
+  }
+  [data-theme="light"] {
+    --bg:            var(--neutral-50);
+    --bg-2:          var(--neutral-100);
+    --surface1:      var(--neutral-100);
+    --surface2:      var(--neutral-200);
+    --surface3:      var(--neutral-300);
+    --border:        var(--neutral-200);
+    --border-vis:    var(--neutral-300);
+    --text1:         var(--neutral-900);
+    --text2:         var(--neutral-500);
+    --text3:         var(--neutral-400);
+    --text4:         var(--neutral-300);
+    --accent:        var(--brand-600);
+    --accent-hover:  var(--brand-700);
+    --accent-subtle: var(--brand-50);
+    --grid-dot:      rgba(71, 85, 105, 0.15);
+    --window-shadow: 0 30px 80px rgba(15, 23, 42, 0.12), 0 10px 30px rgba(15, 23, 42, 0.08);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text1);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    transition: background 300ms ease, color 300ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sp-2xl);
+    position: relative;
+  }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+  .mono { font-family: var(--font-mono); }
+
+  /* ─── page backdrop: ridge dot-grid + corner glow ─── */
+  .page-bg {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .page-bg .dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, var(--grid-dot) 1.4px, transparent 1.4px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 40%, transparent 95%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 40%, transparent 95%);
+  }
+  .page-bg .glow {
+    position: absolute;
+    top: -20%; left: -15%;
+    width: 60%; height: 60%;
+    background: radial-gradient(circle at 30% 30%, rgba(16, 185, 129, 0.12), transparent 65%);
+    filter: blur(40px);
+  }
+
+  /* ─── browser window frame ─── */
+  .window {
+    position: relative;
+    z-index: 1;
+    width: min(1320px, 100%);
+    max-width: 1320px;
+    border-radius: var(--r-container);
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    box-shadow: var(--window-shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* window title bar — traffic lights + tab + url */
+  .win-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--sp-md);
+    height: 36px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    gap: var(--sp-md);
+    flex-shrink: 0;
+  }
+  .win-lights {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .win-lights span {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    display: block;
+  }
+  .win-lights .close  { background: #EF4F58; }
+  .win-lights .min    { background: #F5BD4F; }
+  .win-lights .max    { background: #61C454; }
+  .win-tabs {
+    display: flex;
+    flex: 1;
+    gap: 2px;
+    height: 100%;
+    align-items: end;
+    margin-left: var(--sp-md);
+  }
+  .win-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    padding: 7px 14px 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text2);
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .win-tab.active {
+    color: var(--text1);
+    background: var(--bg);
+  }
+  .win-tab .favicon {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    clip-path: polygon(0 100%, 50% 0, 100% 100%);
+    flex-shrink: 0;
+  }
+  .win-tab .close {
+    color: var(--text3);
+    font-size: 13px;
+    line-height: 1;
+  }
+  .win-tab-new {
+    padding: 6px 8px;
+    color: var(--text3);
+    font-size: 14px;
+    align-self: center;
+  }
+
+  /* URL bar row */
+  .win-urlbar {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    padding: 0 var(--sp-md);
+    height: 40px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .win-urlbar .arrows {
+    display: flex;
+    gap: 2px;
+    color: var(--text3);
+  }
+  .win-urlbar .arrows i { font-size: 16px; }
+  .win-urlbar .url {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text2);
+    min-width: 0;
+  }
+  .win-urlbar .url .lock { color: var(--accent); font-size: 11px; }
+  .win-urlbar .url .domain { color: var(--text1); }
+  .win-urlbar .url .path { color: var(--text3); }
+  .win-urlbar .url-actions {
+    display: flex;
+    gap: var(--sp-sm);
+    color: var(--text3);
+  }
+  .win-urlbar .url-actions i { font-size: 16px; }
+
+  /* ─── app viewport inside the window ─── */
+  .app {
+    display: grid;
+    grid-template-columns: 236px 1fr;
+    grid-template-rows: 52px auto;
+    grid-template-areas:
+      "topbar topbar"
+      "sidebar main";
+    background: var(--bg);
+    color: var(--text1);
+  }
+
+  /* ─── app top bar ─── */
+  .app-topbar {
+    grid-area: topbar;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--sp-md);
+    border-bottom: 1px solid var(--border);
+    gap: var(--sp-lg);
+    background: color-mix(in srgb, var(--surface1) 60%, transparent);
+  }
+  .app-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    color: var(--text1);
+  }
+  .app-brand .mark {
+    width: 13px; height: 13px;
+    background: var(--accent);
+    box-shadow: 0 0 14px rgba(16, 185, 129, 0.55);
+    clip-path: polygon(0 100%, 50% 0, 100% 100%);
+  }
+  .app-breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text3);
+    margin-left: var(--sp-sm);
+  }
+  .app-breadcrumb .sep { color: var(--text4); }
+  .app-breadcrumb .current { color: var(--text1); }
+
+  .app-topnav {
+    display: flex;
+    gap: var(--sp-lg);
+    margin-left: var(--sp-lg);
+  }
+  .app-topnav a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text2);
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 180ms ease, border-color 180ms ease;
+  }
+  .app-topnav a.active {
+    color: var(--text1);
+    border-bottom-color: var(--accent);
+  }
+  .app-topnav a:hover { color: var(--text1); }
+
+  .app-topbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-md);
+  }
+  .env-selector {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px 5px 8px;
+    background: var(--surface1);
+    border: 1px solid var(--border-vis);
+    border-radius: var(--r-control);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text1);
+    cursor: pointer;
+  }
+  .env-selector::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+  .env-selector i { color: var(--text3); font-size: 12px; }
+
+  .app-search {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-control);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    min-width: 200px;
+  }
+  .app-search i { font-size: 13px; }
+  .app-search .kbd {
+    margin-left: auto;
+    padding: 1px 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border-vis);
+    border-radius: var(--r-element);
+    color: var(--text4);
+    font-size: 10px;
+  }
+
+  .app-avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand-400), var(--brand-700));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--neutral-900);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  /* ─── sidebar ─── */
+  .app-sidebar {
+    grid-area: sidebar;
+    background: color-mix(in srgb, var(--surface1) 50%, transparent);
+    border-right: 1px solid var(--border);
+    padding: var(--sp-md);
+    overflow-y: auto;
+  }
+  .sidebar-group-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text4);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0 var(--sp-sm) var(--sp-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sidebar-group-label .count {
+    color: var(--text3);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .sidebar-service {
+    display: grid;
+    grid-template-columns: 10px 1fr auto;
+    align-items: center;
+    gap: var(--sp-sm);
+    padding: 7px var(--sp-sm);
+    border-radius: var(--r-control);
+    cursor: pointer;
+    position: relative;
+  }
+  .sidebar-service:hover { background: var(--surface1); }
+  .sidebar-service .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--brand-400);
+  }
+  .sidebar-service.amber .status-dot { background: var(--status-amber); }
+  .sidebar-service.red   .status-dot { background: var(--status-red); }
+  .sidebar-service .name {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sidebar-service .slo {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+  }
+  .sidebar-service.amber .slo { color: var(--status-amber); }
+  .sidebar-service.red   .slo { color: var(--status-red); }
+  .sidebar-service.active {
+    background: var(--surface2);
+  }
+  .sidebar-service.active .name { color: var(--text1); font-weight: 500; }
+  .sidebar-service.active::before {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 6px; bottom: 6px;
+    width: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .sidebar-sep {
+    margin: var(--sp-md) 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+  }
+  .sidebar-footer {
+    margin-top: var(--sp-lg);
+    padding: var(--sp-sm) var(--sp-sm) 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text4);
+    line-height: 1.7;
+  }
+  .sidebar-footer .row {
+    display: flex;
+    justify-content: space-between;
+  }
+  .sidebar-footer .row strong { color: var(--text2); font-weight: 500; }
+
+  /* ─── main canvas ─── */
+  .app-main {
+    grid-area: main;
+    padding: var(--sp-lg) var(--sp-xl) var(--sp-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-lg);
+  }
+
+  .main-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sp-lg);
+  }
+  .main-head-title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .main-head-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .main-head-name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text1);
+    letter-spacing: -0.01em;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-sm);
+  }
+  .slo-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: var(--accent-subtle);
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    border-radius: var(--r-pill);
+    letter-spacing: 0.04em;
+  }
+  .slo-pill::before {
+    content: "";
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .main-head-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 2px;
+  }
+  .main-head-actions {
+    display: flex;
+    gap: var(--sp-sm);
+    flex-shrink: 0;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-radius: var(--r-control);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    border: 1px solid var(--border-vis);
+    background: var(--surface1);
+    color: var(--text1);
+    cursor: pointer;
+  }
+  .btn i { font-size: 13px; }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--neutral-900);
+    border-color: var(--accent);
+  }
+
+  /* ─── KPI tile row ─── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-md);
+  }
+  .kpi {
+    padding: var(--sp-md);
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    background: color-mix(in srgb, var(--surface1) 55%, transparent);
+  }
+  .kpi-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--sp-sm);
+  }
+  .kpi-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .kpi-trend {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 6px;
+    border-radius: var(--r-element);
+  }
+  .kpi-trend.up-bad {
+    color: var(--status-amber);
+    background: color-mix(in srgb, var(--status-amber) 14%, transparent);
+  }
+  .kpi-trend.flat {
+    color: var(--text3);
+    background: var(--surface1);
+  }
+  .kpi-trend.ok {
+    color: var(--accent);
+    background: var(--accent-subtle);
+  }
+  .kpi-value {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--text1);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .kpi-value .unit {
+    font-size: 15px;
+    color: var(--text3);
+    margin-left: 3px;
+    font-weight: 400;
+  }
+  .kpi-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 4px;
+  }
+  .kpi-visual {
+    margin-top: var(--sp-sm);
+    height: 36px;
+  }
+
+  /* sparkline colors inside kpi */
+  .spark-line { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+  .spark-area { fill: url(#ridge-spark-grad); }
+
+  /* KPI 3: budget bar */
+  .budget-bar {
+    position: relative;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: var(--r-pill);
+    margin-top: var(--sp-sm);
+    overflow: hidden;
+  }
+  .budget-bar-fill {
+    position: absolute; inset: 0 auto 0 0;
+    width: 61.2%;
+    background: linear-gradient(90deg, var(--accent), var(--brand-500));
+    border-radius: var(--r-pill);
+  }
+  .budget-bar-tick {
+    position: absolute;
+    top: -3px; bottom: -3px;
+    left: 60%;
+    width: 1px;
+    background: var(--status-amber);
+  }
+
+  /* ─── chart panel ─── */
+  .chart-panel {
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    background: color-mix(in srgb, var(--surface1) 55%, transparent);
+    padding: var(--sp-md) var(--sp-md) var(--sp-sm);
+    display: flex;
+    flex-direction: column;
+  }
+  .chart-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--sp-sm);
+  }
+  .chart-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 0.04em;
+  }
+  .chart-title strong { color: var(--text1); font-weight: 500; }
+  .chart-legend {
+    display: flex;
+    gap: var(--sp-md);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+  }
+  .chart-legend .k {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .chart-legend .k::before {
+    content: "";
+    width: 8px; height: 2px;
+    background: currentColor;
+  }
+  .chart-legend .k.consumed { color: var(--accent); }
+  .chart-legend .k.slo { color: var(--status-red); }
+  .chart-legend .k.slo::before { border-top: 1px dashed currentColor; background: transparent; height: 0; }
+  .chart-svg {
+    width: 100%;
+    height: 160px;
+  }
+  .chart-grid-line { stroke: var(--border); stroke-width: 0.5; }
+  .chart-axis-label {
+    fill: var(--text4);
+    font-family: var(--font-mono);
+    font-size: 9px;
+  }
+  .chart-consumed-line {
+    stroke: var(--accent);
+    stroke-width: 1.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .chart-consumed-area { fill: url(#ridge-chart-grad); }
+  .chart-slo-line {
+    stroke: var(--status-red);
+    stroke-width: 1;
+    stroke-dasharray: 4 3;
+    fill: none;
+  }
+  .chart-current-dot {
+    fill: var(--bg);
+    stroke: var(--accent);
+    stroke-width: 2;
+  }
+
+  /* ─── log stream ─── */
+  .log-panel {
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    background: color-mix(in srgb, var(--surface1) 55%, transparent);
+    overflow: hidden;
+  }
+  .log-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--sp-sm) var(--sp-md);
+    border-bottom: 1px solid var(--border);
+  }
+  .log-head .title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 0.04em;
+  }
+  .log-head .title strong { color: var(--text1); font-weight: 500; }
+  .log-head .filter {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text3);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .log-list {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .log-row {
+    display: grid;
+    grid-template-columns: 80px 120px 1fr auto;
+    gap: var(--sp-md);
+    padding: 8px var(--sp-md);
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .log-row:last-child { border-bottom: none; }
+  .log-row .ts { color: var(--text4); }
+  .log-row .kind {
+    color: var(--text3);
+    padding: 1px 6px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-element);
+    text-align: center;
+    width: fit-content;
+    background: var(--surface1);
+  }
+  .log-row.k-deploy    .kind { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); background: var(--accent-subtle); }
+  .log-row.k-alert     .kind { color: var(--status-amber); border-color: color-mix(in srgb, var(--status-amber) 40%, transparent); background: color-mix(in srgb, var(--status-amber) 12%, transparent); }
+  .log-row.k-incident  .kind { color: var(--status-red); border-color: color-mix(in srgb, var(--status-red) 40%, transparent); background: color-mix(in srgb, var(--status-red) 12%, transparent); }
+  .log-row.k-recover   .kind { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); background: var(--accent-subtle); }
+  .log-row.k-note      .kind { color: var(--text2); }
+  .log-row .msg { color: var(--text1); }
+  .log-row .msg .dim { color: var(--text3); }
+  .log-row .msg .num { color: var(--accent); }
+  .log-row .who { color: var(--text3); }
+  .log-row .who::before { content: "by "; color: var(--text4); }
+
+  /* ─── cursor indicator (the "mid-use" touch) ─── */
+  /* Positioned to hover over the selected `checkout-api` row in the sidebar,
+     sitting just past the service name. Sells the "someone is using this
+     right now" read without forcing the user to look for it. */
+  .fake-cursor {
+    position: absolute;
+    top: 175px; left: 200px;
+    width: 16px; height: 18px;
+    pointer-events: none;
+    z-index: 5;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  }
+
+  /* ─── theme toggle bar ─── */
+  .theme-bar {
+    position: fixed;
+    bottom: var(--sp-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: color-mix(in srgb, var(--surface1) 88%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--border-vis);
+    border-radius: var(--r-pill);
+    z-index: 1000;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+  .theme-bar button {
+    padding: 7px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text3);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    transition: all 200ms ease;
+    letter-spacing: 0.04em;
+  }
+  .theme-bar button.active {
+    background: var(--surface3);
+    color: var(--text1);
+  }
+
+  /* responsive: below 1100px collapse sidebar width */
+  @media (max-width: 1100px) {
+    .app { grid-template-columns: 200px 1fr; }
+    .kpi-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- page backdrop -->
+<div class="page-bg">
+  <div class="dots"></div>
+  <div class="glow"></div>
+</div>
+
+<!-- browser window -->
+<div class="window">
+
+  <!-- titlebar: traffic lights + tab strip -->
+  <div class="win-titlebar">
+    <div class="win-lights">
+      <span class="close"></span><span class="min"></span><span class="max"></span>
+    </div>
+    <div class="win-tabs">
+      <div class="win-tab active">
+        <span class="favicon"></span>
+        Ridge — checkout-api
+        <span class="close">×</span>
+      </div>
+      <div class="win-tab">
+        <span class="favicon" style="background: var(--status-amber); clip-path: none; border-radius: 2px;"></span>
+        Runbook · edge cache warmup
+        <span class="close">×</span>
+      </div>
+      <div class="win-tab-new">+</div>
+    </div>
+  </div>
+
+  <!-- url bar -->
+  <div class="win-urlbar">
+    <div class="arrows">
+      <i class="ph ph-arrow-left"></i>
+      <i class="ph ph-arrow-right"></i>
+      <i class="ph ph-arrow-clockwise"></i>
+    </div>
+    <div class="url">
+      <i class="ph ph-lock lock"></i>
+      <span class="domain">app.ridge.dev</span><span class="path">/services/checkout-api/slo</span>
+    </div>
+    <div class="url-actions">
+      <i class="ph ph-bookmark-simple"></i>
+      <i class="ph ph-dots-three-vertical"></i>
+    </div>
+  </div>
+
+  <!-- app viewport -->
+  <div class="app">
+
+    <!-- ─── TOP BAR ─── -->
+    <div class="app-topbar">
+      <a class="app-brand"><span class="mark"></span>Ridge</a>
+      <div class="app-breadcrumb">
+        <span>services</span>
+        <span class="sep">/</span>
+        <span>checkout-api</span>
+        <span class="sep">/</span>
+        <span class="current">slo</span>
+      </div>
+      <nav class="app-topnav">
+        <a class="active">Overview</a>
+        <a>Alerts</a>
+        <a>Incidents</a>
+        <a>Runbooks</a>
+        <a>Deploys</a>
+      </nav>
+      <div class="app-topbar-right">
+        <div class="env-selector">production <i class="ph ph-caret-down"></i></div>
+        <div class="app-search">
+          <i class="ph ph-magnifying-glass"></i>
+          <span>search services, incidents…</span>
+          <span class="kbd">⌘K</span>
+        </div>
+        <div class="app-avatar">RV</div>
+      </div>
+    </div>
+
+    <!-- ─── SIDEBAR ─── -->
+    <aside class="app-sidebar">
+      <div class="sidebar-group-label">
+        <span>Services</span>
+        <span class="count">8 / 8</span>
+      </div>
+      <div class="sidebar-service active">
+        <span class="status-dot"></span>
+        <span class="name">checkout-api</span>
+        <span class="slo">99.82%</span>
+      </div>
+      <div class="sidebar-service">
+        <span class="status-dot"></span>
+        <span class="name">auth-worker</span>
+        <span class="slo">99.95%</span>
+      </div>
+      <div class="sidebar-service amber">
+        <span class="status-dot"></span>
+        <span class="name">inventory-db</span>
+        <span class="slo">99.67%</span>
+      </div>
+      <div class="sidebar-service">
+        <span class="status-dot"></span>
+        <span class="name">payments-gateway</span>
+        <span class="slo">99.91%</span>
+      </div>
+      <div class="sidebar-service red">
+        <span class="status-dot"></span>
+        <span class="name">webhook-router</span>
+        <span class="slo">98.43%</span>
+      </div>
+      <div class="sidebar-service">
+        <span class="status-dot"></span>
+        <span class="name">search-index</span>
+        <span class="slo">99.88%</span>
+      </div>
+      <div class="sidebar-service">
+        <span class="status-dot"></span>
+        <span class="name">media-pipeline</span>
+        <span class="slo">99.76%</span>
+      </div>
+      <div class="sidebar-service">
+        <span class="status-dot"></span>
+        <span class="name">notifications</span>
+        <span class="slo">100.00%</span>
+      </div>
+
+      <hr class="sidebar-sep">
+
+      <div class="sidebar-group-label">
+        <span>Fleet</span>
+      </div>
+      <div class="sidebar-footer">
+        <div class="row"><span>total services</span><strong>8</strong></div>
+        <div class="row"><span>passing</span><strong>6</strong></div>
+        <div class="row"><span>approaching</span><strong>1</strong></div>
+        <div class="row"><span>breaching</span><strong>1</strong></div>
+        <div class="row"><span>window</span><strong>30 d</strong></div>
+      </div>
+    </aside>
+
+    <!-- ─── MAIN CANVAS ─── -->
+    <main class="app-main">
+
+      <!-- header -->
+      <div class="main-head">
+        <div class="main-head-title">
+          <span class="main-head-eyebrow">service overview</span>
+          <div class="main-head-name">
+            checkout-api
+            <span class="slo-pill">passing · 99.82%</span>
+          </div>
+          <div class="main-head-meta">
+            owner <span style="color: var(--text1);">platform · payments</span>
+            &nbsp;·&nbsp; objective <span style="color: var(--text1);">99.80% success</span>
+            &nbsp;·&nbsp; window <span style="color: var(--text1);">30 d rolling</span>
+            &nbsp;·&nbsp; next review <span style="color: var(--text1);">2026-04-14</span>
+          </div>
+        </div>
+        <div class="main-head-actions">
+          <button class="btn"><i class="ph ph-bell"></i>alerts</button>
+          <button class="btn"><i class="ph ph-book-open"></i>runbook</button>
+          <button class="btn btn-primary"><i class="ph ph-play"></i>page oncall</button>
+        </div>
+      </div>
+
+      <!-- KPI row -->
+      <div class="kpi-row">
+
+        <!-- p99 latency -->
+        <div class="kpi">
+          <div class="kpi-head">
+            <span class="kpi-label">p99 latency</span>
+            <span class="kpi-trend up-bad"><i class="ph ph-arrow-up" style="font-size: 10px;"></i>8 ms</span>
+          </div>
+          <div class="kpi-value">187<span class="unit">ms</span></div>
+          <div class="kpi-sub">objective ≤ 220 ms &nbsp;·&nbsp; last 24 h</div>
+          <svg class="kpi-visual" viewBox="0 0 300 36" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="ridge-spark-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path class="spark-area" d="M0,22 L12,24 L24,20 L36,21 L48,19 L60,23 L72,18 L84,17 L96,20 L108,19 L120,15 L132,16 L144,13 L156,14 L168,12 L180,15 L192,11 L204,14 L216,10 L228,13 L240,9 L252,12 L264,8 L276,11 L288,7 L300,10 L300,36 L0,36 Z"/>
+            <path class="spark-line" d="M0,22 L12,24 L24,20 L36,21 L48,19 L60,23 L72,18 L84,17 L96,20 L108,19 L120,15 L132,16 L144,13 L156,14 L168,12 L180,15 L192,11 L204,14 L216,10 L228,13 L240,9 L252,12 L264,8 L276,11 L288,7 L300,10"/>
+          </svg>
+        </div>
+
+        <!-- error rate -->
+        <div class="kpi">
+          <div class="kpi-head">
+            <span class="kpi-label">error rate</span>
+            <span class="kpi-trend ok">within budget</span>
+          </div>
+          <div class="kpi-value">0.18<span class="unit">%</span></div>
+          <div class="kpi-sub">objective ≤ 0.20 % &nbsp;·&nbsp; last 24 h</div>
+          <svg class="kpi-visual" viewBox="0 0 300 36" preserveAspectRatio="none">
+            <path class="spark-area" d="M0,26 L15,25 L30,27 L45,24 L60,25 L75,23 L90,26 L105,22 L120,24 L135,21 L150,23 L165,20 L180,22 L195,18 L210,22 L225,19 L240,17 L255,21 L270,18 L285,22 L300,20 L300,36 L0,36 Z"/>
+            <path class="spark-line" d="M0,26 L15,25 L30,27 L45,24 L60,25 L75,23 L90,26 L105,22 L120,24 L135,21 L150,23 L165,20 L180,22 L195,18 L210,22 L225,19 L240,17 L255,21 L270,18 L285,22 L300,20"/>
+          </svg>
+        </div>
+
+        <!-- error budget remaining -->
+        <div class="kpi">
+          <div class="kpi-head">
+            <span class="kpi-label">error budget</span>
+            <span class="kpi-trend flat">day 18 / 30</span>
+          </div>
+          <div class="kpi-value">61.2<span class="unit">%</span></div>
+          <div class="kpi-sub">remaining &nbsp;·&nbsp; burn rate 1.2× nominal</div>
+          <div class="budget-bar">
+            <div class="budget-bar-fill"></div>
+            <div class="budget-bar-tick" title="expected pace"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- chart panel: 30-day burn-down -->
+      <div class="chart-panel">
+        <div class="chart-head">
+          <div class="chart-title">error budget · <strong>30-day rolling window</strong></div>
+          <div class="chart-legend">
+            <span class="k consumed">consumed</span>
+            <span class="k slo">SLO threshold</span>
+          </div>
+        </div>
+        <svg class="chart-svg" viewBox="0 0 860 160" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="ridge-chart-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.28"/>
+              <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- grid lines (horizontal) -->
+          <line class="chart-grid-line" x1="40"  y1="20"  x2="840" y2="20"/>
+          <line class="chart-grid-line" x1="40"  y1="55"  x2="840" y2="55"/>
+          <line class="chart-grid-line" x1="40"  y1="90"  x2="840" y2="90"/>
+          <line class="chart-grid-line" x1="40"  y1="125" x2="840" y2="125"/>
+          <!-- Y axis labels -->
+          <text class="chart-axis-label" x="32"  y="23"  text-anchor="end">100%</text>
+          <text class="chart-axis-label" x="32"  y="58"  text-anchor="end">75%</text>
+          <text class="chart-axis-label" x="32"  y="93"  text-anchor="end">50%</text>
+          <text class="chart-axis-label" x="32"  y="128" text-anchor="end">25%</text>
+          <text class="chart-axis-label" x="32"  y="148" text-anchor="end">0%</text>
+          <!-- SLO threshold line (at 0% budget = breach) -->
+          <line class="chart-slo-line" x1="40" y1="140" x2="840" y2="140"/>
+          <text class="chart-axis-label" x="840" y="138" text-anchor="end" style="fill: var(--status-red);">breach</text>
+          <!-- consumed area + line: descends from 100% at day 1 toward ~61% at day 18 -->
+          <path class="chart-consumed-area" d="M40,20 L70,24 L100,28 L130,34 L160,36 L190,42 L220,45 L250,50 L280,55 L310,58 L340,60 L370,55 L400,61 L430,68 L460,72 L490,70 L520,78 L550,84 L580,80 L610,86 L640,90 L670,92 L700,80 L730,85 L760,88 L790,82 L820,85 L820,140 L40,140 Z"/>
+          <path class="chart-consumed-line"  d="M40,20 L70,24 L100,28 L130,34 L160,36 L190,42 L220,45 L250,50 L280,55 L310,58 L340,60 L370,55 L400,61 L430,68 L460,72 L490,70 L520,78 L550,84 L580,80 L610,86 L640,90 L670,92 L700,80 L730,85 L760,88 L790,82 L820,85"/>
+          <!-- current position dot -->
+          <circle class="chart-current-dot" cx="820" cy="85" r="4"/>
+          <!-- X axis labels -->
+          <text class="chart-axis-label" x="40"  y="158" text-anchor="start">mar 11</text>
+          <text class="chart-axis-label" x="240" y="158" text-anchor="middle">mar 18</text>
+          <text class="chart-axis-label" x="440" y="158" text-anchor="middle">mar 25</text>
+          <text class="chart-axis-label" x="640" y="158" text-anchor="middle">apr 01</text>
+          <text class="chart-axis-label" x="820" y="158" text-anchor="end">apr 10</text>
+        </svg>
+      </div>
+
+      <!-- log stream -->
+      <div class="log-panel">
+        <div class="log-head">
+          <div class="title">recent events · <strong>checkout-api</strong></div>
+          <div class="filter">filter <i class="ph ph-funnel-simple"></i></div>
+        </div>
+        <div class="log-list">
+          <div class="log-row k-deploy">
+            <span class="ts">14:42:07</span>
+            <span class="kind">deploy</span>
+            <span class="msg"><span class="num">v2847.3</span> → <span class="dim">checkout-api</span> · canary ramp to 100%</span>
+            <span class="who">rvelasquez</span>
+          </div>
+          <div class="log-row k-recover">
+            <span class="ts">14:38:19</span>
+            <span class="kind">recover</span>
+            <span class="msg">p99 recovered to <span class="num">187 ms</span> after edge-cache warm-up</span>
+            <span class="who">autosys</span>
+          </div>
+          <div class="log-row k-alert">
+            <span class="ts">14:21:55</span>
+            <span class="kind">alert</span>
+            <span class="msg">p99 latency <span class="num">240 ms</span> &gt; SLO <span class="dim">220 ms</span> · 2-min burn</span>
+            <span class="who">prometheus</span>
+          </div>
+          <div class="log-row k-deploy">
+            <span class="ts">13:55:02</span>
+            <span class="kind">deploy</span>
+            <span class="msg"><span class="num">v2847.2</span> → <span class="dim">checkout-api</span> · rate-limit hotfix</span>
+            <span class="who">ktakeda</span>
+          </div>
+          <div class="log-row k-note">
+            <span class="ts">13:40:46</span>
+            <span class="kind">note</span>
+            <span class="msg">rate-limit tuned on <span class="dim">/charge</span> · <span class="num">1200</span> → <span class="num">1500</span> rps</span>
+            <span class="who">ktakeda</span>
+          </div>
+          <div class="log-row k-incident">
+            <span class="ts">13:15:33</span>
+            <span class="kind">incident</span>
+            <span class="msg">INC-1847 · p99 spike on <span class="dim">/charge</span> · acknowledged</span>
+            <span class="who">ktakeda</span>
+          </div>
+          <div class="log-row k-deploy">
+            <span class="ts">12:58:12</span>
+            <span class="kind">deploy</span>
+            <span class="msg"><span class="num">v2847.1</span> → <span class="dim">checkout-api</span> · canary 25%</span>
+            <span class="who">rvelasquez</span>
+          </div>
+          <div class="log-row k-note">
+            <span class="ts">12:30:00</span>
+            <span class="kind">note</span>
+            <span class="msg">scheduled canary window opens <span class="dim">12:30 – 13:30 UTC</span></span>
+            <span class="who">ridge-bot</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- the "mid-use" touch: fake cursor hovering on the selected service -->
+  <svg class="fake-cursor" viewBox="0 0 16 18" fill="none">
+    <path d="M1 1 L1 15 L5 11 L8 17 L10.5 15.8 L7.5 9.8 L13 9.8 Z"
+          fill="#F8FAFC" stroke="#0F172A" stroke-width="1" stroke-linejoin="round"/>
+  </svg>
+
+</div>
+
+<!-- theme toggle -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="dark">dark</button>
+  <button data-theme-btn="light">light</button>
+</div>
+
+<script>
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  // click-disabled: everything inside the frame is a static mockup
+  document.querySelectorAll('a').forEach(a => a.addEventListener('click', e => e.preventDefault()));
+</script>
+</body>
+</html>

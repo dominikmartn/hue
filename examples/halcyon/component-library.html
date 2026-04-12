@@ -1,0 +1,4360 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Halcyon — Component Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ═══════════════════════════════════════════════
+     PRIMITIVES
+     ═══════════════════════════════════════════════ */
+  :root {
+    --n-50:  #F2F5F8;
+    --n-100: #E0E6EE;
+    --n-200: #C3CCD8;
+    --n-300: #8E9AA9;
+    --n-400: #61707F;
+    --n-500: #3F4C59;
+    --n-600: #29333D;
+    --n-700: #1B242E;
+    --n-800: #121A23;
+    --n-900: #0A1019;
+    --n-950: #05090F;
+
+    --b-50:  #E8F4FF;
+    --b-100: #CFE0FF;
+    --b-200: #A1C2FF;
+    --b-300: #6D9DFF;
+    --b-400: #4680F5;
+    --b-500: #2E66DE;
+    --b-600: #1F4BB0;
+    --b-700: #163777;
+    --b-800: #0E2249;
+    --b-900: #07162F;
+
+    --t-100: #C6F1F0;
+    --t-300: #6DD5D3;
+    --t-500: #2FA7A3;
+    --t-700: #11605F;
+    --t-900: #052928;
+
+    --red-50: #FDF0F0;  --red-500: #E5484D;  --red-900: #7F1D1D;
+    --grn-50: #F0F9EC;  --grn-500: #5CB13E;  --grn-900: #14532D;
+    --amb-50: #FFFBEB;  --amb-500: #E5A73B;  --amb-900: #78350F;
+
+    --r-element:   4px;
+    --r-control:   8px;
+    --r-component: 12px;
+    --r-container: 20px;
+    --r-pill:      999px;
+  }
+
+  /* ═══════════════════════════════════════════════
+     SEMANTIC TOKENS — DARK (default)
+     ═══════════════════════════════════════════════ */
+  [data-theme="dark"] {
+    --bg:             var(--n-900);
+    --surface1:       var(--n-800);
+    --surface2:       var(--n-700);
+    --surface3:       var(--n-600);
+    --border:         var(--n-700);
+    --border-visible: var(--n-600);
+    --text1:          var(--n-50);
+    --text2:          var(--n-200);
+    --text3:          var(--n-300);
+    --text4:          var(--n-400);
+    --accent:         var(--b-400);
+    --accent-subtle:  var(--b-900);
+    --teal:           var(--t-500);
+    --teal-subtle:    var(--t-900);
+    --success:        var(--grn-500);
+    --success-bg:     var(--grn-900);
+    --warning:        var(--amb-500);
+    --warning-bg:     var(--amb-900);
+    --error:          var(--red-500);
+    --error-bg:       var(--red-900);
+    --shadow-l1: 0 2px 8px rgba(0,0,0,0.3);
+    --shadow-l2: 0 4px 16px rgba(0,0,0,0.4);
+    --shadow-l3: 0 8px 32px rgba(0,0,0,0.5);
+    --shadow-accent: 0 4px 16px rgba(70,128,245,0.25);
+  }
+
+  /* ═══════════════════════════════════════════════
+     SEMANTIC TOKENS — LIGHT
+     ═══════════════════════════════════════════════ */
+  [data-theme="light"] {
+    --bg:             var(--n-50);
+    --surface1:       #E0E6EE;
+    --surface2:       #C3CCD8;
+    --surface3:       #8E9AA9;
+    --border:         #C3CCD8;
+    --border-visible: #8E9AA9;
+    --text1:          var(--n-900);
+    --text2:          var(--n-500);
+    --text3:          var(--n-400);
+    --text4:          var(--n-300);
+    --accent:         var(--b-500);
+    --accent-subtle:  var(--b-50);
+    --teal:           var(--t-500);
+    --teal-subtle:    var(--t-100);
+    --success:        var(--grn-500);
+    --success-bg:     var(--grn-50);
+    --warning:        var(--amb-500);
+    --warning-bg:     var(--amb-50);
+    --error:          var(--red-500);
+    --error-bg:       var(--red-50);
+    --shadow-l1: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-l2: 0 4px 16px rgba(0,0,0,0.12);
+    --shadow-l3: 0 8px 32px rgba(0,0,0,0.16);
+    --shadow-accent: 0 4px 16px rgba(46,102,222,0.2);
+  }
+
+  /* ═══════════════════════════════════════════════
+     ANIMATIONS
+     ═══════════════════════════════════════════════ */
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes progress-indeterminate {
+    0%   { transform: translateX(-100%); width: 40%; }
+    50%  { width: 60%; }
+    100% { transform: translateX(250%); width: 40%; }
+  }
+
+  /* ═══════════════════════════════════════════════
+     GLOBAL / BODY
+     ═══════════════════════════════════════════════ */
+  html, body {
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text1);
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+    -webkit-font-smoothing: antialiased;
+    transition: background 400ms ease-in-out, color 400ms ease-in-out;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  /* ═══════════════════════════════════════════════
+     SHELL LAYOUT
+     ═══════════════════════════════════════════════ */
+  .cl-shell {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── TOC sidebar ── */
+  .cl-toc {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 48px 24px 48px 32px;
+    border-right: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .cl-toc h1 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    margin-bottom: 4px;
+    color: var(--text1);
+  }
+  .cl-toc .subtitle {
+    font-size: 12px;
+    color: var(--text3);
+    margin-bottom: 32px;
+    letter-spacing: 0;
+  }
+  .cl-toc nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .cl-toc-group {
+    margin-bottom: 16px;
+  }
+  .cl-toc-cat {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 8px 0 4px;
+    cursor: pointer;
+    transition: color 250ms ease-in-out;
+    text-decoration: none;
+    display: block;
+  }
+  .cl-toc-cat:hover { color: var(--text1); }
+  .cl-toc-cat.active { color: var(--accent); }
+  .cl-toc-sub {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding-left: 8px;
+  }
+  .cl-toc-sub a {
+    font-size: 13px;
+    color: var(--text2);
+    text-decoration: none;
+    padding: 4px 0;
+    transition: color 250ms ease-in-out;
+  }
+  .cl-toc-sub a:hover { color: var(--text1); }
+  .cl-toc-sub a.active { color: var(--accent); font-weight: 500; }
+
+  /* ── Main content ── */
+  .cl-main {
+    flex: 1;
+    max-width: 960px;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  .cl-section {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding: 64px 64px 128px;
+  }
+  .cl-section.active {
+    display: block;
+  }
+
+  /* ═══════════════════════════════════════════════
+     SHARED: section header, canvas, variant, spec table
+     ═══════════════════════════════════════════════ */
+  .cl-section-header { margin-bottom: 24px; }
+  .cl-section-header h2 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    margin-bottom: 8px;
+    color: var(--text1);
+  }
+  .cl-section-header p {
+    font-size: 14px;
+    color: var(--text2);
+    max-width: 640px;
+  }
+
+  .cl-component-group {
+    margin-bottom: 64px;
+  }
+  .cl-component-group h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+    color: var(--text1);
+  }
+  .cl-component-group > p {
+    font-size: 14px;
+    color: var(--text2);
+    max-width: 640px;
+    margin-bottom: 24px;
+  }
+
+  .cl-canvas {
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    padding: 48px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: flex-start;
+  }
+  .cl-canvas--grid   { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .cl-canvas--stack  { flex-direction: column; align-items: stretch; gap: 16px; }
+  .cl-canvas--center { justify-content: center; align-items: center; }
+
+  .cl-variant {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .cl-variant-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  .cl-spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 48px;
+  }
+  .cl-spec-table th,
+  .cl-spec-table td {
+    text-align: left;
+    padding: 12px 16px 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .cl-spec-table th {
+    font-weight: 500;
+    color: var(--text3);
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding-bottom: 8px;
+  }
+  .cl-spec-table td { color: var(--text2); }
+  .cl-spec-table td.col-name  { color: var(--text1); font-weight: 500; }
+  .cl-spec-table td.col-value,
+  .cl-spec-table td.col-hex {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--text1);
+  }
+  .cl-spec-table .swatch-inline {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    margin-right: 8px;
+    vertical-align: -2px;
+    border: 1px solid var(--border);
+  }
+
+  /* ═══════════════════════════════════════════════
+     FOUNDATIONS: Colors
+     ═══════════════════════════════════════════════ */
+  .ramp-row {
+    display: flex;
+    gap: 4px;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  .ramp-row:last-child { margin-bottom: 0; }
+  .ramp-chip {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+  .ramp-swatch {
+    height: 48px;
+    border-radius: var(--r-element);
+    border: 1px solid var(--border);
+  }
+  .ramp-label {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 9px;
+    color: var(--text3);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ramp-heading {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    width: 100%;
+  }
+  .swatch {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .swatch-chip {
+    width: 100%;
+    height: 72px;
+    border-radius: var(--r-element);
+    border: 1px solid var(--border);
+  }
+  .swatch-name {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--text1);
+  }
+  .swatch-hex {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--text3);
+  }
+
+  /* ═══════════════════════════════════════════════
+     FOUNDATIONS: Typography
+     ═══════════════════════════════════════════════ */
+  .type-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 32px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .type-row:last-child { border-bottom: none; }
+  .type-sample {
+    color: var(--text1);
+    flex: 1;
+    min-width: 0;
+  }
+  .type-sample.is-display { font-family: 'Manrope', sans-serif; font-size: 64px; line-height: 1.05; letter-spacing: -0.02em; font-weight: 500; }
+  .type-sample.is-h1      { font-family: 'Manrope', sans-serif; font-size: 40px; line-height: 1.1; letter-spacing: -0.015em; font-weight: 600; }
+  .type-sample.is-h2      { font-family: 'Manrope', sans-serif; font-size: 28px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 600; }
+  .type-sample.is-h3      { font-family: 'Manrope', sans-serif; font-size: 20px; line-height: 1.3; letter-spacing: -0.005em; font-weight: 600; }
+  .type-sample.is-body     { font-size: 15px; line-height: 1.5; letter-spacing: -0.005em; font-weight: 400; }
+  .type-sample.is-body-sm  { font-size: 13px; line-height: 1.45; font-weight: 400; }
+  .type-sample.is-caption  { font-size: 11px; line-height: 1.4; color: var(--text2); font-weight: 500; }
+  .type-sample.is-label    { font-size: 12px; line-height: 1.3; letter-spacing: 0.04em; font-weight: 600; text-transform: uppercase; color: var(--text2); }
+  .type-sample.is-mono     { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.5; font-weight: 400; color: var(--text2); }
+  .type-meta {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--text3);
+    flex-shrink: 0;
+    text-align: right;
+    min-width: 180px;
+  }
+
+  /* ═══════════════════════════════════════════════
+     FOUNDATIONS: Radii
+     ═══════════════════════════════════════════════ */
+  .radius-demo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .radius-shape {
+    width: 80px;
+    height: 80px;
+    background: var(--accent);
+    border: none;
+  }
+  .radius-shape.r-element   { border-radius: var(--r-element); }
+  .radius-shape.r-control   { border-radius: var(--r-control); }
+  .radius-shape.r-component { border-radius: var(--r-component); }
+  .radius-shape.r-container { border-radius: var(--r-container); }
+  .radius-shape.r-pill      { border-radius: var(--r-pill); width: 120px; height: 48px; }
+  .radius-meta {
+    font-size: 11px;
+    color: var(--text3);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    text-align: center;
+  }
+  .radius-meta strong {
+    display: block;
+    color: var(--text1);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  /* ═══════════════════════════════════════════════
+     FOUNDATIONS: Elevation
+     ═══════════════════════════════════════════════ */
+  .elev-stack {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    width: 100%;
+  }
+  .elev-card {
+    background: var(--bg);
+    border-radius: var(--r-component);
+    padding: 24px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .elev-card.l1 { box-shadow: var(--shadow-l1); }
+  .elev-card.l2 { box-shadow: var(--shadow-l2); }
+  .elev-card.l3 { box-shadow: var(--shadow-l3); }
+  .elev-card.l-accent { box-shadow: var(--shadow-accent); }
+  .elev-level {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 4px;
+  }
+  .elev-name {
+    font-family: 'Manrope', sans-serif;
+    font-size: 18px;
+    color: var(--text1);
+  }
+
+  /* ═══════════════════════════════════════════════
+     FOUNDATIONS: Spacing
+     ═══════════════════════════════════════════════ */
+  .spacing-list { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+  .spacing-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .spacing-bar {
+    height: 8px;
+    background: var(--accent);
+    border-radius: var(--r-pill);
+  }
+  .spacing-token {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--text1);
+    min-width: 100px;
+  }
+  .spacing-value {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--text3);
+    min-width: 40px;
+  }
+
+  /* ═══════════════════════════════════════════════
+     FOUNDATIONS: Iconography
+     ═══════════════════════════════════════════════ */
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+    width: 100%;
+  }
+  .icon-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px;
+    border-radius: var(--r-element);
+    background: var(--bg);
+  }
+  .icon-cell i { font-size: 24px; color: var(--text1); }
+  .icon-cell .icon-name {
+    font-size: 10px;
+    color: var(--text3);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  .icon-sizes {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 16px 0;
+  }
+  .icon-sizes i { color: var(--text1); }
+  .icon-sizes .size16 { font-size: 16px; }
+  .icon-sizes .size20 { font-size: 20px; }
+  .icon-sizes .size24 { font-size: 24px; }
+  .icon-disclaimer {
+    background: var(--accent-subtle);
+    color: var(--text2);
+    padding: 16px 20px;
+    border-radius: var(--r-component);
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+  .icon-disclaimer strong { color: var(--accent); display: block; margin-bottom: 4px; }
+
+  /* ═══════════════════════════════════════════════
+     ACTIONS: Button (.cl-btn)
+     ═══════════════════════════════════════════════ */
+  .cl-btn {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    border-radius: var(--r-control);
+    border: none;
+    cursor: pointer;
+    transition: all 250ms ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+  }
+  /* sizes */
+  .cl-btn--sm  { font-size: 13px; padding: 7px 14px; }
+  .cl-btn--md  { font-size: 15px; padding: 11px 20px; }
+  .cl-btn--lg  { font-size: 16px; padding: 14px 28px; }
+  .cl-btn:not(.cl-btn--sm):not(.cl-btn--lg) { font-size: 15px; padding: 11px 20px; }
+  /* primary */
+  .cl-btn--primary { background: var(--accent); color: #FFFFFF; }
+  .cl-btn--primary.is-hover { box-shadow: var(--shadow-accent); }
+  .cl-btn--primary.is-focus { outline: none; box-shadow: 0 0 0 3px var(--accent-subtle); }
+  .cl-btn--primary.is-active { transform: scale(0.97); }
+  .cl-btn--primary.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  .cl-btn--primary.is-loading { color: transparent; pointer-events: none; }
+  .cl-btn--primary.is-loading::after {
+    content: "";
+    position: absolute;
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #FFFFFF;
+    border-radius: 50%;
+    animation: spin 600ms linear infinite;
+  }
+  /* secondary */
+  .cl-btn--secondary { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+  .cl-btn--secondary.cl-btn--sm  { padding: 5.5px 12.5px; }
+  .cl-btn--secondary.cl-btn--md  { padding: 9.5px 18.5px; }
+  .cl-btn--secondary.cl-btn--lg  { padding: 12.5px 26.5px; }
+  .cl-btn--secondary:not(.cl-btn--sm):not(.cl-btn--lg) { padding: 9.5px 18.5px; }
+  .cl-btn--secondary.is-hover { background: rgba(70,128,245,0.08); }
+  .cl-btn--secondary.is-focus { outline: none; box-shadow: 0 0 0 3px var(--accent-subtle); }
+  .cl-btn--secondary.is-active { transform: scale(0.97); }
+  .cl-btn--secondary.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  .cl-btn--secondary.is-loading { color: transparent; border-color: transparent; pointer-events: none; }
+  .cl-btn--secondary.is-loading::after {
+    content: "";
+    position: absolute;
+    width: 18px; height: 18px;
+    border: 2px solid rgba(70,128,245,0.3);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 600ms linear infinite;
+  }
+  /* ghost */
+  .cl-btn--ghost { background: transparent; color: var(--text2); }
+  .cl-btn--ghost.is-hover { color: var(--text1); background: var(--surface1); }
+  .cl-btn--ghost.is-focus { outline: none; box-shadow: 0 0 0 3px var(--accent-subtle); }
+  .cl-btn--ghost.is-active { background: var(--surface2); }
+  .cl-btn--ghost.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  /* destructive */
+  .cl-btn--destructive { background: var(--error); color: #FFFFFF; }
+  .cl-btn--destructive.is-hover { box-shadow: 0 4px 16px rgba(229,72,77,0.25); }
+  .cl-btn--destructive.is-focus { outline: none; box-shadow: 0 0 0 3px var(--error-bg); }
+  .cl-btn--destructive.is-active { transform: scale(0.97); }
+  .cl-btn--destructive.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  .cl-btn--destructive.is-loading { color: transparent; pointer-events: none; }
+  .cl-btn--destructive.is-loading::after {
+    content: "";
+    position: absolute;
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #FFFFFF;
+    border-radius: 50%;
+    animation: spin 600ms linear infinite;
+  }
+
+  /* ═══════════════════════════════════════════════
+     ACTIONS: Icon Button (.cl-icon-btn)
+     ═══════════════════════════════════════════════ */
+  .cl-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--r-control);
+    transition: all 250ms ease-in-out;
+    position: relative;
+  }
+  .cl-icon-btn--sm  { width: 32px; height: 32px; font-size: 16px; }
+  .cl-icon-btn--md  { width: 40px; height: 40px; font-size: 20px; }
+  .cl-icon-btn--lg  { width: 48px; height: 48px; font-size: 24px; }
+  .cl-icon-btn:not(.cl-icon-btn--sm):not(.cl-icon-btn--lg) { width: 40px; height: 40px; font-size: 20px; }
+  .cl-icon-btn--primary { background: var(--accent); color: #FFFFFF; }
+  .cl-icon-btn--primary.is-hover { box-shadow: var(--shadow-accent); }
+  .cl-icon-btn--primary.is-focus { box-shadow: 0 0 0 3px var(--accent-subtle); }
+  .cl-icon-btn--primary.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  .cl-icon-btn--secondary { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+  .cl-icon-btn--secondary.is-hover { background: rgba(70,128,245,0.08); }
+  .cl-icon-btn--secondary.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  .cl-icon-btn--ghost { background: transparent; color: var(--text2); }
+  .cl-icon-btn--ghost.is-hover { color: var(--text1); background: var(--surface1); }
+  .cl-icon-btn--ghost.is-disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ═══════════════════════════════════════════════
+     ACTIONS: Toggle Button (.cl-toggle-btn)
+     ═══════════════════════════════════════════════ */
+  .cl-toggle-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: var(--r-control);
+    border: 1.5px solid var(--border-visible);
+    background: transparent;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 250ms ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cl-toggle-btn.is-hover { border-color: var(--text3); color: var(--text1); }
+  .cl-toggle-btn.is-on {
+    background: var(--surface2);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .cl-toggle-btn.is-on.is-hover { background: rgba(70,128,245,0.15); }
+  .cl-toggle-btn.is-disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ═══════════════════════════════════════════════
+     ACTIONS: Segmented Control (.cl-segmented)
+     ═══════════════════════════════════════════════ */
+  .cl-segmented {
+    display: inline-flex;
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-control);
+    padding: 4px;
+    gap: 2px;
+  }
+  .cl-segmented-item {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: calc(var(--r-control) - 2px);
+    border: none;
+    background: transparent;
+    color: var(--text3);
+    cursor: pointer;
+    transition: all 250ms ease-in-out;
+  }
+  .cl-segmented-item.is-hover { color: var(--text1); background: var(--surface2); }
+  .cl-segmented-item.is-selected {
+    background: var(--accent);
+    color: #FFFFFF;
+    box-shadow: var(--shadow-l1);
+  }
+  .cl-segmented-item.is-disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ═══════════════════════════════════════════════
+     ACTIONS: Dropdown Menu (.cl-dropdown)
+     ═══════════════════════════════════════════════ */
+  .cl-dropdown {
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    box-shadow: var(--shadow-l2);
+    padding: 6px;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .cl-dropdown-item {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text1);
+    padding: 8px 12px;
+    border-radius: var(--r-element);
+    cursor: pointer;
+    transition: background 150ms ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+  }
+  .cl-dropdown-item .cl-dropdown-shortcut {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--text3);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  .cl-dropdown-item.is-hover { background: var(--surface2); color: var(--text1); }
+  .cl-dropdown-item.is-focus { background: var(--surface2); color: var(--text1); outline: none; }
+  .cl-dropdown-item.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  .cl-dropdown-item.is-checked::before {
+    content: "\2713";
+    font-size: 12px;
+    color: var(--accent);
+    width: 16px;
+  }
+  .cl-dropdown-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 0;
+  }
+
+  /* ═══════════════════════════════════════════════
+     INPUTS: Text Input (.cl-input)
+     ═══════════════════════════════════════════════ */
+  .cl-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cl-input-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text2);
+  }
+  .cl-input-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .cl-input {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--r-control);
+    height: 40px;
+    padding: 0 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text1);
+    width: 280px;
+    transition: all 250ms ease-in-out;
+  }
+  .cl-input::placeholder { color: var(--text3); }
+  .cl-input.is-hover { border-color: var(--border-visible); }
+  .cl-input.is-focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+    outline: none;
+  }
+  .cl-input.is-filled { color: var(--text1); }
+  .cl-input.is-error {
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px var(--error-bg);
+  }
+  .cl-input.is-success { border-color: var(--success); }
+  .cl-input.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  .cl-input.is-readonly { background: var(--surface1); cursor: default; }
+  .cl-input-icon {
+    position: absolute;
+    left: 12px;
+    font-size: 16px;
+    color: var(--text3);
+    pointer-events: none;
+  }
+  .cl-input-icon + .cl-input { padding-left: 36px; }
+  .cl-input-clear {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: var(--text3);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 2px;
+  }
+  .cl-input-clear:hover { color: var(--text1); }
+  .cl-input-hint {
+    font-size: 12px;
+    color: var(--text3);
+  }
+  .cl-input-error-text {
+    font-size: 12px;
+    color: var(--error);
+  }
+
+  /* ═══════════════════════════════════════════════
+     INPUTS: Textarea (.cl-textarea)
+     ═══════════════════════════════════════════════ */
+  .cl-textarea {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--r-control);
+    padding: 12px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text1);
+    width: 320px;
+    min-height: 96px;
+    resize: vertical;
+    transition: all 250ms ease-in-out;
+  }
+  .cl-textarea::placeholder { color: var(--text3); }
+  .cl-textarea.is-hover { border-color: var(--border-visible); }
+  .cl-textarea.is-focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+    outline: none;
+  }
+  .cl-textarea.is-error {
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px var(--error-bg);
+  }
+  .cl-textarea.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  .cl-textarea.is-readonly { background: var(--surface1); cursor: default; }
+
+  /* ═══════════════════════════════════════════════
+     INPUTS: Select (.cl-select)
+     ═══════════════════════════════════════════════ */
+  .cl-select {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  .cl-select .cl-input {
+    padding-right: 36px;
+    cursor: pointer;
+  }
+  /* When .cl-input is a div (not an input), ensure vertical centering */
+  div.cl-input {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 16px;
+  }
+  .cl-select div.cl-input {
+    padding-right: 36px;
+  }
+  .cl-select-chevron {
+    position: absolute;
+    right: 12px;
+    font-size: 16px;
+    color: var(--text3);
+    pointer-events: none;
+    transition: transform 250ms ease;
+  }
+  .cl-select.is-open .cl-select-chevron { transform: rotate(180deg); }
+
+  /* ═══════════════════════════════════════════════
+     INPUTS: Checkbox (.cl-checkbox)
+     ═══════════════════════════════════════════════ */
+  .cl-checkbox-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .cl-checkbox {
+    width: 18px;
+    height: 18px;
+    border-radius: var(--r-element);
+    border: 1.5px solid var(--border-visible);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 200ms ease;
+    flex-shrink: 0;
+  }
+  .cl-checkbox.is-hover { border-color: var(--text3); }
+  .cl-checkbox.is-focus { box-shadow: 0 0 0 3px var(--accent-subtle); }
+  .cl-checkbox.is-checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .cl-checkbox.is-checked::after {
+    content: "";
+    width: 10px;
+    height: 5px;
+    border-left: 2px solid #FFFFFF;
+    border-bottom: 2px solid #FFFFFF;
+    transform: rotate(-45deg);
+    margin-top: -2px;
+  }
+  .cl-checkbox.is-indeterminate {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .cl-checkbox.is-indeterminate::after {
+    content: "";
+    width: 8px;
+    height: 2px;
+    background: #FFFFFF;
+    border-radius: 1px;
+  }
+  .cl-checkbox.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  .cl-checkbox-label {
+    font-size: 14px;
+    color: var(--text1);
+  }
+  .cl-checkbox.is-disabled + .cl-checkbox-label { opacity: 0.4; }
+
+  /* ═══════════════════════════════════════════════
+     INPUTS: Radio (.cl-radio)
+     ═══════════════════════════════════════════════ */
+  .cl-radio-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .cl-radio {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-visible);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 200ms ease;
+    flex-shrink: 0;
+  }
+  .cl-radio.is-hover { border-color: var(--text3); }
+  .cl-radio.is-focus { box-shadow: 0 0 0 3px var(--accent-subtle); }
+  .cl-radio.is-selected {
+    border-color: var(--accent);
+  }
+  .cl-radio.is-selected::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .cl-radio.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  .cl-radio-label {
+    font-size: 14px;
+    color: var(--text1);
+  }
+
+  /* ═══════════════════════════════════════════════
+     INPUTS: Switch (.cl-switch)
+     ═══════════════════════════════════════════════ */
+  .cl-switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    border-radius: var(--r-pill);
+    background: var(--surface3);
+    cursor: pointer;
+    transition: background 250ms ease-in-out;
+    flex-shrink: 0;
+  }
+  .cl-switch-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    transition: left 250ms ease-in-out;
+  }
+  .cl-switch.is-on { background: var(--accent); }
+  .cl-switch.is-on .cl-switch-thumb { left: 22px; }
+  .cl-switch.is-hover { box-shadow: 0 0 0 3px var(--surface2); }
+  .cl-switch.is-focus { box-shadow: 0 0 0 3px var(--accent-subtle); }
+  .cl-switch.is-disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ═══════════════════════════════════════════════
+     INPUTS: Slider (.cl-slider)
+     ═══════════════════════════════════════════════ */
+  .cl-slider {
+    position: relative;
+    width: 240px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+  }
+  .cl-slider-track {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    background: var(--surface2);
+    border-radius: var(--r-pill);
+  }
+  .cl-slider-fill {
+    position: absolute;
+    top: 0;
+    height: 4px;
+    background: var(--accent);
+    border-radius: var(--r-pill);
+  }
+  .cl-slider-thumb {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: var(--shadow-l1);
+    border: 2px solid var(--accent);
+    cursor: pointer;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: -8px;
+  }
+  .cl-slider.is-hover .cl-slider-thumb { transform: translateY(-50%) scale(1.15); }
+  .cl-slider.is-active .cl-slider-thumb { transform: translateY(-50%) scale(1.25); box-shadow: var(--shadow-l2); }
+  .cl-slider.is-focus .cl-slider-thumb { box-shadow: 0 0 0 3px var(--accent-subtle); }
+  .cl-slider.is-disabled { opacity: 0.4; pointer-events: none; }
+
+  /* ═══════════════════════════════════════════════
+     INPUTS: Date Picker (.cl-datepicker)
+     ═══════════════════════════════════════════════ */
+  .cl-datepicker {
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    box-shadow: var(--shadow-l2);
+    padding: 16px;
+    width: 280px;
+  }
+  .cl-datepicker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text1);
+  }
+  .cl-datepicker-header button {
+    background: none;
+    border: none;
+    color: var(--text3);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    border-radius: var(--r-element);
+    transition: color 150ms ease;
+  }
+  .cl-datepicker-header button:hover { color: var(--text1); }
+  .cl-datepicker-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    text-align: center;
+  }
+  .cl-datepicker-grid .cl-day-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 4px 0;
+  }
+  .cl-day {
+    font-size: 13px;
+    padding: 6px;
+    border-radius: var(--r-control);
+    cursor: pointer;
+    color: var(--text1);
+    transition: all 150ms ease;
+    border: none;
+    background: transparent;
+  }
+  .cl-day:hover { background: var(--surface2); }
+  .cl-day.is-today {
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .cl-day.is-selected {
+    background: var(--accent);
+    color: #FFFFFF;
+    font-weight: 600;
+  }
+  .cl-day.is-range {
+    background: var(--surface2);
+    color: var(--text1);
+    border-radius: var(--r-control);
+  }
+  .cl-day.is-disabled {
+    color: var(--text4);
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  /* ═══════════════════════════════════════════════
+     INPUTS: Combobox (.cl-combobox)
+     ═══════════════════════════════════════════════ */
+  .cl-combobox {
+    position: relative;
+    width: 280px;
+  }
+  .cl-combobox .cl-input { width: 100%; }
+  .cl-combobox .cl-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .cl-combobox-empty {
+    font-size: 13px;
+    color: var(--text3);
+    padding: 12px;
+    text-align: center;
+  }
+
+  /* ═══════════════════════════════════════════════
+     DATA DISPLAY: Card (.cl-card)
+     ═══════════════════════════════════════════════ */
+  .cl-card {
+    background: var(--bg);
+    border-radius: var(--r-component);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: box-shadow 400ms ease-in-out;
+  }
+  .cl-card--image {
+    padding: 0;
+    overflow: hidden;
+  }
+  .cl-card--image .cl-card-img,
+  .cl-card--image .cl-card-image {
+    width: 100%;
+    height: 160px;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text3);
+    font-size: 13px;
+  }
+  .cl-card--image .cl-card-body-area,
+  .cl-card--image .cl-card-body { padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .cl-card-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .cl-card-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 20px;
+    color: var(--text1);
+    line-height: 1.2;
+    font-weight: 500;
+  }
+  .cl-card-desc {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+  .cl-card.is-hover { box-shadow: var(--shadow-l1); }
+  .cl-card.is-focus { box-shadow: 0 0 0 3px var(--accent-subtle); }
+  .cl-card.is-selected { border: 1.5px solid var(--accent); }
+
+  /* ═══════════════════════════════════════════════
+     DATA DISPLAY: Avatar (.cl-avatar)
+     ═══════════════════════════════════════════════ */
+  .cl-avatar {
+    border-radius: 50%;
+    background: var(--surface2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    color: var(--text2);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+  }
+  .cl-avatar--sm  { width: 28px; height: 28px; font-size: 11px; }
+  .cl-avatar--md  { width: 36px; height: 36px; font-size: 13px; }
+  .cl-avatar--lg  { width: 48px; height: 48px; font-size: 16px; }
+  .cl-avatar:not(.cl-avatar--sm):not(.cl-avatar--lg) { width: 36px; height: 36px; font-size: 13px; }
+  .cl-avatar--initials { background: var(--accent-subtle); color: var(--accent); }
+  .cl-avatar--icon { background: var(--surface2); color: var(--text2); }
+  .cl-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .cl-avatar-group {
+    display: flex;
+  }
+  .cl-avatar-group .cl-avatar {
+    border: 2px solid var(--bg);
+    margin-left: -8px;
+  }
+  .cl-avatar-group .cl-avatar:first-child { margin-left: 0; }
+
+  /* ═══════════════════════════════════════════════
+     DATA DISPLAY: Badge (.cl-badge)
+     ═══════════════════════════════════════════════ */
+  .cl-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: var(--r-pill);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .cl-badge--neutral  { background: var(--surface2); color: var(--text2); }
+  .cl-badge--info     { background: var(--accent-subtle); color: var(--accent); }
+  .cl-badge--success  { background: var(--success-bg); color: var(--success); }
+  .cl-badge--warning  { background: var(--warning-bg); color: var(--warning); }
+  .cl-badge--error    { background: var(--error-bg); color: var(--error); }
+
+  /* ═══════════════════════════════════════════════
+     DATA DISPLAY: Tag (.cl-tag)
+     ═══════════════════════════════════════════════ */
+  .cl-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: var(--r-pill);
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 200ms ease;
+    background: var(--surface2);
+    color: var(--text2);
+  }
+  .cl-tag--accent { background: var(--accent-subtle); color: var(--accent); }
+  .cl-tag--teal   { background: var(--teal-subtle); color: var(--teal); }
+  .cl-tag .cl-tag-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .cl-tag--removable { padding-right: 6px; }
+  .cl-tag-x {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: inherit;
+    opacity: 0.6;
+    transition: opacity 150ms ease;
+  }
+  .cl-tag-x:hover, .cl-tag-x.is-hover { opacity: 1; }
+  .cl-tag.is-disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ═══════════════════════════════════════════════
+     DATA DISPLAY: Data Table (.cl-data-table)
+     ═══════════════════════════════════════════════ */
+  .cl-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .cl-data-table th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text3);
+    border-bottom: 1px solid var(--border);
+    cursor: default;
+  }
+  .cl-data-table th.is-sort-active {
+    color: var(--accent);
+  }
+  .cl-data-table td {
+    padding: 10px 16px;
+    color: var(--text1);
+    border-bottom: 1px solid var(--border);
+  }
+  .cl-data-table tr.is-hover td { background: var(--surface1); }
+  .cl-data-table tr.is-selected td { background: var(--surface1); }
+  .cl-data-table .row-checkbox {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ═══════════════════════════════════════════════
+     DATA DISPLAY: Skeleton (.cl-skeleton-*)
+     ═══════════════════════════════════════════════ */
+  .cl-skeleton-text,
+  .cl-skeleton-circle,
+  .cl-skeleton-card,
+  .cl-skeleton-row {
+    background: linear-gradient(90deg, var(--surface2) 25%, var(--surface1) 50%, var(--surface2) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  .cl-skeleton-text {
+    height: 12px;
+    border-radius: var(--r-element);
+    width: 100%;
+  }
+  .cl-skeleton-circle {
+    border-radius: 50%;
+  }
+  .cl-skeleton-card {
+    border-radius: var(--r-component);
+    min-height: 120px;
+  }
+  .cl-skeleton-row {
+    height: 48px;
+    border-radius: var(--r-element);
+    width: 100%;
+  }
+
+  /* ═══════════════════════════════════════════════
+     NAVIGATION: Tabs (.cl-tabs)
+     ═══════════════════════════════════════════════ */
+  .cl-tabs {
+    display: inline-flex;
+    gap: 0;
+  }
+  .cl-tabs--underline {
+    border-bottom: 1px solid var(--border);
+  }
+  .cl-tabs--pill {
+    background: var(--surface1);
+    border-radius: var(--r-control);
+    padding: 4px;
+    gap: 2px;
+    border-bottom: none;
+  }
+  .cl-tab {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text3);
+    padding: 8px 16px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    transition: all 250ms ease-in-out;
+    position: relative;
+  }
+  /* underline variant */
+  .cl-tabs--underline .cl-tab { border-bottom: 2px solid transparent; margin-bottom: -1px; border-radius: 0; }
+  .cl-tabs--underline .cl-tab.is-active { color: var(--accent); border-bottom-color: var(--accent); }
+  .cl-tabs--underline .cl-tab.is-hover { color: var(--text1); }
+  /* pill variant */
+  .cl-tabs--pill .cl-tab { border-radius: calc(var(--r-control) - 2px); }
+  .cl-tabs--pill .cl-tab.is-active { background: var(--accent); color: #FFFFFF; }
+  .cl-tabs--pill .cl-tab.is-hover { color: var(--text1); background: var(--surface2); }
+  .cl-tab.is-focus { box-shadow: 0 0 0 3px var(--accent-subtle); outline: none; }
+  .cl-tab.is-disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ═══════════════════════════════════════════════
+     NAVIGATION: Breadcrumb (.cl-breadcrumb)
+     ═══════════════════════════════════════════════ */
+  .cl-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-size: 14px;
+  }
+  .cl-breadcrumb-item {
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 200ms ease;
+    cursor: pointer;
+  }
+  .cl-breadcrumb-item.is-hover { color: var(--text1); }
+  .cl-breadcrumb-item.is-current { color: var(--text1); font-weight: 500; cursor: default; }
+  .cl-breadcrumb-sep {
+    color: var(--text4);
+    margin: 0 8px;
+    font-size: 12px;
+  }
+
+  /* ═══════════════════════════════════════════════
+     NAVIGATION: Pagination (.cl-pagination)
+     ═══════════════════════════════════════════════ */
+  .cl-pagination {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .cl-page,
+  .cl-page-nav {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--r-control);
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 200ms ease;
+  }
+  .cl-page.is-current {
+    background: var(--accent);
+    color: #FFFFFF;
+  }
+  .cl-page.is-hover { background: var(--surface2); color: var(--text1); }
+  .cl-page.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  .cl-page-nav.is-hover { background: var(--surface2); color: var(--text1); }
+  .cl-page-nav.is-disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ═══════════════════════════════════════════════
+     NAVIGATION: Nav Menu (.cl-nav-menu)
+     ═══════════════════════════════════════════════ */
+  .cl-nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 220px;
+  }
+  .cl-nav-item {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text2);
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: var(--r-element);
+    transition: all 200ms ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    text-align: left;
+    width: 100%;
+  }
+  .cl-nav-item.is-hover { background: var(--surface1); color: var(--text1); }
+  .cl-nav-item.is-active { background: var(--surface2); color: var(--text1); font-weight: 500; }
+  .cl-nav-item.is-focus { box-shadow: 0 0 0 3px var(--accent-subtle); outline: none; }
+
+  /* ═══════════════════════════════════════════════
+     NAVIGATION: Link (.cl-link)
+     ═══════════════════════════════════════════════ */
+  .cl-link {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: rgba(70,128,245,0.3);
+    text-underline-offset: 3px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 200ms ease;
+  }
+  .cl-link.is-hover { text-decoration-color: var(--accent); }
+  .cl-link.is-focus { outline: none; box-shadow: 0 0 0 3px var(--accent-subtle); border-radius: 2px; }
+  .cl-link.is-active { color: var(--b-300); }
+  .cl-link.is-visited { color: var(--b-300); }
+  .cl-link--standalone {
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .cl-link--standalone.is-hover { text-decoration: underline; }
+
+  /* ═══════════════════════════════════════════════
+     FEEDBACK: Alert (.cl-alert)
+     ═══════════════════════════════════════════════ */
+  .cl-alert {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    border-radius: var(--r-component);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .cl-alert--info    { background: var(--accent-subtle); color: var(--text1); }
+  .cl-alert--success { background: var(--success-bg); color: var(--text1); }
+  .cl-alert--warning { background: var(--warning-bg); color: var(--text1); }
+  .cl-alert--error   { background: var(--error-bg); color: var(--text1); }
+  .cl-alert-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    line-height: 1;
+    padding-top: 2px;
+  }
+  .cl-alert--info .cl-alert-icon    { color: var(--accent); }
+  .cl-alert--success .cl-alert-icon { color: var(--success); }
+  .cl-alert--warning .cl-alert-icon { color: var(--warning); }
+  .cl-alert--error .cl-alert-icon   { color: var(--error); }
+  .cl-alert-content { flex: 1; }
+  .cl-alert-title {
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .cl-alert-dismiss {
+    background: none;
+    border: none;
+    color: var(--text3);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 2px;
+    flex-shrink: 0;
+    transition: color 200ms ease;
+  }
+  .cl-alert-dismiss:hover { color: var(--text1); }
+
+  /* ═══════════════════════════════════════════════
+     FEEDBACK: Toast (.cl-toast)
+     ═══════════════════════════════════════════════ */
+  .cl-toast {
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    box-shadow: var(--shadow-l2);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--text1);
+    min-width: 280px;
+    max-width: 400px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cl-toast::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+  }
+  .cl-toast--info::before    { background: var(--accent); }
+  .cl-toast--success::before { background: var(--success); }
+  .cl-toast--warning::before { background: var(--warning); }
+  .cl-toast--error::before   { background: var(--error); }
+  .cl-toast-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .cl-toast--info .cl-toast-icon    { color: var(--accent); }
+  .cl-toast--success .cl-toast-icon { color: var(--success); }
+  .cl-toast--warning .cl-toast-icon { color: var(--warning); }
+  .cl-toast--error .cl-toast-icon   { color: var(--error); }
+  .cl-toast-content { flex: 1; }
+  .cl-toast-action {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .cl-toast-action:hover { text-decoration: underline; }
+
+  /* ═══════════════════════════════════════════════
+     FEEDBACK: Progress (.cl-progress)
+     ═══════════════════════════════════════════════ */
+  .cl-progress,
+  .cl-progress-track {
+    width: 240px;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: var(--r-pill);
+    overflow: hidden;
+    position: relative;
+  }
+  .cl-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: var(--r-pill);
+    transition: width 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .cl-progress.is-indeterminate .cl-progress-fill,
+  .cl-progress-fill.is-indeterminate {
+    animation: progress-indeterminate 1.5s ease-in-out infinite;
+  }
+  .cl-progress-ring {
+    position: relative;
+  }
+  .cl-progress-ring svg {
+    transform: rotate(-90deg);
+  }
+  .cl-progress-ring .ring-track {
+    fill: none;
+    stroke: var(--surface2);
+    stroke-width: 8;
+  }
+  .cl-progress-ring .ring-fill {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .cl-progress-ring-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  /* ═══════════════════════════════════════════════
+     FEEDBACK: Spinner (.cl-spinner)
+     ═══════════════════════════════════════════════ */
+  .cl-spinner {
+    border-radius: 50%;
+    border: 2.5px solid var(--surface2);
+    border-top-color: var(--accent);
+    animation: spin 700ms linear infinite;
+  }
+  .cl-spinner--sm { width: 16px; height: 16px; border-width: 2px; }
+  .cl-spinner--md { width: 24px; height: 24px; border-width: 2.5px; }
+  .cl-spinner--lg { width: 40px; height: 40px; border-width: 3px; }
+  .cl-spinner:not(.cl-spinner--sm):not(.cl-spinner--lg) { width: 24px; height: 24px; }
+
+  /* ═══════════════════════════════════════════════
+     FEEDBACK: Empty State (.cl-empty)
+     ═══════════════════════════════════════════════ */
+  .cl-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 48px 24px;
+    gap: 12px;
+  }
+  .cl-empty-icon {
+    font-size: 40px;
+    color: var(--text4);
+    margin-bottom: 4px;
+  }
+  .cl-empty-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text1);
+  }
+  .cl-empty-desc {
+    font-size: 14px;
+    color: var(--text2);
+    max-width: 320px;
+  }
+
+  /* ═══════════════════════════════════════════════
+     OVERLAYS: Modal (.cl-modal-demo)
+     ═══════════════════════════════════════════════ */
+  .cl-modal-demo {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: var(--surface2);
+    border-radius: var(--r-component);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cl-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+  }
+  .cl-modal-panel {
+    position: relative;
+    background: var(--surface1);
+    border-radius: var(--r-container);
+    box-shadow: var(--shadow-l3);
+    max-width: 400px;
+    width: 90%;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .cl-modal-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 22px;
+    color: var(--text1);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .cl-modal-body {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+  .cl-modal-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  /* ═══════════════════════════════════════════════
+     OVERLAYS: Popover (.cl-popover-demo)
+     ═══════════════════════════════════════════════ */
+  .cl-popover-demo {
+    position: relative;
+    display: inline-block;
+  }
+  .cl-popover-panel {
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    box-shadow: var(--shadow-l2);
+    padding: 16px;
+    min-width: 200px;
+    font-size: 14px;
+    color: var(--text1);
+    position: relative;
+  }
+  .cl-popover-arrow {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--surface1);
+    border-left: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+    transform: rotate(45deg);
+    top: -5px;
+    left: 24px;
+  }
+  .cl-popover-arrow--bottom {
+    top: auto;
+    bottom: -5px;
+    transform: rotate(225deg);
+  }
+
+  /* ═══════════════════════════════════════════════
+     OVERLAYS: Tooltip (.cl-tooltip-demo)
+     ═══════════════════════════════════════════════ */
+  .cl-tooltip-demo,
+  .cl-tooltip-anchor {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cl-tooltip-bubble,
+  .cl-tooltip {
+    background: var(--n-700);
+    color: var(--n-100);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: var(--r-control);
+    white-space: nowrap;
+    position: absolute;
+    pointer-events: none;
+  }
+  [data-theme="light"] .cl-tooltip-bubble,
+  [data-theme="light"] .cl-tooltip {
+    background: var(--n-800);
+    color: var(--n-50);
+  }
+  .cl-tooltip-bubble::after,
+  .cl-tooltip-arrow {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: inherit;
+    transform: rotate(45deg);
+  }
+  /* top */
+  .cl-tooltip-demo--top .cl-tooltip-bubble,
+  .cl-tooltip--top { bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
+  .cl-tooltip-demo--top .cl-tooltip-bubble::after,
+  .cl-tooltip--top .cl-tooltip-arrow { bottom: -3px; left: 50%; margin-left: -3px; }
+  /* right */
+  .cl-tooltip-demo--right .cl-tooltip-bubble,
+  .cl-tooltip--right { left: calc(100% + 8px); top: 50%; transform: translateY(-50%); }
+  .cl-tooltip-demo--right .cl-tooltip-bubble::after,
+  .cl-tooltip--right .cl-tooltip-arrow { left: -3px; top: 50%; margin-top: -3px; }
+  /* bottom */
+  .cl-tooltip-demo--bottom .cl-tooltip-bubble,
+  .cl-tooltip--bottom { top: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
+  .cl-tooltip-demo--bottom .cl-tooltip-bubble::after,
+  .cl-tooltip--bottom .cl-tooltip-arrow { top: -3px; left: 50%; margin-left: -3px; }
+  /* left */
+  .cl-tooltip-demo--left .cl-tooltip-bubble,
+  .cl-tooltip--left { right: calc(100% + 8px); top: 50%; transform: translateY(-50%); }
+  .cl-tooltip-demo--left .cl-tooltip-bubble::after,
+  .cl-tooltip--left .cl-tooltip-arrow { right: -3px; top: 50%; margin-top: -3px; }
+
+  /* ═══════════════════════════════════════════════
+     OVERLAYS: Accordion (.cl-accordion)
+     ═══════════════════════════════════════════════ */
+  .cl-accordion {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: var(--r-component);
+    overflow: hidden;
+    width: 100%;
+  }
+  .cl-accordion-item {
+    border-bottom: 1px solid var(--border);
+  }
+  .cl-accordion-item:last-child { border-bottom: none; }
+  .cl-accordion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text1);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    transition: background 200ms ease;
+  }
+  .cl-accordion-header.is-hover { background: var(--surface1); }
+  .cl-accordion-header.is-focus { box-shadow: inset 0 0 0 3px var(--accent-subtle); outline: none; }
+  .cl-accordion-header.is-disabled { opacity: 0.4; cursor: not-allowed; }
+  .cl-accordion-chevron {
+    font-size: 16px;
+    color: var(--text3);
+    transition: transform 250ms ease;
+    flex-shrink: 0;
+  }
+  .cl-accordion-item.is-expanded .cl-accordion-chevron { transform: rotate(180deg); }
+  .cl-accordion-content {
+    padding: 0 16px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 300ms ease, padding 300ms ease;
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+  .cl-accordion-item.is-expanded .cl-accordion-content {
+    max-height: 200px;
+    padding: 0 16px 16px;
+  }
+
+  /* ═══════════════════════════════════════════════
+     FLOATING BAR (theme toggle)
+     ═══════════════════════════════════════════════ */
+  .floating-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    box-shadow: var(--shadow-l2);
+    padding: 6px;
+    gap: 4px;
+  }
+  .mode-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    padding: 8px 16px;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 250ms ease-in-out;
+  }
+  .mode-btn:hover { color: var(--text1); }
+  .mode-btn.active {
+    background: var(--accent);
+    color: #FFFFFF;
+  }
+</style>
+</head>
+<body>
+<div class="cl-shell">
+
+  <!-- ═══════════════════════════════════════════
+       TOC SIDEBAR
+       ═══════════════════════════════════════════ -->
+  <aside class="cl-toc">
+    <h1>Halcyon</h1>
+    <div class="subtitle">Component Library</div>
+    <nav>
+      <!-- Foundations -->
+      <div class="cl-toc-group">
+        <a href="#" class="cl-toc-cat active" data-cat="cat-foundations">Foundations</a>
+        <div class="cl-toc-sub">
+          <a href="#colors" data-cat="cat-foundations">Colors</a>
+          <a href="#typography" data-cat="cat-foundations">Typography</a>
+          <a href="#radii" data-cat="cat-foundations">Radii</a>
+          <a href="#elevation" data-cat="cat-foundations">Elevation</a>
+          <a href="#spacing" data-cat="cat-foundations">Spacing</a>
+          <a href="#iconography" data-cat="cat-foundations">Iconography</a>
+        </div>
+      </div>
+      <!-- Actions -->
+      <div class="cl-toc-group">
+        <a href="#" class="cl-toc-cat" data-cat="cat-actions">Actions</a>
+        <div class="cl-toc-sub">
+          <a href="#button" data-cat="cat-actions">Button</a>
+          <a href="#icon-button" data-cat="cat-actions">Icon Button</a>
+          <a href="#toggle-button" data-cat="cat-actions">Toggle Button</a>
+          <a href="#segmented-control" data-cat="cat-actions">Segmented Control</a>
+          <a href="#dropdown-menu" data-cat="cat-actions">Dropdown Menu</a>
+        </div>
+      </div>
+      <!-- Inputs -->
+      <div class="cl-toc-group">
+        <a href="#" class="cl-toc-cat" data-cat="cat-inputs">Inputs</a>
+        <div class="cl-toc-sub">
+          <a href="#text-input" data-cat="cat-inputs">Text Input</a>
+          <a href="#textarea" data-cat="cat-inputs">Textarea</a>
+          <a href="#select" data-cat="cat-inputs">Select</a>
+          <a href="#checkbox" data-cat="cat-inputs">Checkbox</a>
+          <a href="#radio-group" data-cat="cat-inputs">Radio Group</a>
+          <a href="#switch" data-cat="cat-inputs">Switch</a>
+          <a href="#slider" data-cat="cat-inputs">Slider</a>
+          <a href="#date-picker" data-cat="cat-inputs">Date Picker</a>
+          <a href="#combobox" data-cat="cat-inputs">Combobox</a>
+        </div>
+      </div>
+      <!-- Data Display -->
+      <div class="cl-toc-group">
+        <a href="#" class="cl-toc-cat" data-cat="cat-data">Data Display</a>
+        <div class="cl-toc-sub">
+          <a href="#card" data-cat="cat-data">Card</a>
+          <a href="#avatar" data-cat="cat-data">Avatar</a>
+          <a href="#badge" data-cat="cat-data">Badge</a>
+          <a href="#tag" data-cat="cat-data">Tag</a>
+          <a href="#data-table" data-cat="cat-data">Data Table</a>
+          <a href="#skeleton" data-cat="cat-data">Skeleton</a>
+        </div>
+      </div>
+      <!-- Navigation -->
+      <div class="cl-toc-group">
+        <a href="#" class="cl-toc-cat" data-cat="cat-nav">Navigation</a>
+        <div class="cl-toc-sub">
+          <a href="#tabs" data-cat="cat-nav">Tabs</a>
+          <a href="#breadcrumb" data-cat="cat-nav">Breadcrumb</a>
+          <a href="#pagination" data-cat="cat-nav">Pagination</a>
+          <a href="#nav-menu" data-cat="cat-nav">Nav Menu</a>
+          <a href="#link" data-cat="cat-nav">Link</a>
+        </div>
+      </div>
+      <!-- Feedback -->
+      <div class="cl-toc-group">
+        <a href="#" class="cl-toc-cat" data-cat="cat-feedback">Feedback</a>
+        <div class="cl-toc-sub">
+          <a href="#alert" data-cat="cat-feedback">Alert</a>
+          <a href="#toast" data-cat="cat-feedback">Toast</a>
+          <a href="#progress" data-cat="cat-feedback">Progress</a>
+          <a href="#spinner" data-cat="cat-feedback">Spinner</a>
+          <a href="#empty-state" data-cat="cat-feedback">Empty State</a>
+        </div>
+      </div>
+      <!-- Overlays -->
+      <div class="cl-toc-group">
+        <a href="#" class="cl-toc-cat" data-cat="cat-overlays">Overlays</a>
+        <div class="cl-toc-sub">
+          <a href="#modal" data-cat="cat-overlays">Modal</a>
+          <a href="#popover" data-cat="cat-overlays">Popover</a>
+          <a href="#tooltip" data-cat="cat-overlays">Tooltip</a>
+          <a href="#accordion" data-cat="cat-overlays">Accordion</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTENT
+       ═══════════════════════════════════════════ -->
+  <main class="cl-main">
+
+    <!-- ═══════════════════════════════════════
+         FOUNDATIONS
+         ═══════════════════════════════════════ -->
+    <section id="cat-foundations" class="cl-section active">
+      <div class="cl-section-header">
+        <h2>Foundations</h2>
+        <p>The primitive tokens, scales, and shared language that every Halcyon component is built from.</p>
+      </div>
+
+      <!-- ── Colors ── -->
+      <div class="cl-component-group" id="colors">
+        <h3>Colors</h3>
+        <p>Cool teal-biased neutral ramp, blue brand ramp, and a dedicated teal accent. Dark mode is the default; light mode is derived.</p>
+        <div class="cl-canvas cl-canvas--stack">
+          <div>
+            <div class="ramp-heading">Neutral</div>
+            <div class="ramp-row">
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#F2F5F8;"></div><div class="ramp-label">50</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#E0E6EE;"></div><div class="ramp-label">100</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#C3CCD8;"></div><div class="ramp-label">200</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#8E9AA9;"></div><div class="ramp-label">300</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#61707F;"></div><div class="ramp-label">400</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#3F4C59;"></div><div class="ramp-label">500</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#29333D;"></div><div class="ramp-label">600</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#1B242E;"></div><div class="ramp-label">700</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#121A23;"></div><div class="ramp-label">800</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#0A1019;"></div><div class="ramp-label">900</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#05090F;"></div><div class="ramp-label">950</div></div>
+            </div>
+          </div>
+          <div>
+            <div class="ramp-heading">Brand</div>
+            <div class="ramp-row">
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#E8F4FF;"></div><div class="ramp-label">50</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#CFE0FF;"></div><div class="ramp-label">100</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#A1C2FF;"></div><div class="ramp-label">200</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#6D9DFF;"></div><div class="ramp-label">300</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#4680F5;"></div><div class="ramp-label">400</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#2E66DE;"></div><div class="ramp-label">500</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#1F4BB0;"></div><div class="ramp-label">600</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#163777;"></div><div class="ramp-label">700</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#0E2249;"></div><div class="ramp-label">800</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#07162F;"></div><div class="ramp-label">900</div></div>
+            </div>
+          </div>
+          <div>
+            <div class="ramp-heading">Teal</div>
+            <div class="ramp-row">
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#C6F1F0;"></div><div class="ramp-label">100</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#6DD5D3;"></div><div class="ramp-label">300</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#2FA7A3;"></div><div class="ramp-label">500</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#11605F;"></div><div class="ramp-label">700</div></div>
+              <div class="ramp-chip"><div class="ramp-swatch" style="background:#052928;"></div><div class="ramp-label">900</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="cl-canvas">
+          <div class="swatch-grid">
+            <div class="swatch"><div class="swatch-chip" style="background: var(--bg);"></div><div class="swatch-name">background</div><div class="swatch-hex">{neutral.900}</div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--surface1);"></div><div class="swatch-name">surface1</div><div class="swatch-hex">{neutral.800}</div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--surface2);"></div><div class="swatch-name">surface2</div><div class="swatch-hex">{neutral.700}</div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--surface3);"></div><div class="swatch-name">surface3</div><div class="swatch-hex">{neutral.600}</div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--text1);"></div><div class="swatch-name">text1</div><div class="swatch-hex">{neutral.50}</div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--text2);"></div><div class="swatch-name">text2</div><div class="swatch-hex">{neutral.200}</div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--text3);"></div><div class="swatch-name">text3</div><div class="swatch-hex">{neutral.300}</div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--text4);"></div><div class="swatch-name">text4</div><div class="swatch-hex">{neutral.400}</div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--accent);"></div><div class="swatch-name">accent</div><div class="swatch-hex">{brand.400}</div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--accent-subtle);"></div><div class="swatch-name">accent-subtle</div><div class="swatch-hex">{brand.900}</div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--success);"></div><div class="swatch-name">success</div><div class="swatch-hex">{green.500}</div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--error);"></div><div class="swatch-name">error</div><div class="swatch-hex">{red.500}</div></div>
+          </div>
+        </div>
+        <table class="cl-spec-table">
+          <thead><tr><th>Token</th><th>Primitive</th><th>Hex (dark)</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">--background</td><td class="col-value">{neutral.900}</td><td class="col-hex"><span class="swatch-inline" style="background:#0A1019;"></span>#0A1019</td><td>Page background</td></tr>
+            <tr><td class="col-name">--surface1</td><td class="col-value">{neutral.800}</td><td class="col-hex"><span class="swatch-inline" style="background:#121A23;"></span>#121A23</td><td>Cards, elevated containers</td></tr>
+            <tr><td class="col-name">--surface2</td><td class="col-value">{neutral.700}</td><td class="col-hex"><span class="swatch-inline" style="background:#1B242E;"></span>#1B242E</td><td>Grouped backgrounds</td></tr>
+            <tr><td class="col-name">--surface3</td><td class="col-value">{neutral.600}</td><td class="col-hex"><span class="swatch-inline" style="background:#29333D;"></span>#29333D</td><td>Inset areas</td></tr>
+            <tr><td class="col-name">--text1</td><td class="col-value">{neutral.50}</td><td class="col-hex"><span class="swatch-inline" style="background:#F2F5F8;"></span>#F2F5F8</td><td>Primary text</td></tr>
+            <tr><td class="col-name">--text2</td><td class="col-value">{neutral.200}</td><td class="col-hex"><span class="swatch-inline" style="background:#C3CCD8;"></span>#C3CCD8</td><td>Secondary text</td></tr>
+            <tr><td class="col-name">--text3</td><td class="col-value">{neutral.300}</td><td class="col-hex"><span class="swatch-inline" style="background:#8E9AA9;"></span>#8E9AA9</td><td>Tertiary text, placeholders</td></tr>
+            <tr><td class="col-name">--accent</td><td class="col-value">{brand.400}</td><td class="col-hex"><span class="swatch-inline" style="background:#4680F5;"></span>#4680F5</td><td>Primary accent</td></tr>
+            <tr><td class="col-name">--accent-subtle</td><td class="col-value">{brand.900}</td><td class="col-hex"><span class="swatch-inline" style="background:#07162F;"></span>#07162F</td><td>Tinted background</td></tr>
+            <tr><td class="col-name">--teal</td><td class="col-value">{teal.500}</td><td class="col-hex"><span class="swatch-inline" style="background:#2FA7A3;"></span>#2FA7A3</td><td>Secondary accent</td></tr>
+            <tr><td class="col-name">--success</td><td class="col-value">{green.500}</td><td class="col-hex"><span class="swatch-inline" style="background:#5CB13E;"></span>#5CB13E</td><td>Positive states</td></tr>
+            <tr><td class="col-name">--warning</td><td class="col-value">{amber.500}</td><td class="col-hex"><span class="swatch-inline" style="background:#E5A73B;"></span>#E5A73B</td><td>Caution states</td></tr>
+            <tr><td class="col-name">--error</td><td class="col-value">{red.500}</td><td class="col-hex"><span class="swatch-inline" style="background:#E5484D;"></span>#E5484D</td><td>Destructive states</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Typography ── -->
+      <div class="cl-component-group" id="typography">
+        <h3>Typography</h3>
+        <p>Display and headings in Manrope (geometric sans-serif). Body in Inter. Code and data in JetBrains Mono.</p>
+        <div class="cl-canvas cl-canvas--stack">
+          <div class="type-row"><div class="type-sample is-display">Trace how decisions propagate</div><div class="type-meta">Manrope 500 &middot; 64/1.05</div></div>
+          <div class="type-row"><div class="type-sample is-h1">Decision graph</div><div class="type-meta">Manrope 600 &middot; 40/1.1</div></div>
+          <div class="type-row"><div class="type-sample is-h2">Impact analysis</div><div class="type-meta">Manrope 600 &middot; 28/1.2</div></div>
+          <div class="type-row"><div class="type-sample is-h3">Change propagation</div><div class="type-meta">Manrope 600 &middot; 20/1.3</div></div>
+          <div class="type-row"><div class="type-sample is-body">Where a change started, what it touched, and where it settled. Halcyon traces the full dependency graph across your architecture.</div><div class="type-meta">Inter 400 &middot; 15/1.5</div></div>
+          <div class="type-row"><div class="type-sample is-body-sm">Secondary context for engineering decisions and module dependencies.</div><div class="type-meta">Inter 400 &middot; 13/1.45</div></div>
+          <div class="type-row"><div class="type-sample is-caption">3 changes propagated &middot; 12 modules impacted</div><div class="type-meta">Inter 500 &middot; 11/1.4</div></div>
+          <div class="type-row"><div class="type-sample is-label">Decision Trace</div><div class="type-meta">Inter 600 &middot; 12/1.3 &middot; 0.04em</div></div>
+          <div class="type-row"><div class="type-sample is-mono">git log --graph --oneline</div><div class="type-meta">JetBrains Mono 400 &middot; 13/1.5</div></div>
+        </div>
+        <table class="cl-spec-table">
+          <thead><tr><th>Token</th><th>Font</th><th>Size</th><th>Line height</th><th>Weight</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">display</td><td class="col-value">Manrope</td><td class="col-value">64px</td><td class="col-value">1.05</td><td class="col-value">500</td></tr>
+            <tr><td class="col-name">h1</td><td class="col-value">Manrope</td><td class="col-value">40px</td><td class="col-value">1.1</td><td class="col-value">600</td></tr>
+            <tr><td class="col-name">h2</td><td class="col-value">Manrope</td><td class="col-value">28px</td><td class="col-value">1.2</td><td class="col-value">600</td></tr>
+            <tr><td class="col-name">h3</td><td class="col-value">Manrope</td><td class="col-value">20px</td><td class="col-value">1.3</td><td class="col-value">600</td></tr>
+            <tr><td class="col-name">body</td><td class="col-value">Inter</td><td class="col-value">15px</td><td class="col-value">1.5</td><td class="col-value">400</td></tr>
+            <tr><td class="col-name">body-sm</td><td class="col-value">Inter</td><td class="col-value">13px</td><td class="col-value">1.45</td><td class="col-value">400</td></tr>
+            <tr><td class="col-name">caption</td><td class="col-value">Inter</td><td class="col-value">11px</td><td class="col-value">1.4</td><td class="col-value">500</td></tr>
+            <tr><td class="col-name">label</td><td class="col-value">Inter</td><td class="col-value">12px</td><td class="col-value">1.3</td><td class="col-value">600</td></tr>
+            <tr><td class="col-name">mono</td><td class="col-value">JetBrains Mono</td><td class="col-value">13px</td><td class="col-value">1.5</td><td class="col-value">400</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Radii ── -->
+      <div class="cl-component-group" id="radii">
+        <h3>Radii</h3>
+        <p>Structured radii scale. Buttons use 8px (control), cards use 12px (component), modals use 20px (container). Only tags and badges get the full pill (999px).</p>
+        <div class="cl-canvas">
+          <div class="radius-demo"><div class="radius-shape r-element"></div><div class="radius-meta"><strong>Element</strong>4px</div></div>
+          <div class="radius-demo"><div class="radius-shape r-control"></div><div class="radius-meta"><strong>Control</strong>8px</div></div>
+          <div class="radius-demo"><div class="radius-shape r-component"></div><div class="radius-meta"><strong>Component</strong>12px</div></div>
+          <div class="radius-demo"><div class="radius-shape r-container"></div><div class="radius-meta"><strong>Container</strong>20px</div></div>
+          <div class="radius-demo"><div class="radius-shape r-pill"></div><div class="radius-meta"><strong>Pill</strong>999px</div></div>
+        </div>
+        <table class="cl-spec-table">
+          <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">--r-element</td><td class="col-value">4px</td><td>Small controls, checkboxes, list items</td></tr>
+            <tr><td class="col-name">--r-control</td><td class="col-value">8px</td><td>Buttons, inputs, dropdown triggers</td></tr>
+            <tr><td class="col-name">--r-component</td><td class="col-value">12px</td><td>Cards, panels, canvases</td></tr>
+            <tr><td class="col-name">--r-container</td><td class="col-value">20px</td><td>Modals, sheets, popovers</td></tr>
+            <tr><td class="col-name">--r-pill</td><td class="col-value">999px</td><td>Tags, badges, nav pills</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Elevation ── -->
+      <div class="cl-component-group" id="elevation">
+        <h3>Elevation</h3>
+        <p>Deep shadows for dark-mode depth. In light mode, shadows lighten automatically. Three levels from subtle card lift to full modal overlay, plus an accent glow.</p>
+        <div class="cl-canvas">
+          <div class="elev-stack">
+            <div class="elev-card l1"><div class="elev-level">Level 1</div><div class="elev-name">Card hover</div></div>
+            <div class="elev-card l2"><div class="elev-level">Level 2</div><div class="elev-name">Menu / popover</div></div>
+            <div class="elev-card l3"><div class="elev-level">Level 3</div><div class="elev-name">Modal / sheet</div></div>
+          </div>
+        </div>
+        <div class="cl-canvas cl-canvas--center">
+          <div class="elev-card l-accent" style="width:260px;"><div class="elev-level">Accent</div><div class="elev-name">Primary CTA hover</div></div>
+        </div>
+        <table class="cl-spec-table">
+          <thead><tr><th>Level</th><th>Dark mode</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">0</td><td class="col-value">none</td><td>Default card state (flat)</td></tr>
+            <tr><td class="col-name">1</td><td class="col-value">0 2px 8px rgba(0,0,0,0.3)</td><td>Card hover, sticky nav</td></tr>
+            <tr><td class="col-name">2</td><td class="col-value">0 4px 16px rgba(0,0,0,0.4)</td><td>Menus, popovers</td></tr>
+            <tr><td class="col-name">3</td><td class="col-value">0 8px 32px rgba(0,0,0,0.5)</td><td>Modals, sheets</td></tr>
+            <tr><td class="col-name">accent</td><td class="col-value">0 4px 16px rgba(70,128,245,0.25)</td><td>Primary CTA hover</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Spacing ── -->
+      <div class="cl-component-group" id="spacing">
+        <h3>Spacing</h3>
+        <p>8px base scale with increments for fine control. Used consistently across padding, gap, and margin throughout the system.</p>
+        <div class="cl-canvas cl-canvas--stack">
+          <div class="spacing-list">
+            <div class="spacing-row"><div class="spacing-token">--space-2xs</div><div class="spacing-value">2px</div><div class="spacing-bar" style="width: 2px;"></div></div>
+            <div class="spacing-row"><div class="spacing-token">--space-xs</div><div class="spacing-value">4px</div><div class="spacing-bar" style="width: 4px;"></div></div>
+            <div class="spacing-row"><div class="spacing-token">--space-sm</div><div class="spacing-value">8px</div><div class="spacing-bar" style="width: 8px;"></div></div>
+            <div class="spacing-row"><div class="spacing-token">--space-sm+</div><div class="spacing-value">12px</div><div class="spacing-bar" style="width: 12px;"></div></div>
+            <div class="spacing-row"><div class="spacing-token">--space-md</div><div class="spacing-value">16px</div><div class="spacing-bar" style="width: 16px;"></div></div>
+            <div class="spacing-row"><div class="spacing-token">--space-md+</div><div class="spacing-value">20px</div><div class="spacing-bar" style="width: 20px;"></div></div>
+            <div class="spacing-row"><div class="spacing-token">--space-lg</div><div class="spacing-value">24px</div><div class="spacing-bar" style="width: 24px;"></div></div>
+            <div class="spacing-row"><div class="spacing-token">--space-xl</div><div class="spacing-value">32px</div><div class="spacing-bar" style="width: 32px;"></div></div>
+            <div class="spacing-row"><div class="spacing-token">--space-2xl</div><div class="spacing-value">48px</div><div class="spacing-bar" style="width: 48px;"></div></div>
+            <div class="spacing-row"><div class="spacing-token">--space-3xl</div><div class="spacing-value">64px</div><div class="spacing-bar" style="width: 64px;"></div></div>
+            <div class="spacing-row"><div class="spacing-token">--space-4xl</div><div class="spacing-value">96px</div><div class="spacing-bar" style="width: 96px;"></div></div>
+          </div>
+        </div>
+        <table class="cl-spec-table">
+          <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td>--space-2xs</td><td class="col-value">2px</td><td>Hairline gaps, icon nudges</td></tr>
+            <tr><td>--space-xs</td><td class="col-value">4px</td><td>Tight padding, inline spacing</td></tr>
+            <tr><td>--space-sm</td><td class="col-value">8px</td><td>Base unit, small gaps</td></tr>
+            <tr><td>--space-md</td><td class="col-value">12px</td><td>Control padding, form gaps</td></tr>
+            <tr><td>--space-lg</td><td class="col-value">16px</td><td>Component padding, list gaps</td></tr>
+            <tr><td>--space-xl</td><td class="col-value">24px</td><td>Section padding, card padding</td></tr>
+            <tr><td>--space-2xl</td><td class="col-value">32px</td><td>Group spacing</td></tr>
+            <tr><td>--space-3xl</td><td class="col-value">48px</td><td>Section margins</td></tr>
+            <tr><td>--space-4xl</td><td class="col-value">96px</td><td>Page-level spacing</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Iconography ── -->
+      <div class="cl-component-group" id="iconography">
+        <h3>Iconography</h3>
+        <p>Phosphor regular as the primary icon kit. Clean, geometric outlines that match Halcyon's structured aesthetic.</p>
+        <div class="icon-disclaimer">
+          <strong>Icon kit</strong>
+          Halcyon uses Phosphor Icons (regular weight) as its icon set. The geometric, clean lines align well with Manrope headings and the structured radius scale.
+        </div>
+        <div class="cl-canvas cl-canvas--stack">
+          <div>
+            <div class="cl-variant-label" style="margin-bottom: 16px;">Sample glyphs (24px)</div>
+            <div class="icon-grid">
+              <div class="icon-cell"><i class="ph ph-house"></i><div class="icon-name">house</div></div>
+              <div class="icon-cell"><i class="ph ph-magnifying-glass"></i><div class="icon-name">search</div></div>
+              <div class="icon-cell"><i class="ph ph-gear"></i><div class="icon-name">gear</div></div>
+              <div class="icon-cell"><i class="ph ph-bell"></i><div class="icon-name">bell</div></div>
+              <div class="icon-cell"><i class="ph ph-user"></i><div class="icon-name">user</div></div>
+              <div class="icon-cell"><i class="ph ph-heart"></i><div class="icon-name">heart</div></div>
+              <div class="icon-cell"><i class="ph ph-star"></i><div class="icon-name">star</div></div>
+              <div class="icon-cell"><i class="ph ph-folder"></i><div class="icon-name">folder</div></div>
+              <div class="icon-cell"><i class="ph ph-chat-circle"></i><div class="icon-name">chat</div></div>
+              <div class="icon-cell"><i class="ph ph-calendar"></i><div class="icon-name">calendar</div></div>
+              <div class="icon-cell"><i class="ph ph-lightning"></i><div class="icon-name">lightning</div></div>
+              <div class="icon-cell"><i class="ph ph-check-circle"></i><div class="icon-name">check</div></div>
+            </div>
+          </div>
+          <div>
+            <div class="cl-variant-label" style="margin-bottom: 16px;">Sizes</div>
+            <div class="icon-sizes">
+              <i class="ph ph-house size16"></i>
+              <span class="type-meta" style="min-width:0;">16px inline</span>
+              <i class="ph ph-house size20"></i>
+              <span class="type-meta" style="min-width:0;">20px button</span>
+              <i class="ph ph-house size24"></i>
+              <span class="type-meta" style="min-width:0;">24px navigation</span>
+            </div>
+          </div>
+        </div>
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">kit</td><td class="col-value">Phosphor</td></tr>
+            <tr><td class="col-name">weight</td><td class="col-value">regular (1.5px stroke)</td></tr>
+            <tr><td class="col-name">CDN</td><td class="col-value">unpkg.com/@phosphor-icons/web@2/.../regular/style.css</td></tr>
+            <tr><td class="col-name">class prefix</td><td class="col-value">ph ph-</td></tr>
+            <tr><td class="col-name">default color</td><td class="col-value">inherits from var(--text1)</td></tr>
+            <tr><td class="col-name">sizes</td><td class="col-value">16px inline, 20px button, 24px nav</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         ACTIONS
+         ═══════════════════════════════════════ -->
+    <section id="cat-actions" class="cl-section">
+      <div class="cl-section-header">
+        <h2>Actions</h2>
+        <p>Interactive controls that trigger commands or navigate. Buttons, toggles, segmented controls, and dropdown menus.</p>
+      </div>
+      <!-- ── Button ── -->
+      <div class="cl-component-group" id="button">
+        <h3>Button</h3>
+        <p>Primary actions, secondary options, ghost text buttons, and destructive actions in three sizes.</p>
+
+        <!-- Canvas 1: Variants (all md, default state) -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Primary</span>
+            <button class="cl-btn cl-btn--primary">Primary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Secondary</span>
+            <button class="cl-btn cl-btn--secondary">Secondary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Ghost</span>
+            <button class="cl-btn cl-btn--ghost">Ghost</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Destructive</span>
+            <button class="cl-btn cl-btn--destructive">Destructive</button>
+          </div>
+        </div>
+
+        <!-- Canvas 2: Primary States -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <button class="cl-btn cl-btn--primary">Primary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Hover</span>
+            <button class="cl-btn cl-btn--primary is-hover">Primary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <button class="cl-btn cl-btn--primary is-focus">Primary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Active</span>
+            <button class="cl-btn cl-btn--primary is-active">Primary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled</span>
+            <button class="cl-btn cl-btn--primary is-disabled">Primary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Loading</span>
+            <button class="cl-btn cl-btn--primary is-loading">Primary</button>
+          </div>
+        </div>
+
+        <!-- Canvas 3: Secondary States -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <button class="cl-btn cl-btn--secondary">Secondary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Hover</span>
+            <button class="cl-btn cl-btn--secondary is-hover">Secondary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <button class="cl-btn cl-btn--secondary is-focus">Secondary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Active</span>
+            <button class="cl-btn cl-btn--secondary is-active">Secondary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled</span>
+            <button class="cl-btn cl-btn--secondary is-disabled">Secondary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Loading</span>
+            <button class="cl-btn cl-btn--secondary is-loading">Secondary</button>
+          </div>
+        </div>
+
+        <!-- Canvas 4: Ghost States -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <button class="cl-btn cl-btn--ghost">Ghost</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Hover</span>
+            <button class="cl-btn cl-btn--ghost is-hover">Ghost</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <button class="cl-btn cl-btn--ghost is-focus">Ghost</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Active</span>
+            <button class="cl-btn cl-btn--ghost is-active">Ghost</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled</span>
+            <button class="cl-btn cl-btn--ghost is-disabled">Ghost</button>
+          </div>
+        </div>
+
+        <!-- Canvas 5: Destructive States -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <button class="cl-btn cl-btn--destructive">Destructive</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Hover</span>
+            <button class="cl-btn cl-btn--destructive is-hover">Destructive</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <button class="cl-btn cl-btn--destructive is-focus">Destructive</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Active</span>
+            <button class="cl-btn cl-btn--destructive is-active">Destructive</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled</span>
+            <button class="cl-btn cl-btn--destructive is-disabled">Destructive</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Loading</span>
+            <button class="cl-btn cl-btn--destructive is-loading">Destructive</button>
+          </div>
+        </div>
+
+        <!-- Canvas 6: Sizes -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Small</span>
+            <button class="cl-btn cl-btn--primary cl-btn--sm">Primary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Medium</span>
+            <button class="cl-btn cl-btn--primary cl-btn--md">Primary</button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Large</span>
+            <button class="cl-btn cl-btn--primary cl-btn--lg">Primary</button>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">background</td><td class="col-value">var(--accent) #4680F5</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-control) 8px</td></tr>
+            <tr><td class="col-name">font-size</td><td class="col-value">15px</td></tr>
+            <tr><td class="col-name">padding</td><td class="col-value">11px 20px</td></tr>
+            <tr><td class="col-name">font-weight</td><td class="col-value">600</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Icon Button ── -->
+      <div class="cl-component-group" id="icon-button">
+        <h3>Icon Button</h3>
+        <p>Compact square buttons for toolbar actions and icon-only controls in three variants and sizes.</p>
+
+        <!-- Canvas 1: 3x3 grid — variant x size -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Primary / SM</span>
+            <button class="cl-icon-btn cl-icon-btn--primary cl-icon-btn--sm"><i class="ph ph-plus"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Primary / MD</span>
+            <button class="cl-icon-btn cl-icon-btn--primary cl-icon-btn--md"><i class="ph ph-plus"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Primary / LG</span>
+            <button class="cl-icon-btn cl-icon-btn--primary cl-icon-btn--lg"><i class="ph ph-plus"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Secondary / SM</span>
+            <button class="cl-icon-btn cl-icon-btn--secondary cl-icon-btn--sm"><i class="ph ph-plus"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Secondary / MD</span>
+            <button class="cl-icon-btn cl-icon-btn--secondary cl-icon-btn--md"><i class="ph ph-plus"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Secondary / LG</span>
+            <button class="cl-icon-btn cl-icon-btn--secondary cl-icon-btn--lg"><i class="ph ph-plus"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Ghost / SM</span>
+            <button class="cl-icon-btn cl-icon-btn--ghost cl-icon-btn--sm"><i class="ph ph-plus"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Ghost / MD</span>
+            <button class="cl-icon-btn cl-icon-btn--ghost cl-icon-btn--md"><i class="ph ph-plus"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Ghost / LG</span>
+            <button class="cl-icon-btn cl-icon-btn--ghost cl-icon-btn--lg"><i class="ph ph-plus"></i></button>
+          </div>
+        </div>
+
+        <!-- Canvas 2: Primary MD states -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <button class="cl-icon-btn cl-icon-btn--primary cl-icon-btn--md"><i class="ph ph-plus"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Hover</span>
+            <button class="cl-icon-btn cl-icon-btn--primary cl-icon-btn--md is-hover"><i class="ph ph-plus"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <button class="cl-icon-btn cl-icon-btn--primary cl-icon-btn--md is-focus"><i class="ph ph-plus"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled</span>
+            <button class="cl-icon-btn cl-icon-btn--primary cl-icon-btn--md is-disabled"><i class="ph ph-plus"></i></button>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Size</th><th>Dimensions</th><th>Icon size</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">sm</td><td class="col-value">32 x 32px</td><td class="col-value">16px</td></tr>
+            <tr><td class="col-name">md</td><td class="col-value">40 x 40px</td><td class="col-value">20px</td></tr>
+            <tr><td class="col-name">lg</td><td class="col-value">48 x 48px</td><td class="col-value">24px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Toggle Button ── -->
+      <div class="cl-component-group" id="toggle-button">
+        <h3>Toggle Button</h3>
+        <p>Two-state buttons for switching between views or modes, with on/off visual feedback.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Off</span>
+            <button class="cl-toggle-btn"><i class="ph ph-grid-four"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Off / Hover</span>
+            <button class="cl-toggle-btn is-hover"><i class="ph ph-grid-four"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">On</span>
+            <button class="cl-toggle-btn is-on"><i class="ph ph-list"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">On / Hover</span>
+            <button class="cl-toggle-btn is-on is-hover"><i class="ph ph-list"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <button class="cl-toggle-btn is-on is-focus"><i class="ph ph-list"></i></button>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled</span>
+            <button class="cl-toggle-btn is-disabled"><i class="ph ph-grid-four"></i></button>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>State</th><th>Background</th><th>Border</th><th>Color</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">off</td><td class="col-value">transparent</td><td class="col-value">var(--border-visible)</td><td class="col-value">var(--text2)</td></tr>
+            <tr><td class="col-name">off / hover</td><td class="col-value">transparent</td><td class="col-value">var(--text3)</td><td class="col-value">var(--text1)</td></tr>
+            <tr><td class="col-name">on</td><td class="col-value">var(--accent-subtle)</td><td class="col-value">var(--accent)</td><td class="col-value">var(--accent)</td></tr>
+            <tr><td class="col-name">on / hover</td><td class="col-value">rgba(70,128,245,0.15)</td><td class="col-value">var(--accent)</td><td class="col-value">var(--accent)</td></tr>
+            <tr><td class="col-name">disabled</td><td class="col-value">transparent</td><td class="col-value">var(--border-visible)</td><td class="col-value">var(--text2) 40%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Segmented Control ── -->
+      <div class="cl-component-group" id="segmented-control">
+        <h3>Segmented Control</h3>
+        <p>Mutually exclusive option group for switching between views or time ranges.</p>
+
+        <div class="cl-canvas cl-canvas--stack">
+          <div class="cl-segmented">
+            <button class="cl-segmented-item">Daily</button>
+            <button class="cl-segmented-item is-selected">Weekly</button>
+            <button class="cl-segmented-item">Monthly</button>
+            <button class="cl-segmented-item is-disabled">Yearly</button>
+          </div>
+          <div class="cl-segmented">
+            <button class="cl-segmented-item">Daily</button>
+            <button class="cl-segmented-item">Weekly</button>
+            <button class="cl-segmented-item is-hover">Monthly</button>
+            <button class="cl-segmented-item">Yearly</button>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">background</td><td class="col-value">var(--surface1)</td></tr>
+            <tr><td class="col-name">border</td><td class="col-value">1px solid var(--border)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-control) 8px</td></tr>
+            <tr><td class="col-name">padding</td><td class="col-value">4px</td></tr>
+            <tr><td class="col-name">item font-size</td><td class="col-value">13px</td></tr>
+            <tr><td class="col-name">item padding</td><td class="col-value">6px 16px</td></tr>
+            <tr><td class="col-name">selected background</td><td class="col-value">var(--accent) #4680F5</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Dropdown Menu ── -->
+      <div class="cl-component-group" id="dropdown-menu">
+        <h3>Dropdown Menu</h3>
+        <p>Context menus and action lists with hover states, dividers, disabled items, and checkmarks.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-dropdown">
+            <div class="cl-dropdown-item is-hover">Edit</div>
+            <div class="cl-dropdown-item">Duplicate</div>
+            <div class="cl-dropdown-item">Move to... <span style="float:right;color:var(--text4)"><i class="ph ph-caret-right"></i></span></div>
+            <div class="cl-dropdown-divider"></div>
+            <div class="cl-dropdown-item is-disabled">Archive</div>
+            <div class="cl-dropdown-item" style="color:var(--error)">Delete</div>
+            <div class="cl-dropdown-divider"></div>
+            <div class="cl-dropdown-item is-checked">Settings</div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">background</td><td class="col-value">var(--surface1)</td></tr>
+            <tr><td class="col-name">border</td><td class="col-value">1px solid var(--border)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-component) 12px</td></tr>
+            <tr><td class="col-name">box-shadow</td><td class="col-value">var(--shadow-l2)</td></tr>
+            <tr><td class="col-name">min-width</td><td class="col-value">200px</td></tr>
+            <tr><td class="col-name">item padding</td><td class="col-value">8px 12px</td></tr>
+            <tr><td class="col-name">item font-size</td><td class="col-value">14px</td></tr>
+            <tr><td class="col-name">hover background</td><td class="col-value">var(--accent-subtle)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         INPUTS
+         ═══════════════════════════════════════ -->
+    <section id="cat-inputs" class="cl-section">
+      <div class="cl-section-header">
+        <h2>Inputs</h2>
+        <p>Form controls for collecting user data. Text fields, selects, checkboxes, radios, switches, sliders, and date pickers.</p>
+      </div>
+      <!-- ── Text Input ── -->
+      <div class="cl-component-group" id="text-input">
+        <h3>Text Input</h3>
+        <p>Single-line text fields with label, placeholder, validation, and icon variants.</p>
+
+        <!-- Canvas 1: States -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <div class="cl-input-wrapper">
+              <div class="cl-input"><span style="color:var(--text4)">Email address</span></div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Hover</span>
+            <div class="cl-input-wrapper">
+              <div class="cl-input is-hover"><span style="color:var(--text4)">Email address</span></div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <div class="cl-input-wrapper">
+              <div class="cl-input is-focus">user@example.com</div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Filled</span>
+            <div class="cl-input-wrapper">
+              <div class="cl-input is-filled">user@example.com</div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled</span>
+            <div class="cl-input-wrapper">
+              <div class="cl-input is-disabled"><span style="color:var(--text4)">Email address</span></div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Read-only</span>
+            <div class="cl-input-wrapper">
+              <div class="cl-input is-readonly">user@example.com</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas 2: Validation -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Error</span>
+            <div class="cl-input-wrapper">
+              <div class="cl-input is-error">invalid-email</div>
+              <div class="cl-input-error-text">Invalid email address</div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Success</span>
+            <div class="cl-input-wrapper">
+              <div class="cl-input is-success">user@example.com</div>
+              <div class="cl-input-hint" style="color:var(--success)">Email verified</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas 3: Variants with icons -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">With Icon</span>
+            <div class="cl-input-wrapper">
+              <div class="cl-input-field">
+                <i class="cl-input-icon ph ph-magnifying-glass"></i>
+                <div class="cl-input"><span style="color:var(--text4)">Search...</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">With Clear</span>
+            <div class="cl-input-wrapper">
+              <div class="cl-input-field">
+                <div class="cl-input is-filled">user@example.com</div>
+                <button class="cl-input-clear"><i class="ph ph-x-circle"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">background</td><td class="col-value">var(--surface2)</td></tr>
+            <tr><td class="col-name">border</td><td class="col-value">1.5px solid var(--border)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-control) 8px</td></tr>
+            <tr><td class="col-name">height</td><td class="col-value">40px</td></tr>
+            <tr><td class="col-name">padding</td><td class="col-value">0 16px</td></tr>
+            <tr><td class="col-name">font-size</td><td class="col-value">14px</td></tr>
+            <tr><td class="col-name">focus border</td><td class="col-value">var(--accent) #4680F5</td></tr>
+            <tr><td class="col-name">focus ring</td><td class="col-value">0 0 0 3px var(--accent-subtle)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Textarea ── -->
+      <div class="cl-component-group" id="textarea">
+        <h3>Textarea</h3>
+        <p>Multi-line text input for longer content like descriptions, comments, and notes.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <div class="cl-textarea"><span style="color:var(--text3)">Write a description...</span></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <div class="cl-textarea is-focus">The quarterly report shows a 15% increase in active users across all regions. Mobile engagement continues to outpace desktop.</div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled</span>
+            <div class="cl-textarea is-disabled"><span style="color:var(--text3)">Write a description...</span></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Error</span>
+            <div class="cl-textarea is-error">Too short</div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">background</td><td class="col-value">var(--surface2)</td></tr>
+            <tr><td class="col-name">border</td><td class="col-value">1.5px solid var(--border)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-control) 8px</td></tr>
+            <tr><td class="col-name">padding</td><td class="col-value">12px 16px</td></tr>
+            <tr><td class="col-name">min-height</td><td class="col-value">96px</td></tr>
+            <tr><td class="col-name">font-size</td><td class="col-value">14px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Select ── -->
+      <div class="cl-component-group" id="select">
+        <h3>Select</h3>
+        <p>Dropdown selection control for choosing one option from a list, with open and closed states.</p>
+
+        <!-- Canvas 1: Closed states -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <div class="cl-select">
+              <div class="cl-input"><span style="color:var(--text4)">Select a country...</span></div>
+              <i class="cl-select-chevron ph ph-caret-down"></i>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Hover</span>
+            <div class="cl-select">
+              <div class="cl-input is-hover"><span style="color:var(--text4)">Select a country...</span></div>
+              <i class="cl-select-chevron ph ph-caret-down"></i>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <div class="cl-select">
+              <div class="cl-input is-focus"><span style="color:var(--text4)">Select a country...</span></div>
+              <i class="cl-select-chevron ph ph-caret-down"></i>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled</span>
+            <div class="cl-select">
+              <div class="cl-input is-disabled"><span style="color:var(--text4)">Select a country...</span></div>
+              <i class="cl-select-chevron ph ph-caret-down"></i>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Error</span>
+            <div class="cl-select">
+              <div class="cl-input is-error"><span style="color:var(--text4)">Select a country...</span></div>
+              <i class="cl-select-chevron ph ph-caret-down"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas 2: Open state -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Open</span>
+            <div style="position:relative">
+              <div class="cl-select is-open">
+                <div class="cl-input is-focus">Select a country...</div>
+                <i class="cl-select-chevron ph ph-caret-down"></i>
+              </div>
+              <div class="cl-dropdown" style="margin-top:4px">
+                <div class="cl-dropdown-item">Germany</div>
+                <div class="cl-dropdown-item is-hover">France</div>
+                <div class="cl-dropdown-item">United Kingdom</div>
+                <div class="cl-dropdown-item">Japan</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">background</td><td class="col-value">var(--surface2)</td></tr>
+            <tr><td class="col-name">border</td><td class="col-value">1.5px solid var(--border)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-control) 8px</td></tr>
+            <tr><td class="col-name">height</td><td class="col-value">40px</td></tr>
+            <tr><td class="col-name">chevron</td><td class="col-value">ph-caret-down, 16px, var(--text3)</td></tr>
+            <tr><td class="col-name">open rotation</td><td class="col-value">rotate(180deg)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Checkbox ── -->
+      <div class="cl-component-group" id="checkbox">
+        <h3>Checkbox</h3>
+        <p>Binary selection controls for forms and settings, with checked, indeterminate, and group layouts.</p>
+
+        <!-- Canvas 1: States -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Unchecked</span>
+            <div class="cl-checkbox"></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Checked</span>
+            <div class="cl-checkbox is-checked"></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Indeterminate</span>
+            <div class="cl-checkbox is-indeterminate"></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Hover</span>
+            <div class="cl-checkbox is-hover"></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <div class="cl-checkbox is-focus"></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled</span>
+            <div class="cl-checkbox is-disabled"></div>
+          </div>
+        </div>
+
+        <!-- Canvas 2: Group with labels -->
+        <div class="cl-canvas">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+              <div class="cl-checkbox is-checked"></div>
+              <span class="cl-checkbox-label">Option A</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+              <div class="cl-checkbox"></div>
+              <span class="cl-checkbox-label">Option B</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+              <div class="cl-checkbox is-disabled"></div>
+              <span class="cl-checkbox-label" style="opacity:0.4">Option C</span>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">size</td><td class="col-value">18 x 18px</td></tr>
+            <tr><td class="col-name">border</td><td class="col-value">1.5px solid var(--border-visible)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-element) 4px</td></tr>
+            <tr><td class="col-name">checked background</td><td class="col-value">var(--accent) #4680F5</td></tr>
+            <tr><td class="col-name">check icon</td><td class="col-value">12px #FFFFFF</td></tr>
+            <tr><td class="col-name">label font-size</td><td class="col-value">14px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Radio Group ── -->
+      <div class="cl-component-group" id="radio-group">
+        <h3>Radio Group</h3>
+        <p>Mutually exclusive option selection with dot indicator for single-choice form fields.</p>
+
+        <div class="cl-canvas">
+          <div style="display:flex;flex-direction:column;gap:0">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+              <div class="cl-radio is-selected"></div>
+              <span class="cl-radio-label">Small</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+              <div class="cl-radio"></div>
+              <span class="cl-radio-label">Medium</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+              <div class="cl-radio is-hover"></div>
+              <span class="cl-radio-label">Large</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+              <div class="cl-radio is-disabled"></div>
+              <span class="cl-radio-label" style="opacity:0.4">Custom</span>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">size</td><td class="col-value">18 x 18px</td></tr>
+            <tr><td class="col-name">border</td><td class="col-value">1.5px solid var(--border-visible)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">50%</td></tr>
+            <tr><td class="col-name">selected border</td><td class="col-value">var(--accent) #4680F5</td></tr>
+            <tr><td class="col-name">dot size</td><td class="col-value">8 x 8px</td></tr>
+            <tr><td class="col-name">label font-size</td><td class="col-value">14px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Switch ── -->
+      <div class="cl-component-group" id="switch">
+        <h3>Switch</h3>
+        <p>Toggle switches for binary settings with on/off states and sliding thumb animation.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Off</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="cl-switch"><div class="cl-switch-thumb"></div></div>
+              <span style="font-size:14px;color:var(--text2)">Notifications</span>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Off / Hover</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="cl-switch is-hover"><div class="cl-switch-thumb"></div></div>
+              <span style="font-size:14px;color:var(--text2)">Notifications</span>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">On</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="cl-switch is-on"><div class="cl-switch-thumb"></div></div>
+              <span style="font-size:14px;color:var(--text2)">Notifications</span>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">On / Hover</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="cl-switch is-on is-hover"><div class="cl-switch-thumb"></div></div>
+              <span style="font-size:14px;color:var(--text2)">Notifications</span>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">On / Focus</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="cl-switch is-on is-focus"><div class="cl-switch-thumb"></div></div>
+              <span style="font-size:14px;color:var(--text2)">Notifications</span>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled Off</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="cl-switch is-disabled"><div class="cl-switch-thumb"></div></div>
+              <span style="font-size:14px;color:var(--text2);opacity:0.4">Notifications</span>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled On</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="cl-switch is-on is-disabled"><div class="cl-switch-thumb"></div></div>
+              <span style="font-size:14px;color:var(--text2);opacity:0.4">Notifications</span>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">track size</td><td class="col-value">44 x 24px</td></tr>
+            <tr><td class="col-name">thumb size</td><td class="col-value">20 x 20px</td></tr>
+            <tr><td class="col-name">off background</td><td class="col-value">var(--surface3)</td></tr>
+            <tr><td class="col-name">on background</td><td class="col-value">var(--accent) #4680F5</td></tr>
+            <tr><td class="col-name">thumb color</td><td class="col-value">#FFFFFF</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-pill) 999px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Slider ── -->
+      <div class="cl-component-group" id="slider">
+        <h3>Slider</h3>
+        <p>Continuous value selection with track fill, thumb, and optional range mode with two handles.</p>
+
+        <!-- Canvas 1: Single slider states -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default (50%)</span>
+            <div class="cl-slider" style="width:280px">
+              <div class="cl-slider-track">
+                <div class="cl-slider-fill" style="width:50%"></div>
+                <div class="cl-slider-thumb" style="left:50%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Hover</span>
+            <div class="cl-slider is-hover" style="width:280px">
+              <div class="cl-slider-track">
+                <div class="cl-slider-fill" style="width:50%"></div>
+                <div class="cl-slider-thumb" style="left:50%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Active</span>
+            <div class="cl-slider is-active" style="width:280px">
+              <div class="cl-slider-track">
+                <div class="cl-slider-fill" style="width:65%"></div>
+                <div class="cl-slider-thumb" style="left:65%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <div class="cl-slider is-focus" style="width:280px">
+              <div class="cl-slider-track">
+                <div class="cl-slider-fill" style="width:50%"></div>
+                <div class="cl-slider-thumb" style="left:50%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled</span>
+            <div class="cl-slider is-disabled" style="width:280px">
+              <div class="cl-slider-track">
+                <div class="cl-slider-fill" style="width:30%"></div>
+                <div class="cl-slider-thumb" style="left:30%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas 2: Range slider -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Range (25%–75%)</span>
+            <div class="cl-slider" style="width:280px">
+              <div class="cl-slider-track">
+                <div class="cl-slider-fill" style="left:25%;width:50%"></div>
+                <div class="cl-slider-thumb" style="left:25%"></div>
+                <div class="cl-slider-thumb" style="left:75%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">track height</td><td class="col-value">4px</td></tr>
+            <tr><td class="col-name">track background</td><td class="col-value">var(--surface2)</td></tr>
+            <tr><td class="col-name">fill color</td><td class="col-value">var(--accent) #4680F5</td></tr>
+            <tr><td class="col-name">thumb size</td><td class="col-value">16 x 16px</td></tr>
+            <tr><td class="col-name">thumb border</td><td class="col-value">2px solid var(--accent)</td></tr>
+            <tr><td class="col-name">thumb background</td><td class="col-value">#FFFFFF</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Date Picker ── -->
+      <div class="cl-component-group" id="date-picker">
+        <h3>Date Picker</h3>
+        <p>Inline calendar for date selection with today highlight, selected state, range highlight, and navigation.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-datepicker">
+            <div class="cl-datepicker-header">
+              <button class="cl-icon-btn cl-icon-btn--ghost cl-icon-btn--sm"><i class="ph ph-caret-left"></i></button>
+              <span style="font-weight:600;font-size:15px">April 2026</span>
+              <button class="cl-icon-btn cl-icon-btn--ghost cl-icon-btn--sm"><i class="ph ph-caret-right"></i></button>
+            </div>
+            <div class="cl-datepicker-grid">
+              <div class="cl-day-label">Mo</div><div class="cl-day-label">Tu</div><div class="cl-day-label">We</div><div class="cl-day-label">Th</div><div class="cl-day-label">Fr</div><div class="cl-day-label">Sa</div><div class="cl-day-label">Su</div>
+              <!-- Week 1: Mar 30–31, Apr 1–5 -->
+              <div class="cl-day is-disabled">30</div>
+              <div class="cl-day is-disabled">31</div>
+              <div class="cl-day">1</div>
+              <div class="cl-day">2</div>
+              <div class="cl-day">3</div>
+              <div class="cl-day">4</div>
+              <div class="cl-day">5</div>
+              <!-- Week 2: Apr 6–12 -->
+              <div class="cl-day">6</div>
+              <div class="cl-day">7</div>
+              <div class="cl-day is-range">8</div>
+              <div class="cl-day is-range">9</div>
+              <div class="cl-day is-range">10</div>
+              <div class="cl-day">11</div>
+              <div class="cl-day is-today">12</div>
+              <!-- Week 3: Apr 13–19 -->
+              <div class="cl-day">13</div>
+              <div class="cl-day">14</div>
+              <div class="cl-day is-selected">15</div>
+              <div class="cl-day">16</div>
+              <div class="cl-day">17</div>
+              <div class="cl-day">18</div>
+              <div class="cl-day">19</div>
+              <!-- Week 4: Apr 20–26 -->
+              <div class="cl-day">20</div>
+              <div class="cl-day">21</div>
+              <div class="cl-day">22</div>
+              <div class="cl-day">23</div>
+              <div class="cl-day">24</div>
+              <div class="cl-day">25</div>
+              <div class="cl-day">26</div>
+              <!-- Week 5: Apr 27–30, May 1–3 -->
+              <div class="cl-day">27</div>
+              <div class="cl-day">28</div>
+              <div class="cl-day">29</div>
+              <div class="cl-day">30</div>
+              <div class="cl-day is-disabled">1</div>
+              <div class="cl-day is-disabled">2</div>
+              <div class="cl-day is-disabled">3</div>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">background</td><td class="col-value">var(--surface1)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-component) 12px</td></tr>
+            <tr><td class="col-name">padding</td><td class="col-value">16px</td></tr>
+            <tr><td class="col-name">width</td><td class="col-value">280px</td></tr>
+            <tr><td class="col-name">day font-size</td><td class="col-value">13px</td></tr>
+            <tr><td class="col-name">today color</td><td class="col-value">var(--accent) #4680F5</td></tr>
+            <tr><td class="col-name">selected bg</td><td class="col-value">var(--accent) #4680F5</td></tr>
+            <tr><td class="col-name">range bg</td><td class="col-value">var(--accent-subtle)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Combobox ── -->
+      <div class="cl-component-group" id="combobox">
+        <h3>Combobox</h3>
+        <p>Searchable dropdown that filters options as you type, with empty state for no results.</p>
+
+        <!-- Canvas 1: Closed -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Closed</span>
+            <div class="cl-combobox">
+              <div class="cl-input"><span style="color:var(--text4)">Search frameworks...</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas 2: Open with results -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Open / Filtered</span>
+            <div class="cl-combobox" style="margin-bottom:160px">
+              <div class="cl-input is-focus">re</div>
+              <div class="cl-dropdown">
+                <div class="cl-dropdown-item is-hover">React</div>
+                <div class="cl-dropdown-item">Remix</div>
+                <div class="cl-dropdown-item">Redwood</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas 3: Open with empty state -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">No Results</span>
+            <div class="cl-combobox" style="margin-bottom:80px">
+              <div class="cl-input is-focus">xyz</div>
+              <div class="cl-dropdown">
+                <div class="cl-combobox-empty">No results found</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">width</td><td class="col-value">280px</td></tr>
+            <tr><td class="col-name">input</td><td class="col-value">standard cl-input (40px height)</td></tr>
+            <tr><td class="col-name">dropdown offset</td><td class="col-value">4px below input</td></tr>
+            <tr><td class="col-name">max-height</td><td class="col-value">200px (scrollable)</td></tr>
+            <tr><td class="col-name">empty state</td><td class="col-value">13px var(--text3) centered</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         DATA DISPLAY
+         ═══════════════════════════════════════ -->
+    <section id="cat-data" class="cl-section">
+      <div class="cl-section-header">
+        <h2>Data Display</h2>
+        <p>Components for presenting information. Cards, avatars, badges, tags, data tables, and loading skeletons.</p>
+      </div>
+      <!-- ── Card ── -->
+      <div class="cl-component-group" id="card">
+        <h3>Card</h3>
+        <p>Content containers for grouping related information with optional image, hover lift, and selection states.</p>
+
+        <!-- Canvas 1: State variants -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <div class="cl-card">
+              <div class="cl-card-body">
+                <div class="cl-card-title">API Integration</div>
+                <div class="cl-card-desc">Connect your services with our REST API. Full documentation available.</div>
+              </div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Hover</span>
+            <div class="cl-card is-hover">
+              <div class="cl-card-body">
+                <div class="cl-card-title">Dashboard</div>
+                <div class="cl-card-desc">Monitor your metrics in real-time with customizable widgets.</div>
+              </div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <div class="cl-card is-focus">
+              <div class="cl-card-body">
+                <div class="cl-card-title">Analytics</div>
+                <div class="cl-card-desc">Deep insights into user behavior and performance trends.</div>
+              </div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Selected</span>
+            <div class="cl-card is-selected">
+              <div class="cl-card-body">
+                <div class="cl-card-title">Deployment</div>
+                <div class="cl-card-desc">One-click deploy to production with automatic rollbacks.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas 2: Card with image -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Image Card</span>
+            <div class="cl-card cl-card--image">
+              <div class="cl-card-image"></div>
+              <div class="cl-card-body">
+                <div class="cl-card-title">Featured Project</div>
+                <div class="cl-card-desc">A comprehensive overview of project milestones and deliverables.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">background</td><td class="col-value">var(--surface1)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-component) 12px</td></tr>
+            <tr><td class="col-name">padding</td><td class="col-value">20px</td></tr>
+            <tr><td class="col-name">shadow (hover)</td><td class="col-value">var(--shadow-l2)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Avatar ── -->
+      <div class="cl-component-group" id="avatar">
+        <h3>Avatar</h3>
+        <p>User representation in three sizes with image, initials, or icon variants, plus grouped stacking.</p>
+
+        <!-- Canvas 1: Sizes and types -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Image SM</span>
+            <div class="cl-avatar cl-avatar--sm" style="background:var(--accent)"></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Image MD</span>
+            <div class="cl-avatar cl-avatar--md" style="background:var(--accent)"></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Image LG</span>
+            <div class="cl-avatar cl-avatar--lg" style="background:var(--accent)"></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Initials SM</span>
+            <div class="cl-avatar cl-avatar--sm">DM</div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Initials MD</span>
+            <div class="cl-avatar cl-avatar--md">DM</div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Initials LG</span>
+            <div class="cl-avatar cl-avatar--lg">DM</div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Icon SM</span>
+            <div class="cl-avatar cl-avatar--sm"><i class="ph ph-user"></i></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Icon MD</span>
+            <div class="cl-avatar cl-avatar--md"><i class="ph ph-user"></i></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Icon LG</span>
+            <div class="cl-avatar cl-avatar--lg"><i class="ph ph-user"></i></div>
+          </div>
+        </div>
+
+        <!-- Canvas 2: Avatar group -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Group</span>
+            <div class="cl-avatar-group">
+              <div class="cl-avatar cl-avatar--md" style="background:var(--accent)"></div>
+              <div class="cl-avatar cl-avatar--md" style="background:var(--teal)"></div>
+              <div class="cl-avatar cl-avatar--md" style="background:var(--success)"></div>
+              <div class="cl-avatar cl-avatar--md" style="background:var(--warning)"></div>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Size</th><th>Dimensions</th><th>Font size</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">SM</td><td class="col-value">24px</td><td class="col-value">11px</td></tr>
+            <tr><td class="col-name">MD</td><td class="col-value">32px</td><td class="col-value">13px</td></tr>
+            <tr><td class="col-name">LG</td><td class="col-value">48px</td><td class="col-value">18px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Badge ── -->
+      <div class="cl-component-group" id="badge">
+        <h3>Badge</h3>
+        <p>Status indicators and labels in semantic color variants for inline metadata.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Neutral</span>
+            <span class="cl-badge cl-badge--neutral">Default</span>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Info</span>
+            <span class="cl-badge cl-badge--info">New</span>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Success</span>
+            <span class="cl-badge cl-badge--success">Active</span>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Warning</span>
+            <span class="cl-badge cl-badge--warning">Pending</span>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Error</span>
+            <span class="cl-badge cl-badge--error">Failed</span>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Variant</th><th>Background</th><th>Color</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">Neutral</td><td class="col-value">var(--surface2)</td><td class="col-value">var(--text2)</td></tr>
+            <tr><td class="col-name">Info</td><td class="col-value">var(--accent-subtle)</td><td class="col-value">var(--accent)</td></tr>
+            <tr><td class="col-name">Success</td><td class="col-value">var(--success-bg)</td><td class="col-value">var(--success)</td></tr>
+            <tr><td class="col-name">Warning</td><td class="col-value">var(--warning-bg)</td><td class="col-value">var(--warning)</td></tr>
+            <tr><td class="col-name">Error</td><td class="col-value">var(--error-bg)</td><td class="col-value">var(--error)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Tag ── -->
+      <div class="cl-component-group" id="tag">
+        <h3>Tag</h3>
+        <p>Categorization labels with optional remove action, accent and teal variants, and disabled state.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <span class="cl-tag">Design</span>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Accent</span>
+            <span class="cl-tag cl-tag--accent">Frontend</span>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Teal</span>
+            <span class="cl-tag cl-tag--teal">Backend</span>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Removable</span>
+            <span class="cl-tag cl-tag--removable">React<i class="ph ph-x cl-tag-x"></i></span>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Removable (X hover)</span>
+            <span class="cl-tag cl-tag--removable">React<i class="ph ph-x cl-tag-x is-hover"></i></span>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Disabled</span>
+            <span class="cl-tag is-disabled">Legacy</span>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">background</td><td class="col-value">var(--surface2)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-pill) 999px</td></tr>
+            <tr><td class="col-name">padding</td><td class="col-value">4px 12px</td></tr>
+            <tr><td class="col-name">font-size</td><td class="col-value">13px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Data Table ── -->
+      <div class="cl-component-group" id="data-table">
+        <h3>Data Table</h3>
+        <p>Structured tabular data with sortable columns, row selection, hover highlighting, and inline badges.</p>
+
+        <div class="cl-canvas">
+          <table class="cl-data-table">
+            <thead>
+              <tr>
+                <th style="width:40px"><div class="cl-checkbox" style="width:16px;height:16px"></div></th>
+                <th class="is-sort-active">Name <i class="ph ph-arrow-up" style="font-size:12px"></i></th>
+                <th>Status</th>
+                <th>Role</th>
+                <th>Last active</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><div class="cl-checkbox" style="width:16px;height:16px"></div></td><td>Sarah Chen</td><td><span class="cl-badge cl-badge--success">Active</span></td><td>Engineer</td><td style="color:var(--text3)">2h ago</td></tr>
+              <tr class="is-hover"><td><div class="cl-checkbox" style="width:16px;height:16px"></div></td><td>Marcus Johnson</td><td><span class="cl-badge cl-badge--success">Active</span></td><td>Designer</td><td style="color:var(--text3)">5h ago</td></tr>
+              <tr><td><div class="cl-checkbox" style="width:16px;height:16px"></div></td><td>Aiko Tanaka</td><td><span class="cl-badge cl-badge--warning">Away</span></td><td>PM</td><td style="color:var(--text3)">1d ago</td></tr>
+              <tr class="is-selected"><td><div class="cl-checkbox is-checked" style="width:16px;height:16px"></div></td><td>David Park</td><td><span class="cl-badge cl-badge--neutral">Offline</span></td><td>Engineer</td><td style="color:var(--text3)">3d ago</td></tr>
+              <tr><td><div class="cl-checkbox" style="width:16px;height:16px"></div></td><td>Elena Morales</td><td><span class="cl-badge cl-badge--error">Suspended</span></td><td>Admin</td><td style="color:var(--text3)">1w ago</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">header background</td><td class="col-value">var(--surface1)</td></tr>
+            <tr><td class="col-name">row height</td><td class="col-value">48px</td></tr>
+            <tr><td class="col-name">border-bottom</td><td class="col-value">1px solid var(--border)</td></tr>
+            <tr><td class="col-name">hover background</td><td class="col-value">var(--surface1)</td></tr>
+            <tr><td class="col-name">selected background</td><td class="col-value">var(--accent-subtle)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Skeleton ── -->
+      <div class="cl-component-group" id="skeleton">
+        <h3>Skeleton</h3>
+        <p>Loading placeholders that mimic content layout before data arrives with shimmer animation.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Text</span>
+            <div style="display:flex;flex-direction:column;gap:8px;width:200px">
+              <div class="cl-skeleton-text skeleton-shimmer" style="width:100%"></div>
+              <div class="cl-skeleton-text skeleton-shimmer" style="width:80%"></div>
+              <div class="cl-skeleton-text skeleton-shimmer" style="width:60%"></div>
+            </div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Circle</span>
+            <div class="cl-skeleton-circle skeleton-shimmer" style="width:48px;height:48px"></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Card</span>
+            <div class="cl-skeleton-card skeleton-shimmer" style="width:280px;height:160px"></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Table rows</span>
+            <div style="display:flex;flex-direction:column;gap:8px;width:280px">
+              <div class="cl-skeleton-row skeleton-shimmer"></div>
+              <div class="cl-skeleton-row skeleton-shimmer"></div>
+              <div class="cl-skeleton-row skeleton-shimmer"></div>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Type</th><th>Dimensions</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">Text line</td><td class="col-value">100% x 12px</td></tr>
+            <tr><td class="col-name">Circle</td><td class="col-value">48px x 48px</td></tr>
+            <tr><td class="col-name">Card</td><td class="col-value">280px x 160px</td></tr>
+            <tr><td class="col-name">Table row</td><td class="col-value">100% x 40px</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         NAVIGATION
+         ═══════════════════════════════════════ -->
+    <section id="cat-nav" class="cl-section">
+      <div class="cl-section-header">
+        <h2>Navigation</h2>
+        <p>Wayfinding components. Tabs, breadcrumbs, pagination, nav menus, and links.</p>
+      </div>
+      <!-- ── Tabs ── -->
+      <div class="cl-component-group" id="tabs">
+        <h3>Tabs</h3>
+        <p>Horizontal tab navigation in underline and pill variants with active, hover, focus, and disabled states.</p>
+
+        <!-- Canvas 1: Underline variant -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Underline</span>
+            <div class="cl-tabs cl-tabs--underline">
+              <button class="cl-tab is-active">Overview</button>
+              <button class="cl-tab is-hover">Analytics</button>
+              <button class="cl-tab">Settings</button>
+              <button class="cl-tab is-disabled">Billing</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas 2: Pill variant -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Pill</span>
+            <div class="cl-tabs cl-tabs--pill">
+              <button class="cl-tab is-active">Overview</button>
+              <button class="cl-tab is-hover">Analytics</button>
+              <button class="cl-tab">Settings</button>
+              <button class="cl-tab is-disabled">Billing</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas 3: Focus state -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <div class="cl-tabs cl-tabs--underline">
+              <button class="cl-tab">Overview</button>
+              <button class="cl-tab is-focus">Analytics</button>
+              <button class="cl-tab">Settings</button>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">tab padding</td><td class="col-value">8px 16px</td></tr>
+            <tr><td class="col-name">font-size</td><td class="col-value">14px</td></tr>
+            <tr><td class="col-name">active indicator</td><td class="col-value">2px solid var(--accent)</td></tr>
+            <tr><td class="col-name">pill border-radius</td><td class="col-value">var(--r-pill)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Breadcrumb ── -->
+      <div class="cl-component-group" id="breadcrumb">
+        <h3>Breadcrumb</h3>
+        <p>Hierarchical page path with separator dividers, hover links, and a current page indicator.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <div class="cl-breadcrumb">
+              <span class="cl-breadcrumb-item">Home</span>
+              <span class="cl-breadcrumb-sep">/</span>
+              <span class="cl-breadcrumb-item is-hover">Projects</span>
+              <span class="cl-breadcrumb-sep">/</span>
+              <span class="cl-breadcrumb-item">Halcyon</span>
+              <span class="cl-breadcrumb-sep">/</span>
+              <span class="cl-breadcrumb-item is-current">Settings</span>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">font-size</td><td class="col-value">14px</td></tr>
+            <tr><td class="col-name">separator color</td><td class="col-value">var(--text4)</td></tr>
+            <tr><td class="col-name">current color</td><td class="col-value">var(--text1)</td></tr>
+            <tr><td class="col-name">hover color</td><td class="col-value">var(--accent)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Pagination ── -->
+      <div class="cl-component-group" id="pagination">
+        <h3>Pagination</h3>
+        <p>Page navigation with numbered buttons, ellipsis truncation, and directional arrow controls.</p>
+
+        <!-- Canvas 1: Default (page 3 active) -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Page 3 active</span>
+            <div class="cl-pagination">
+              <button class="cl-page-nav"><i class="ph ph-caret-left"></i></button>
+              <button class="cl-page">1</button>
+              <button class="cl-page">2</button>
+              <button class="cl-page is-current">3</button>
+              <button class="cl-page">4</button>
+              <button class="cl-page is-hover">5</button>
+              <span style="color:var(--text4)">…</span>
+              <button class="cl-page">9</button>
+              <button class="cl-page">10</button>
+              <button class="cl-page-nav"><i class="ph ph-caret-right"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas 2: First page (prev disabled) -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">First page</span>
+            <div class="cl-pagination">
+              <button class="cl-page-nav is-disabled"><i class="ph ph-caret-left"></i></button>
+              <button class="cl-page is-current">1</button>
+              <button class="cl-page">2</button>
+              <button class="cl-page">3</button>
+              <button class="cl-page">4</button>
+              <button class="cl-page">5</button>
+              <span style="color:var(--text4)">…</span>
+              <button class="cl-page">9</button>
+              <button class="cl-page">10</button>
+              <button class="cl-page-nav"><i class="ph ph-caret-right"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">button size</td><td class="col-value">36px x 36px</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-control) 8px</td></tr>
+            <tr><td class="col-name">current background</td><td class="col-value">var(--accent)</td></tr>
+            <tr><td class="col-name">gap</td><td class="col-value">4px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Nav Menu ── -->
+      <div class="cl-component-group" id="nav-menu">
+        <h3>Nav Menu</h3>
+        <p>Vertical sidebar navigation with active, hover, and focus item states.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <div class="cl-nav-menu">
+              <button class="cl-nav-item is-active">Dashboard</button>
+              <button class="cl-nav-item is-hover">Projects</button>
+              <button class="cl-nav-item">Team</button>
+              <button class="cl-nav-item is-focus">Settings</button>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">item padding</td><td class="col-value">8px 16px</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-control) 8px</td></tr>
+            <tr><td class="col-name">active background</td><td class="col-value">var(--surface2)</td></tr>
+            <tr><td class="col-name">font-size</td><td class="col-value">14px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Link ── -->
+      <div class="cl-component-group" id="link">
+        <h3>Link</h3>
+        <p>Inline and standalone text links with hover, focus, active, and visited states.</p>
+
+        <!-- Canvas 1: Inline links -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <a class="cl-link">Learn more</a>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Hover</span>
+            <a class="cl-link is-hover">Learn more</a>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <a class="cl-link is-focus">Learn more</a>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Active</span>
+            <a class="cl-link is-active">Learn more</a>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Visited</span>
+            <a class="cl-link is-visited">Learn more</a>
+          </div>
+        </div>
+
+        <!-- Canvas 2: Standalone links -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Standalone</span>
+            <a class="cl-link cl-link--standalone">Learn more</a>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Hover</span>
+            <a class="cl-link cl-link--standalone is-hover">Learn more</a>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Focus</span>
+            <a class="cl-link cl-link--standalone is-focus">Learn more</a>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Active</span>
+            <a class="cl-link cl-link--standalone is-active">Learn more</a>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Visited</span>
+            <a class="cl-link cl-link--standalone is-visited">Learn more</a>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">color</td><td class="col-value">var(--accent)</td></tr>
+            <tr><td class="col-name">text-decoration</td><td class="col-value">underline (inline), none (standalone)</td></tr>
+            <tr><td class="col-name">hover color</td><td class="col-value">var(--accent) + underline</td></tr>
+            <tr><td class="col-name">visited color</td><td class="col-value">var(--text3)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         FEEDBACK
+         ═══════════════════════════════════════ -->
+    <section id="cat-feedback" class="cl-section">
+      <div class="cl-section-header">
+        <h2>Feedback</h2>
+        <p>System responses and status indicators. Alerts, toasts, progress bars, spinners, and empty states.</p>
+      </div>
+      <!-- ── Alert ── -->
+      <div class="cl-component-group" id="alert">
+        <h3>Alert</h3>
+        <p>Contextual banners for info, success, warning, and error messages with optional dismiss action.</p>
+
+        <div class="cl-canvas" style="flex-direction:column;align-items:stretch">
+          <div class="cl-alert cl-alert--info">
+            <i class="cl-alert-icon ph ph-info"></i>
+            <div class="cl-alert-content">
+              <div class="cl-alert-title">New version available</div>
+              <p>A new version of the platform is ready. Update now to get the latest features.</p>
+            </div>
+            <i class="cl-alert-dismiss ph ph-x"></i>
+          </div>
+          <div class="cl-alert cl-alert--success">
+            <i class="cl-alert-icon ph ph-check-circle"></i>
+            <div class="cl-alert-content">
+              <div class="cl-alert-title">Changes saved successfully</div>
+            </div>
+          </div>
+          <div class="cl-alert cl-alert--warning">
+            <i class="cl-alert-icon ph ph-warning"></i>
+            <div class="cl-alert-content">
+              <div class="cl-alert-title">API rate limit approaching</div>
+              <p>You have used 85% of your monthly quota.</p>
+            </div>
+          </div>
+          <div class="cl-alert cl-alert--error">
+            <i class="cl-alert-icon ph ph-x-circle"></i>
+            <div class="cl-alert-content">
+              <div class="cl-alert-title">Connection failed</div>
+              <p>Unable to reach the server. Check your network and try again.</p>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-component) 12px</td></tr>
+            <tr><td class="col-name">padding</td><td class="col-value">16px</td></tr>
+            <tr><td class="col-name">icon size</td><td class="col-value">20px</td></tr>
+            <tr><td class="col-name">gap</td><td class="col-value">12px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Toast ── -->
+      <div class="cl-component-group" id="toast">
+        <h3>Toast</h3>
+        <p>Transient notification messages for background events with optional action links.</p>
+
+        <div class="cl-canvas" style="flex-direction:column;align-items:stretch">
+          <div class="cl-toast cl-toast--info">
+            <i class="ph ph-info" style="font-size:20px;color:var(--accent)"></i>
+            <span>Deployment started</span>
+            <span class="cl-toast-action">View</span>
+          </div>
+          <div class="cl-toast cl-toast--success">
+            <i class="ph ph-check-circle" style="font-size:20px;color:var(--success)"></i>
+            <span>File uploaded successfully</span>
+          </div>
+          <div class="cl-toast cl-toast--warning">
+            <i class="ph ph-warning" style="font-size:20px;color:var(--warning)"></i>
+            <span>Storage 90% full</span>
+          </div>
+          <div class="cl-toast cl-toast--error">
+            <i class="ph ph-x-circle" style="font-size:20px;color:var(--error)"></i>
+            <span>Payment failed</span>
+            <span class="cl-toast-action">Retry</span>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">background</td><td class="col-value">var(--surface2)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-component) 12px</td></tr>
+            <tr><td class="col-name">padding</td><td class="col-value">12px 16px</td></tr>
+            <tr><td class="col-name">shadow</td><td class="col-value">var(--shadow-l2)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Progress ── -->
+      <div class="cl-component-group" id="progress">
+        <h3>Progress</h3>
+        <p>Horizontal progress bars, indeterminate loading animation, and circular SVG ring indicator.</p>
+
+        <!-- Canvas 1: Determinate bars -->
+        <div class="cl-canvas" style="flex-direction:column;gap:16px">
+          <div class="cl-variant">
+            <span class="cl-variant-label">0%</span>
+            <div class="cl-progress-track"><div class="cl-progress-fill" style="width:0%"></div></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">25%</span>
+            <div class="cl-progress-track"><div class="cl-progress-fill" style="width:25%"></div></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">50%</span>
+            <div class="cl-progress-track"><div class="cl-progress-fill" style="width:50%"></div></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">75%</span>
+            <div class="cl-progress-track"><div class="cl-progress-fill" style="width:75%"></div></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">100%</span>
+            <div class="cl-progress-track"><div class="cl-progress-fill" style="width:100%"></div></div>
+          </div>
+        </div>
+
+        <!-- Canvas 2: Indeterminate -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Indeterminate</span>
+            <div class="cl-progress-track"><div class="cl-progress-fill is-indeterminate"></div></div>
+          </div>
+        </div>
+
+        <!-- Canvas 3: Ring -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Ring 67%</span>
+            <div style="position:relative;width:64px;height:64px">
+              <svg viewBox="0 0 64 64" width="64" height="64">
+                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--surface3)" stroke-width="4"/>
+                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-dasharray="175.93" stroke-dashoffset="58.06" transform="rotate(-90 32 32)"/>
+              </svg>
+              <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--text1)">67%</span>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">track height</td><td class="col-value">6px</td></tr>
+            <tr><td class="col-name">track background</td><td class="col-value">var(--surface2)</td></tr>
+            <tr><td class="col-name">fill color</td><td class="col-value">var(--accent)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-pill)</td></tr>
+            <tr><td class="col-name">ring size</td><td class="col-value">64px, stroke-width 4</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Spinner ── -->
+      <div class="cl-component-group" id="spinner">
+        <h3>Spinner</h3>
+        <p>Animated loading spinners in three sizes for inline and overlay loading states.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Small</span>
+            <div class="cl-spinner cl-spinner--sm"></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Medium</span>
+            <div class="cl-spinner cl-spinner--md"></div>
+          </div>
+          <div class="cl-variant">
+            <span class="cl-variant-label">Large</span>
+            <div class="cl-spinner cl-spinner--lg"></div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Size</th><th>Dimensions</th><th>Border width</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">SM</td><td class="col-value">16px</td><td class="col-value">2px</td></tr>
+            <tr><td class="col-name">MD</td><td class="col-value">24px</td><td class="col-value">2.5px</td></tr>
+            <tr><td class="col-name">LG</td><td class="col-value">36px</td><td class="col-value">3px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Empty State ── -->
+      <div class="cl-component-group" id="empty-state">
+        <h3>Empty State</h3>
+        <p>Placeholder content for screens with no data, guiding users toward their first action.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <div class="cl-empty">
+              <i class="cl-empty-icon ph ph-folder-open"></i>
+              <div class="cl-empty-title">No projects yet</div>
+              <div class="cl-empty-desc">Create your first project to get started with Halcyon.</div>
+              <button class="cl-btn cl-btn--primary">Create Project</button>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">icon size</td><td class="col-value">48px</td></tr>
+            <tr><td class="col-name">title font-size</td><td class="col-value">18px / 600</td></tr>
+            <tr><td class="col-name">desc font-size</td><td class="col-value">14px</td></tr>
+            <tr><td class="col-name">text-align</td><td class="col-value">center</td></tr>
+            <tr><td class="col-name">gap</td><td class="col-value">12px</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         OVERLAYS
+         ═══════════════════════════════════════ -->
+    <section id="cat-overlays" class="cl-section">
+      <div class="cl-section-header">
+        <h2>Overlays</h2>
+        <p>Layered UI that appears above the page. Modals, popovers, tooltips, and accordions.</p>
+      </div>
+      <!-- ── Modal ── -->
+      <div class="cl-component-group" id="modal">
+        <h3>Modal</h3>
+        <p>Centered dialog panels for confirmations and alerts with backdrop overlay simulation.</p>
+
+        <!-- Canvas 1: Default dialog -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Confirmation</span>
+            <div class="cl-modal-demo">
+              <div class="cl-modal-panel">
+                <div class="cl-modal-title">Delete project?</div>
+                <div class="cl-modal-body">This action cannot be undone. All data associated with this project will be permanently removed.</div>
+                <div class="cl-modal-actions">
+                  <button class="cl-btn cl-btn--secondary cl-btn--sm">Cancel</button>
+                  <button class="cl-btn cl-btn--destructive cl-btn--sm">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas 2: Alert variant with icon -->
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Alert</span>
+            <div class="cl-modal-demo">
+              <div class="cl-modal-panel" style="text-align:center">
+                <i class="ph ph-warning-circle" style="font-size:48px;color:var(--error);margin-bottom:16px;display:block"></i>
+                <div class="cl-modal-title">Session expired</div>
+                <div class="cl-modal-body">Your session has timed out. Please sign in again to continue.</div>
+                <div class="cl-modal-actions" style="justify-content:center">
+                  <button class="cl-btn cl-btn--primary cl-btn--sm">Sign in</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">panel background</td><td class="col-value">var(--surface1)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-container) 20px</td></tr>
+            <tr><td class="col-name">padding</td><td class="col-value">24px</td></tr>
+            <tr><td class="col-name">shadow</td><td class="col-value">var(--shadow-l3)</td></tr>
+            <tr><td class="col-name">max-width</td><td class="col-value">420px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Popover ── -->
+      <div class="cl-component-group" id="popover">
+        <h3>Popover</h3>
+        <p>Floating panels anchored to trigger elements with arrow pointer and dropdown-style content.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <div class="cl-popover-demo">
+              <button class="cl-btn cl-btn--secondary cl-btn--sm">Options</button>
+              <div class="cl-popover-panel">
+                <div class="cl-dropdown-item">Edit profile</div>
+                <div class="cl-dropdown-item is-hover">Preferences</div>
+                <div class="cl-dropdown-divider"></div>
+                <div class="cl-dropdown-item" style="color:var(--error)">Sign out</div>
+                <div class="cl-popover-arrow"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">background</td><td class="col-value">var(--surface2)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-component) 12px</td></tr>
+            <tr><td class="col-name">padding</td><td class="col-value">4px</td></tr>
+            <tr><td class="col-name">shadow</td><td class="col-value">var(--shadow-l2)</td></tr>
+            <tr><td class="col-name">arrow size</td><td class="col-value">8px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Tooltip ── -->
+      <div class="cl-component-group" id="tooltip">
+        <h3>Tooltip</h3>
+        <p>Small informational labels that appear on hover in four directional placements.</p>
+
+        <div class="cl-canvas">
+          <div style="display:flex;gap:80px;align-items:center;justify-content:center;padding:48px">
+            <div class="cl-tooltip-anchor">
+              <button class="cl-icon-btn cl-icon-btn--ghost cl-icon-btn--sm"><i class="ph ph-info"></i></button>
+              <div class="cl-tooltip cl-tooltip--top">More info<div class="cl-tooltip-arrow"></div></div>
+            </div>
+            <div class="cl-tooltip-anchor">
+              <button class="cl-icon-btn cl-icon-btn--ghost cl-icon-btn--sm"><i class="ph ph-info"></i></button>
+              <div class="cl-tooltip cl-tooltip--right">More info<div class="cl-tooltip-arrow"></div></div>
+            </div>
+            <div class="cl-tooltip-anchor">
+              <button class="cl-icon-btn cl-icon-btn--ghost cl-icon-btn--sm"><i class="ph ph-info"></i></button>
+              <div class="cl-tooltip cl-tooltip--bottom">More info<div class="cl-tooltip-arrow"></div></div>
+            </div>
+            <div class="cl-tooltip-anchor">
+              <button class="cl-icon-btn cl-icon-btn--ghost cl-icon-btn--sm"><i class="ph ph-info"></i></button>
+              <div class="cl-tooltip cl-tooltip--left">More info<div class="cl-tooltip-arrow"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">background</td><td class="col-value">var(--surface3)</td></tr>
+            <tr><td class="col-name">border-radius</td><td class="col-value">var(--r-element) 4px</td></tr>
+            <tr><td class="col-name">padding</td><td class="col-value">6px 10px</td></tr>
+            <tr><td class="col-name">font-size</td><td class="col-value">12px</td></tr>
+            <tr><td class="col-name">arrow size</td><td class="col-value">4px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Accordion ── -->
+      <div class="cl-component-group" id="accordion">
+        <h3>Accordion</h3>
+        <p>Collapsible content sections with expand/collapse chevron, hover, and disabled header states.</p>
+
+        <div class="cl-canvas">
+          <div class="cl-variant">
+            <span class="cl-variant-label">Default</span>
+            <div class="cl-accordion" style="max-width:480px">
+              <div class="cl-accordion-item is-expanded">
+                <div class="cl-accordion-header">What is Halcyon?<i class="cl-accordion-chevron ph ph-caret-down"></i></div>
+                <div class="cl-accordion-content">Halcyon is a reasoning platform for engineering teams that lets you trace how decisions propagate across a codebase.</div>
+              </div>
+              <div class="cl-accordion-item">
+                <div class="cl-accordion-header is-hover">How does it work?<i class="cl-accordion-chevron ph ph-caret-down"></i></div>
+                <div class="cl-accordion-content">Connect your repository and Halcyon maps the dependency graph, showing you the blast radius of any change.</div>
+              </div>
+              <div class="cl-accordion-item">
+                <div class="cl-accordion-header is-disabled">Is it open source?<i class="cl-accordion-chevron ph ph-caret-down"></i></div>
+                <div class="cl-accordion-content">Not yet, but we plan to open-source the core engine in Q3 2026.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <table class="cl-spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">header padding</td><td class="col-value">16px 0</td></tr>
+            <tr><td class="col-name">content padding</td><td class="col-value">0 0 16px 0</td></tr>
+            <tr><td class="col-name">border-bottom</td><td class="col-value">1px solid var(--border)</td></tr>
+            <tr><td class="col-name">chevron size</td><td class="col-value">16px</td></tr>
+            <tr><td class="col-name">font-size</td><td class="col-value">15px / 600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     FLOATING BAR
+     ═══════════════════════════════════════════ -->
+<div class="floating-bar">
+  <button class="mode-btn" data-mode="light"><i class="ph ph-sun"></i> Light</button>
+  <button class="mode-btn active" data-mode="dark"><i class="ph ph-moon"></i> Dark</button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCRIPT
+     ═══════════════════════════════════════════ -->
+<script>
+  // Theme toggle
+  const modeButtons = document.querySelectorAll('.mode-btn');
+  modeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.documentElement.dataset.theme = btn.dataset.mode;
+      modeButtons.forEach(b => b.classList.toggle('active', b === btn));
+    });
+  });
+
+  // Category tab switching
+  const catHeaders = document.querySelectorAll('.cl-toc-cat');
+  const subLinks = document.querySelectorAll('.cl-toc-sub a');
+  const allSections = document.querySelectorAll('.cl-section');
+
+  function showCategory(catId) {
+    allSections.forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(catId);
+    if (target) {
+      target.classList.add('active');
+      target.scrollTop = 0;
+    }
+    catHeaders.forEach(h => h.classList.toggle('active', h.dataset.cat === catId));
+    subLinks.forEach(a => a.classList.remove('active'));
+  }
+
+  function showCategoryAndScroll(catId, anchorId) {
+    allSections.forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(catId);
+    if (target) {
+      target.classList.add('active');
+      const anchor = document.getElementById(anchorId);
+      if (anchor) {
+        setTimeout(() => anchor.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+      }
+    }
+    catHeaders.forEach(h => h.classList.toggle('active', h.dataset.cat === catId));
+    subLinks.forEach(a => {
+      const href = a.getAttribute('href');
+      a.classList.toggle('active', href === '#' + anchorId);
+    });
+  }
+
+  // Category header clicks
+  catHeaders.forEach(h => {
+    h.addEventListener('click', e => {
+      e.preventDefault();
+      showCategory(h.dataset.cat);
+    });
+  });
+
+  // Sub-item deep-links
+  subLinks.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const catId = a.dataset.cat;
+      const anchorId = a.getAttribute('href').replace('#', '');
+      showCategoryAndScroll(catId, anchorId);
+    });
+  });
+
+  // Disable all non-TOC anchor clicks (mockup protection)
+  document.querySelectorAll('a').forEach(a => {
+    if (a.closest('.cl-toc')) return;
+    a.addEventListener('click', e => e.preventDefault());
+  });
+
+  // Scroll-tracking: highlight active TOC link on scroll
+  const mainEl = document.querySelector('.cl-main');
+  const componentGroups = document.querySelectorAll('.cl-component-group');
+
+  function updateActiveTocLink() {
+    const scrollTop = mainEl.scrollTop;
+    let activeId = null;
+    componentGroups.forEach(g => {
+      if (g.offsetTop - 80 <= scrollTop) activeId = g.id;
+    });
+    if (activeId) {
+      subLinks.forEach(a => {
+        const href = a.getAttribute('href');
+        a.classList.toggle('active', href === '#' + activeId);
+      });
+    }
+  }
+
+  mainEl.addEventListener('scroll', updateActiveTocLink, { passive: true });
+
+  // Default: dark mode, foundations active
+  showCategory('cat-foundations');
+</script>
+</body>
+</html>
