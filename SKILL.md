@@ -491,7 +491,13 @@ Read `references/landing-page-template.md` for the full specification. Key rules
 7. **Same floating Light/Dark bar** as the other two views.
 8. **All values from `design-model.yaml`.** Re-read before writing CSS.
 
-Open in browser after generating. Editorial brands often look dramatically different in dark mode — always test both.
+**Pre-ship verification — run before declaring the landing done.** These three checks catch the most common silent-failure bugs:
+
+1. **Every CSS class-selector must hit at least one element.** If the stylesheet references `.hero h1` but the HTML only has `<section class="lp-hero">` + `<div class="hero-content">`, the rules don't match and the h1 renders with default browser styles. Grep your selector names against your HTML: every class used in CSS should exist in the markup. If you introduce a wrapper like `.hero-content`, update every matching selector too.
+2. **Flex parents need explicit child widths.** A hero section using `display: flex; align-items: center` will shrink its inner `.container` down to intrinsic content width — so a 1320px max-width container silently becomes 721px. Always give inner containers inside flex heroes `width: 100%`, or use `display: block` on the hero and center with margin.
+3. **Open in the browser and inspect the hero.** Check computed `font-family` and `font-size` on the h1 — if they say `Inter 32px` when you expected `Cormorant Garamond 96px`, your display-font CSS rule didn't match. Fix the selector, don't ship the bug. Also test both light and dark modes — editorial brands often break in one of the two.
+
+Editorial brands often look dramatically different in dark mode — always test both.
 
 ### Step 7.7: Generate App Screen (Phase 4)
 

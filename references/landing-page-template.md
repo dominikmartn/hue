@@ -63,6 +63,15 @@ A standalone HTML file (`landing-page.html`) in the skill folder. Self-contained
 - **Hero is dominant.** The hero headline should feel 2-3× larger than any other typography on the page. Use the display token or a custom larger size if needed.
 - **Feature sections alternate.** Text-left / visual-right, then swap. Prevents the eye from falling into a single column.
 - **One primary color arrival per section.** The accent should appear at a key moment — CTA, highlight, current state — and NOT be spread across every element. Restraint makes the accent feel special.
+- **Flex heroes need explicit inner width.** If the hero is `display: flex; align-items: center` (to vertically center content in a `100vh` section), the inner container will shrink to its intrinsic content width instead of expanding to its `max-width`. Always give the inner `.container` or `.lp-hero > div` `width: 100%` so the `max-width` takes effect. Missing this rule silently collapses a 1320px hero down to 700px.
+
+## CSS / HTML binding
+
+Before shipping the landing, verify every selector actually matches an element:
+
+- If you invent a wrapper class (e.g. `.hero-content`, `.hero-grid`), update every selector that references the old name. Rules like `.hero h1` won't apply to `<section class="lp-hero">` + `<div class="hero-content"><h1>`. The h1 then renders with default browser styles and looks broken.
+- Rule of thumb: grep your stylesheet class-selectors against the HTML. Every class-selector should hit at least one element. Orphan selectors are almost always the source of "why is my display font not loading?".
+- After generating, open the file in a browser and inspect the hero h1's computed `font-family` and `font-size`. If it says `Inter 32px` and you expected `Cormorant Garamond 96px`, your rule didn't match — fix the selector before declaring the landing done.
 
 ## Required sections
 
