@@ -1,0 +1,167 @@
+name: "Relay"
+description: "Fictional Swiss transit dispatch and timetable platform. Pure white canvas, hairline black borders, one red accent, zero radius anywhere. The hero is a live departure board sitting on a 48px grid. Proves the swiss-precision preset: medium: grid + subject: ui-board + relation: flat-on-rule. Inter 800 doing all the typographic heavy lifting."
+philosophy: "On time, on grid. Relay is the dispatch and timetable platform for operations teams. The identity is borrowed straight from a station hall: a hairline grid, a black header strip, tabular numerals, and one red square that says 'this is moving'. Nothing is rounded, nothing decorative, nothing late."
+primary_mode: "light"
+brand_source: "INVENTED — fictional brand for hue carousel"
+brand_domain: "swiss transit board (fictional)"
+brand_type: "content-rich"
+mono_for_data: true
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    neutral:             # pure black + true grayscale, no warmth
+      0:   "#FFFFFF"    # canvas
+      50:  "#F2F2F2"    # surface1
+      100: "#E6E6E6"    # surface2
+      200: "#E0E0E0"    # grid lines
+      500: "#595959"    # secondary text
+      900: "#000000"    # text + border
+    accent:              # single red, no ramp — relay only ships one accent
+      light: "#DD0000"  # primary accent (light mode)
+      dark:  "#FF2222"  # primary accent (dark mode)
+    on_accent:
+      base:  "#FFFFFF"  # white text on red
+  spacing: [0, 8, 16, 24, 32, 48, 64, 96, 128]
+  radii:   [0]          # swiss precision — every corner is a corner
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    light:
+      background:     "{neutral.0}"
+      surface1:       "{neutral.50}"
+      surface2:       "{neutral.100}"
+      surface3:       "{neutral.100}"
+      border:         "{neutral.900}"     # hairline black, not gray
+      border_visible: "{neutral.900}"
+      grid:           "{neutral.200}"     # 48px grid lines, faint
+      text1:          "{neutral.900}"
+      text2:          "{neutral.500}"
+      text3:          "{neutral.500}"
+      text4:          "{neutral.500}"
+      accent:         "{accent.light}"
+      accent_hover:   "{neutral.900}"     # hover collapses to black, not a tint
+      on_accent:      "{on_accent.base}"
+    dark:
+      background:     "#000000"
+      surface1:       "#0A0A0A"
+      surface2:       "#141414"
+      surface3:       "#141414"
+      border:         "#FFFFFF"
+      border_visible: "#FFFFFF"
+      grid:           "#1A1A1A"
+      text1:          "#FFFFFF"
+      text2:          "#A6A6A6"
+      text3:          "#A6A6A6"
+      text4:          "#A6A6A6"
+      accent:         "{accent.dark}"
+      accent_hover:   "#FFFFFF"
+      on_accent:      "{on_accent.base}"
+
+  radii:
+    element:   0
+    control:   0
+    component: 0
+    container: 0
+    pill:      0      # even pills are squares — this is a swiss board
+
+  typography:
+    display:
+      family: "Inter"            # Inter 800 carries the entire identity
+      size:   "128px"            # clamp(56px, 7.5vw, 128px) at desktop max
+      weight: 800
+      line_height: 0.94
+      letter_spacing: "-0.035em"
+      google_fonts: "Inter:wght@400;500;600;700;800"
+    body:
+      family: "Inter"
+      size:   "16px"
+      weight: 400
+      line_height: 1.5
+      letter_spacing: "0em"
+      google_fonts: "Inter:wght@400;500;600;700;800"
+    mono:
+      family: "JetBrains Mono"   # tabular nums for the departure board
+      size:   "13px"
+      weight: 500
+      google_fonts: "JetBrains+Mono:wght@400;500"
+
+# ── HERO STAGE ─── swiss-precision preset
+# Demonstrates:
+#   background.medium: grid (faint 48px hairlines on pure white)
+#   hero.subject: ui-board (a live departure board, on the grid)
+#   relation.type: flat-on-rule — board sits on the canvas, separated by a 1px black rule
+#
+# The hero isn't a render or a 3D field. It's the actual product surface
+# (a departure board with five tabular rows) placed on a station-hall grid,
+# with one red dot in the eyebrow as the only color in the entire viewport.
+hero_stage:
+  preset: "swiss-precision"
+  observed_style:
+    description: "INVENTED for testing: pure white canvas with a faint 48px hairline grid (#E0E0E0). A 'DEP 14:00 GLEIS 3 ON TIME' eyebrow with a red square dot sits above an Inter 800 headline at clamp(56px, 7.5vw, 128px), letter-spacing -0.035em, line-height 0.94. Below it, a live departure board: black header strip with white mono caps, four tabular rows showing time, destination, service, track, status. Three rows are ON TIME, one is +2 MIN in red. The board has 1px black borders all the way through. Zero border-radius, zero gradients, zero shadows."
+    where_used: ["hero", "final cta (background echo, same grid)"]
+    notes: "Fictional composition inspired by Swiss transit information design (Helvetica era SBB / Müller-Brockmann grid tradition). Pure HTML and CSS — no images, no SVG illustrations beyond the platform map. Proves that medium: grid + subject: ui-board can be hero-worthy without any rendering, just by trusting the grid and the type."
+  background:
+    medium: "grid"               # 48px hairline grid on pure white
+    color_mode: "monochrome"
+    saturation: "muted"          # one red square in the entire hero
+    light_source: "none"         # no falloff, no vignette — flat as a timetable
+    falloff: "none"
+    vignette: "none"
+    texture: "clean"
+    motion: "static"
+    intensity: "quiet"           # the grid is faint by design
+    safe_zone: "full-bleed"      # type sits directly on grid, no scrim
+    color_palette:
+      - "#FFFFFF"   # canvas
+      - "#E0E0E0"   # grid lines
+      - "#000000"   # text + borders + board header
+      - "#595959"   # secondary text
+      - "#DD0000"   # the one red — eyebrow dot + delay status
+    recipe: "hairline-grid"      # hairline-grid / dot-grid / rule-block
+    recipe_params:
+      grid_size: "48px"
+      grid_color: "#E0E0E0"
+      grid_weight: "1px"
+      offset: "-1px -1px"
+  hero:
+    subject: "ui-board"          # the live departure board IS the subject
+    form: "departure-board"
+    placement: "below-headline"
+    scale: "full-width"
+    tint: "monochrome"
+  relation:
+    type: "flat-on-rule"         # board sits flat on canvas, separated by 1px black rule
+    bleed: 0
+  disclaimer: "Fictional brand created for the hue carousel. Not affiliated with SBB, Verkehrsbetriebe Mittelland, or any real transit operator. The Swiss transit board aesthetic is a tradition (Müller-Brockmann, Helvetica-era SBB, Frutiger), not a copyrighted style — but station names and operator names are invented."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Fictional: minimal, geometric, hairline. Icons are rare on relay — the identity is type and grid, not glyphs. When used, they're 1px outlines matching the border weight."
+    stroke_weight: "regular"
+    corner_treatment: "sharp"
+    fill_style: "outline"
+    form_language: "geometric"
+    visual_density: "minimal"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "regular"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css"
+    icon_class_prefix: "ph ph-"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  samples:
+    - "The schedule, on time."
+    - "Departures, arrivals, platforms, connections. One service. No detours."
+    - "Every departure, accounted for."
+    - "Real-time data. Plain JSON."
+    - "Board the relay. One service, on time."
+  attributes:
+    - "precise"
+    - "scheduled"
+    - "transit-board terse"
+    - "no marketing softness — every sentence is a dispatch"
+    - "german-swiss restraint, 'Pünktlich' as a footer signature"

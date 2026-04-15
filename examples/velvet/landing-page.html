@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>velvet · Scents composed for the unrepeated evening.</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css">
+
+<style>
+  /* mockup polish — dead links don't fake broken flows */
+  .lp-nav a,
+  .lp-header .btn,
+  .lp-footer a,
+  .btn-primary,
+  .btn-ghost,
+  .btn-secondary,
+  .btn-hero,
+  .ghost-link,
+  .composition-card a {
+    pointer-events: none;
+    cursor: default;
+  }
+  [data-theme-btn] {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+  :root {
+    /* warm-noir palette */
+    --noir-950: #0A0907;   /* near-black, warm undertone */
+    --noir-900: #14120E;   /* surface dark */
+    --noir-800: #1C1A14;
+    --noir-700: #2A271F;
+    --bone-50:  #FAF7F1;
+    --bone-100: #F5F1EA;   /* warm bone */
+    --bone-200: #ECE5D8;
+    --bone-300: #D8D0C0;
+    --taupe:    #8A8578;
+    --taupe-dk: #6B675B;
+
+    --champagne: #D4B896;
+    --rose-gold: #C9A76E;
+    --champagne-soft: rgba(212, 184, 150, 0.55);
+
+    --sp-xs:  4px;
+    --sp-sm:  8px;
+    --sp-md:  16px;
+    --sp-lg:  24px;
+    --sp-xl:  40px;
+    --sp-2xl: 64px;
+    --sp-3xl: 96px;
+    --sp-4xl: 128px;
+    --sp-5xl: 176px;
+
+    --r-xs: 2px;
+    --r-sm: 4px;
+
+    --font-display: 'Cormorant Garamond', 'Playfair Display', 'Times New Roman', serif;
+    --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+
+    --tracking-label: 0.25em;
+    --tracking-display: 0.005em;
+  }
+
+  [data-theme="dark"] {
+    --bg:           var(--noir-950);
+    --surface1:     var(--noir-900);
+    --surface2:     var(--noir-800);
+    --surface3:     var(--noir-700);
+    --text1:        var(--bone-100);
+    --text2:        #C5C0B3;
+    --text3:        var(--taupe);
+    --text4:        var(--taupe-dk);
+    --border:       rgba(212, 184, 150, 0.15);
+    --border-vis:   rgba(212, 184, 150, 0.28);
+    --accent:       var(--champagne);
+    --accent-2:     var(--rose-gold);
+    --hairline:     rgba(245, 241, 234, 0.10);
+    --bottle-glass: rgba(20, 18, 14, 0.65);
+  }
+  [data-theme="light"] {
+    --bg:           var(--bone-100);
+    --surface1:     var(--bone-50);
+    --surface2:     var(--bone-200);
+    --surface3:     var(--bone-300);
+    --text1:        var(--noir-950);
+    --text2:        #2A271F;
+    --text3:        var(--taupe-dk);
+    --text4:        var(--taupe);
+    --border:       rgba(10, 9, 7, 0.12);
+    --border-vis:   rgba(10, 9, 7, 0.22);
+    --accent:       #8B6E3F;
+    --accent-2:     #A48148;
+    --hairline:     rgba(10, 9, 7, 0.10);
+    --bottle-glass: rgba(245, 241, 234, 0.85);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text1);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.65;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background 400ms ease, color 400ms ease;
+  }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--sp-2xl);
+  }
+  .container-wide {
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 var(--sp-xl);
+  }
+
+  .label {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text3);
+  }
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: var(--tracking-display);
+    line-height: 1.04;
+    color: var(--text1);
+  }
+
+  /* ── HEADER / NAV ── */
+  .lp-header {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .lp-header .container-wide {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+  }
+  .lp-brand {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 26px;
+    letter-spacing: 0.02em;
+    color: var(--text1);
+  }
+  .lp-brand-mark {
+    display: inline-block;
+    margin-right: 6px;
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    transform: translateY(-3px);
+  }
+  .lp-nav {
+    display: flex;
+    gap: var(--sp-xl);
+  }
+  .lp-nav a {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text2);
+    transition: color 200ms ease;
+  }
+  .lp-nav a:hover { color: var(--accent); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    padding: 12px 22px;
+    border: 1px solid transparent;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    border-radius: var(--r-xs);
+    cursor: pointer;
+    background: transparent;
+    color: var(--text1);
+    transition: all 240ms ease;
+  }
+  .btn-primary {
+    background: var(--text1);
+    color: var(--bg);
+    border-color: var(--text1);
+  }
+  .btn-primary:hover {
+    background: var(--accent);
+    color: var(--noir-950);
+    border-color: var(--accent);
+  }
+  .btn-ghost {
+    border-color: var(--border-vis);
+    color: var(--text1);
+  }
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .btn-small {
+    padding: 9px 16px;
+    font-size: 10px;
+  }
+
+  /* ── HERO ── */
+  .lp-hero {
+    position: relative;
+    min-height: 100vh;
+    padding: 180px 0 var(--sp-4xl);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-3xl);
+    position: relative;
+    z-index: 2;
+  }
+  .hero-content {
+    max-width: 960px;
+  }
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-md);
+    margin-bottom: var(--sp-2xl);
+  }
+  .hero-eyebrow .rule {
+    flex: 0 0 56px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero-eyebrow .label {
+    color: var(--accent);
+  }
+  .hero-content h1 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(56px, 7.2vw, 112px);
+    line-height: 0.98;
+    letter-spacing: -0.015em;
+    margin: 0 0 var(--sp-2xl);
+    max-width: 12ch;
+    color: var(--text1);
+  }
+  .hero-content h1 em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+  }
+  .hero-content p.sub {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text2);
+    max-width: 56ch;
+    margin: 0 0 56px;
+    font-weight: 300;
+  }
+  .hero-ctas {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-xl);
+    margin: 0 0 var(--sp-4xl);
+  }
+  .ghost-link {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text2);
+    border-bottom: 1px solid var(--border-vis);
+    padding-bottom: 4px;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .ghost-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .hero-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-xl);
+    padding-top: var(--sp-xl);
+    border-top: 1px solid var(--hairline);
+    max-width: 880px;
+  }
+  .hero-meta .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-xs);
+  }
+  .hero-meta .meta-value {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text1);
+    line-height: 1;
+  }
+  .hero-meta .meta-value em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  /* hero corner ornament — subtle Roman numeral */
+  .hero-ornament {
+    position: absolute;
+    top: 96px;
+    right: var(--sp-2xl);
+    z-index: 1;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(180px, 28vw, 360px);
+    line-height: 0.8;
+    color: var(--text1);
+    opacity: 0.035;
+    pointer-events: none;
+    user-select: none;
+  }
+  [data-theme="light"] .hero-ornament {
+    opacity: 0.06;
+  }
+
+  /* ── DIVIDER ── */
+  .lp-divider {
+    border-top: 1px solid var(--hairline);
+  }
+  .section-eyebrow {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: var(--sp-2xl) 0 var(--sp-xl);
+  }
+  .section-eyebrow .left {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-md);
+  }
+  .section-eyebrow .roman {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--accent);
+  }
+  .section-eyebrow .label-strong {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text1);
+  }
+  .section-eyebrow .right {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text3);
+  }
+
+  /* ── COMPOSITIONS ── */
+  .lp-compositions {
+    padding: var(--sp-2xl) 0 var(--sp-4xl);
+  }
+  .compositions-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3xl);
+    margin-bottom: var(--sp-3xl);
+    align-items: end;
+  }
+  .compositions-intro h2 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.005em;
+    margin: 0;
+    color: var(--text1);
+    max-width: 16ch;
+  }
+  .compositions-intro h2 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .compositions-intro p {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--text2);
+    max-width: 42ch;
+    font-weight: 300;
+  }
+
+  .compositions-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1.1fr;
+    gap: var(--sp-xl);
+    align-items: end;
+  }
+  .composition-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .composition-card.elevated { transform: translateY(-48px); }
+  .composition-card.recessed { transform: translateY(48px); }
+
+  .bottle-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(212, 184, 150, 0.10) 0%, transparent 60%),
+      linear-gradient(180deg, var(--surface2) 0%, var(--surface1) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    overflow: hidden;
+    margin-bottom: var(--sp-lg);
+  }
+  .bottle-frame::before {
+    /* faint rule at top */
+    content: "";
+    position: absolute;
+    top: 16px; left: 16px; right: 16px;
+    height: 1px;
+    background: var(--hairline);
+  }
+  .bottle-frame::after {
+    /* faint rule at bottom */
+    content: "";
+    position: absolute;
+    bottom: 16px; left: 16px; right: 16px;
+    height: 1px;
+    background: var(--hairline);
+  }
+  .frame-tag {
+    position: absolute;
+    top: 22px; left: 22px;
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text3);
+    z-index: 3;
+  }
+  .frame-tag-right {
+    position: absolute;
+    top: 22px; right: 22px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--accent);
+    z-index: 3;
+  }
+  .bottle-stage {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* SVG bottles use currentColor + filters set per variant */
+  .bottle {
+    width: 56%;
+    height: auto;
+    filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.55));
+  }
+
+  .composition-card .meta-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sp-md);
+    padding: var(--sp-md) 0 var(--sp-sm);
+    border-top: 1px solid var(--hairline);
+  }
+  .composition-card .num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--accent);
+  }
+  .composition-card .ed {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text3);
+  }
+  .composition-card .name {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--text1);
+    margin: 0 0 var(--sp-sm);
+    letter-spacing: 0.005em;
+  }
+  .composition-card .name em {
+    font-style: italic;
+  }
+  .composition-card .notes {
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text3);
+    font-weight: 300;
+    margin-bottom: var(--sp-md);
+  }
+  .composition-card .notes strong {
+    color: var(--text2);
+    font-weight: 500;
+  }
+  .composition-card .read {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--accent);
+  }
+  .composition-card .read::after {
+    content: "→";
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--accent);
+  }
+
+  /* ── METHOD ── */
+  .lp-method {
+    padding: var(--sp-3xl) 0 var(--sp-4xl);
+    border-top: 1px solid var(--hairline);
+  }
+  .method-head {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: var(--sp-3xl);
+    margin-bottom: var(--sp-3xl);
+    align-items: start;
+  }
+  .method-head h2 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.05;
+    margin: 0;
+    color: var(--text1);
+  }
+  .method-head h2 em { font-style: italic; color: var(--accent); }
+  .method-head p {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--text2);
+    font-weight: 300;
+    max-width: 50ch;
+  }
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-xl);
+  }
+  .method-step {
+    padding-top: var(--sp-xl);
+    border-top: 1px solid var(--hairline);
+  }
+  .method-step .roman-num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--accent);
+    margin-bottom: var(--sp-xl);
+  }
+  .method-step h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1.1;
+    margin: 0 0 var(--sp-md);
+    color: var(--text1);
+  }
+  .method-step h3 em { font-style: italic; }
+  .method-step p {
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--text3);
+    font-weight: 300;
+    max-width: 36ch;
+  }
+  .method-step .step-meta {
+    margin-top: var(--sp-lg);
+    padding-top: var(--sp-md);
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text4);
+  }
+  .method-step .step-meta span:last-child {
+    color: var(--accent);
+  }
+
+  /* ── PULL QUOTE ── */
+  .lp-quote {
+    padding: var(--sp-4xl) 0;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    text-align: center;
+  }
+  .lp-quote .label-strong {
+    display: inline-block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text3);
+    margin-bottom: var(--sp-xl);
+  }
+  .lp-quote blockquote {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(28px, 3.6vw, 46px);
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+    color: var(--text1);
+    margin: 0 auto;
+    max-width: 24ch;
+    quotes: "\201C" "\201D";
+  }
+  .lp-quote blockquote::before { content: open-quote; color: var(--accent); }
+  .lp-quote blockquote::after  { content: close-quote; color: var(--accent); }
+  .lp-quote .credit {
+    margin-top: var(--sp-xl);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text3);
+  }
+  .lp-quote .credit strong {
+    color: var(--text2);
+    font-weight: 500;
+  }
+
+  /* ── ATELIER ── */
+  .lp-atelier {
+    padding: var(--sp-3xl) 0 var(--sp-4xl);
+  }
+  .atelier-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3xl);
+    margin-bottom: var(--sp-2xl);
+    align-items: end;
+  }
+  .atelier-head h2 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.05;
+    margin: 0;
+    color: var(--text1);
+  }
+  .atelier-head h2 em { font-style: italic; color: var(--accent); }
+  .atelier-head p {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--text2);
+    font-weight: 300;
+    max-width: 42ch;
+  }
+  .atelier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .atelier-card {
+    padding: var(--sp-xl) var(--sp-xl) var(--sp-xl) 0;
+    border-right: 1px solid var(--hairline);
+  }
+  .atelier-card:last-child { border-right: none; padding-right: 0; }
+  .atelier-card:not(:first-child) { padding-left: var(--sp-xl); }
+  .atelier-card .city {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1;
+    margin: 0 0 var(--sp-md);
+    color: var(--text1);
+  }
+  .atelier-card .city em { font-style: italic; color: var(--accent); }
+  .atelier-card address {
+    font-style: normal;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text3);
+    font-weight: 300;
+    margin-bottom: var(--sp-lg);
+  }
+  .atelier-card address strong {
+    color: var(--text2);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .atelier-card .hours {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text4);
+    padding-top: var(--sp-md);
+    border-top: 1px solid var(--hairline);
+  }
+
+  /* ── FOOTER ── */
+  .lp-footer {
+    border-top: 1px solid var(--hairline);
+    padding: var(--sp-3xl) 0 var(--sp-2xl);
+  }
+  .lp-footer .container-wide {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--sp-3xl);
+    align-items: start;
+  }
+  .footer-brand {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 42px;
+    line-height: 1;
+    margin-bottom: var(--sp-md);
+    color: var(--text1);
+  }
+  .footer-tag {
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text3);
+    font-weight: 300;
+    max-width: 32ch;
+  }
+  .footer-col h4 {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text2);
+    margin: 0 0 var(--sp-md);
+  }
+  .footer-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-sm);
+  }
+  .footer-col a {
+    font-size: 12px;
+    color: var(--text3);
+    transition: color 200ms ease;
+  }
+  .footer-col a:hover { color: var(--accent); }
+  .footer-bottom {
+    margin-top: var(--sp-2xl);
+    padding-top: var(--sp-lg);
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text4);
+  }
+  .footer-bottom span em { color: var(--accent); font-style: italic; }
+
+  /* ── THEME TOGGLE ── */
+  .theme-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: color-mix(in srgb, var(--surface1) 88%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--border-vis);
+    border-radius: 999px;
+    z-index: 1000;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+  .theme-bar button {
+    padding: 8px 18px;
+    border: none;
+    background: transparent;
+    color: var(--text3);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 200ms ease;
+  }
+  .theme-bar button.active {
+    background: var(--accent);
+    color: var(--noir-950);
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 880px) {
+    .container, .container-wide { padding: 0 var(--sp-lg); }
+    .lp-header .container-wide { height: 64px; }
+    .lp-nav { display: none; }
+    .lp-hero { padding: 140px 0 var(--sp-3xl); min-height: auto; }
+    .hero h1 { font-size: clamp(40px, 11vw, 64px); }
+    .hero-meta { grid-template-columns: repeat(2, 1fr); gap: var(--sp-lg); }
+    .hero-ornament { font-size: 200px; right: -20px; top: 60px; }
+    .compositions-intro,
+    .method-head,
+    .atelier-head { grid-template-columns: 1fr; gap: var(--sp-xl); }
+    .compositions-grid {
+      grid-template-columns: 1fr;
+      gap: var(--sp-xl);
+    }
+    .composition-card.elevated,
+    .composition-card.recessed { transform: none; }
+    .method-grid { grid-template-columns: 1fr; gap: var(--sp-xl); }
+    .atelier-grid { grid-template-columns: 1fr; }
+    .atelier-card {
+      border-right: none;
+      border-bottom: 1px solid var(--hairline);
+      padding: var(--sp-xl) 0;
+    }
+    .atelier-card:last-child { border-bottom: none; }
+    .atelier-card:not(:first-child) { padding-left: 0; }
+    .lp-footer .container-wide { grid-template-columns: 1fr; gap: var(--sp-2xl); }
+    .footer-bottom { flex-direction: column; gap: var(--sp-sm); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="lp-header">
+  <div class="container-wide">
+    <a href="#" class="lp-brand"><span class="lp-brand-mark"></span>velvet</a>
+    <nav class="lp-nav">
+      <a href="#">Compositions</a>
+      <a href="#">Method</a>
+      <a href="#">Journal</a>
+      <a href="#">Atelier</a>
+    </nav>
+    <button class="btn btn-ghost btn-small">Request invitation</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── HERO ── -->
+  <section class="lp-hero">
+    <div class="hero-ornament">N</div>
+    <div class="container-wide">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span class="rule"></span>
+            <span class="label">Private Atelier · Established 2019</span>
+          </div>
+          <h1>Scents composed for the <em>unrepeated</em> evening.</h1>
+          <p class="sub">A private perfumery for collectors, hosted by master perfumers Élise Marchand and Sofia Renault. Each composition is bottled in editions of no more than forty, then signed by hand and shipped from the Paris atelier.</p>
+          <div class="hero-ctas">
+            <button class="btn btn-primary">Request an invitation</button>
+            <a href="#" class="ghost-link">Read the journal</a>
+          </div>
+          <div class="hero-meta">
+            <div class="meta-item">
+              <span class="label">Founded</span>
+              <span class="meta-value">2019</span>
+            </div>
+            <div class="meta-item">
+              <span class="label">Edition</span>
+              <span class="meta-value"><em>40</em> bottles</span>
+            </div>
+            <div class="meta-item">
+              <span class="label">Compositions</span>
+              <span class="meta-value">Twelve</span>
+            </div>
+            <div class="meta-item">
+              <span class="label">Ateliers</span>
+              <span class="meta-value">Paris, Kyoto</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── COMPOSITIONS ── -->
+  <section class="lp-compositions lp-divider">
+    <div class="container-wide">
+      <div class="section-eyebrow">
+        <div class="left">
+          <span class="roman">I.</span>
+          <span class="label-strong">The Compositions</span>
+        </div>
+        <div class="right">Spring Edition · MMXXVI</div>
+      </div>
+
+      <div class="compositions-intro">
+        <h2>Three new <em>chapters,</em> bottled this season.</h2>
+        <p>Each composition begins with a place. Then a memory of weather. Then the smallest possible cast of materials. We finish a perfume only when nothing further can be removed without losing the room it was built for.</p>
+      </div>
+
+      <div class="compositions-grid">
+
+        <!-- Card 1 -->
+        <article class="composition-card recessed">
+          <div class="bottle-frame">
+            <span class="frame-tag">FIG · 01</span>
+            <span class="frame-tag-right">N<sup>o</sup> 01</span>
+            <div class="bottle-stage">
+              <svg class="bottle" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="glass1" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#3A2818" stop-opacity="0.95"/>
+                    <stop offset="0.5" stop-color="#1A0F08" stop-opacity="0.98"/>
+                    <stop offset="1" stop-color="#0A0604" stop-opacity="1"/>
+                  </linearGradient>
+                  <linearGradient id="shine1" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#D4B896" stop-opacity="0.55"/>
+                    <stop offset="0.4" stop-color="#D4B896" stop-opacity="0.10"/>
+                    <stop offset="1" stop-color="#D4B896" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- cap -->
+                <rect x="78" y="18" width="44" height="22" fill="#0A0604" stroke="#D4B896" stroke-width="0.6"/>
+                <!-- neck -->
+                <rect x="86" y="40" width="28" height="18" fill="url(#glass1)" stroke="#D4B896" stroke-width="0.4"/>
+                <!-- shoulder + body (square architectural) -->
+                <path d="M 50 70 L 50 240 Q 50 256 66 256 L 134 256 Q 150 256 150 240 L 150 70 Q 150 58 138 58 L 62 58 Q 50 58 50 70 Z"
+                  fill="url(#glass1)" stroke="#D4B896" stroke-width="0.6"/>
+                <!-- inner highlight -->
+                <path d="M 60 76 L 60 230 Q 60 242 72 242" fill="none" stroke="url(#shine1)" stroke-width="3"/>
+                <!-- label band -->
+                <rect x="62" y="140" width="76" height="62" fill="#0A0604" stroke="#D4B896" stroke-width="0.4"/>
+                <text x="100" y="162" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="11" fill="#D4B896" font-style="italic">velvet</text>
+                <line x1="74" y1="170" x2="126" y2="170" stroke="#D4B896" stroke-width="0.3"/>
+                <text x="100" y="184" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="14" fill="#F5F1EA">N&#176; 01</text>
+                <text x="100" y="196" text-anchor="middle" font-family="Inter, sans-serif" font-size="5" fill="#8A8578" letter-spacing="1">BOIS NOIRCI</text>
+              </svg>
+            </div>
+          </div>
+          <div class="meta-row">
+            <span class="num">N<sup>o</sup> 01</span>
+            <span class="ed">Edition / 40</span>
+          </div>
+          <h3 class="name">Bois <em>Noirci</em></h3>
+          <p class="notes">Charred cedar from the Aubrac plateau, smoked over hay. <strong>Top:</strong> bergamot, black pepper. <strong>Heart:</strong> burnt cedar, oud. <strong>Base:</strong> labdanum, ambergris.</p>
+          <a href="#" class="read">Read the chapter</a>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="composition-card elevated">
+          <div class="bottle-frame">
+            <span class="frame-tag">FIG · 02</span>
+            <span class="frame-tag-right">N<sup>o</sup> 02</span>
+            <div class="bottle-stage">
+              <svg class="bottle" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="glass2" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#E8DDC5" stop-opacity="0.92"/>
+                    <stop offset="0.45" stop-color="#C9B89A" stop-opacity="0.95"/>
+                    <stop offset="1" stop-color="#8A7A60" stop-opacity="0.98"/>
+                  </linearGradient>
+                  <linearGradient id="shine2" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.65"/>
+                    <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.10"/>
+                    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- tall slim apothecary -->
+                <rect x="84" y="14" width="32" height="18" fill="#1A0F08" stroke="#D4B896" stroke-width="0.6"/>
+                <rect x="90" y="32" width="20" height="22" fill="url(#glass2)" stroke="#D4B896" stroke-width="0.4"/>
+                <!-- shoulders curve to body -->
+                <path d="M 60 80 Q 60 56 84 56 L 116 56 Q 140 56 140 80 L 140 248 Q 140 260 128 260 L 72 260 Q 60 260 60 248 Z"
+                  fill="url(#glass2)" stroke="#D4B896" stroke-width="0.6"/>
+                <path d="M 70 88 L 70 240 Q 70 250 80 250" fill="none" stroke="url(#shine2)" stroke-width="3"/>
+                <!-- printed label, no rect -->
+                <text x="100" y="150" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="11" fill="#1A0F08" font-style="italic">velvet</text>
+                <line x1="78" y1="158" x2="122" y2="158" stroke="#1A0F08" stroke-width="0.3"/>
+                <text x="100" y="178" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="16" fill="#0A0604">N&#176; 02</text>
+                <text x="100" y="194" text-anchor="middle" font-family="Inter, sans-serif" font-size="5" fill="#3A2818" letter-spacing="1">CENDRES BLANCHES</text>
+                <text x="100" y="226" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="7" fill="#3A2818" font-style="italic">Paris MMXXVI</text>
+              </svg>
+            </div>
+          </div>
+          <div class="meta-row">
+            <span class="num">N<sup>o</sup> 02</span>
+            <span class="ed">Edition / 40</span>
+          </div>
+          <h3 class="name">Cendres <em>Blanches</em></h3>
+          <p class="notes">A winter chapel after midnight mass. <strong>Top:</strong> frankincense, white pepper. <strong>Heart:</strong> orris, cool iris. <strong>Base:</strong> birch tar, cashmeran, cold suede.</p>
+          <a href="#" class="read">Read the chapter</a>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="composition-card recessed">
+          <div class="bottle-frame">
+            <span class="frame-tag">FIG · 03</span>
+            <span class="frame-tag-right">N<sup>o</sup> 03</span>
+            <div class="bottle-stage">
+              <svg class="bottle" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="glass3" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#9B6B2F" stop-opacity="0.95"/>
+                    <stop offset="0.45" stop-color="#5C3B14" stop-opacity="0.97"/>
+                    <stop offset="1" stop-color="#2A1606" stop-opacity="1"/>
+                  </linearGradient>
+                  <linearGradient id="shine3" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#F5D9A8" stop-opacity="0.6"/>
+                    <stop offset="0.5" stop-color="#F5D9A8" stop-opacity="0.08"/>
+                    <stop offset="1" stop-color="#F5D9A8" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- broad rounded flacon -->
+                <rect x="78" y="20" width="44" height="20" fill="#0A0604" stroke="#D4B896" stroke-width="0.6"/>
+                <rect x="86" y="40" width="28" height="14" fill="url(#glass3)" stroke="#D4B896" stroke-width="0.4"/>
+                <path d="M 44 90 Q 44 54 84 54 L 116 54 Q 156 54 156 90 L 156 234 Q 156 258 132 258 L 68 258 Q 44 258 44 234 Z"
+                  fill="url(#glass3)" stroke="#D4B896" stroke-width="0.6"/>
+                <path d="M 56 100 Q 56 70 84 70" fill="none" stroke="url(#shine3)" stroke-width="3"/>
+                <!-- label oval -->
+                <ellipse cx="100" cy="170" rx="36" ry="40" fill="#0A0604" stroke="#D4B896" stroke-width="0.4"/>
+                <text x="100" y="158" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="10" fill="#D4B896" font-style="italic">velvet</text>
+                <line x1="80" y1="164" x2="120" y2="164" stroke="#D4B896" stroke-width="0.3"/>
+                <text x="100" y="180" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="14" fill="#F5F1EA">N&#176; 03</text>
+                <text x="100" y="194" text-anchor="middle" font-family="Inter, sans-serif" font-size="4.5" fill="#8A8578" letter-spacing="1">VERRE AMBRÉ</text>
+              </svg>
+            </div>
+          </div>
+          <div class="meta-row">
+            <span class="num">N<sup>o</sup> 03</span>
+            <span class="ed">Edition / 40</span>
+          </div>
+          <h3 class="name">Verre <em>Ambré</em></h3>
+          <p class="notes">A glass of cognac forgotten by a fire. <strong>Top:</strong> mandarin, davana. <strong>Heart:</strong> rum absolute, tobacco leaf. <strong>Base:</strong> Siam benzoin, vanilla, oakwood.</p>
+          <a href="#" class="read">Read the chapter</a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── METHOD ── -->
+  <section class="lp-method">
+    <div class="container-wide">
+      <div class="section-eyebrow">
+        <div class="left">
+          <span class="roman">II.</span>
+          <span class="label-strong">The Method</span>
+        </div>
+        <div class="right">Eight months per chapter</div>
+      </div>
+
+      <div class="method-head">
+        <h2>Slow work, by <em>hand,</em> in three movements.</h2>
+        <p>We do not brief outside houses, and we do not buy ready-made accords. Every material is sourced under our own contracts, then aged, decanted and finished under our own roof. Eight months is the average time from harvest to bottle. Some chapters take twice that.</p>
+      </div>
+
+      <div class="method-grid">
+        <article class="method-step">
+          <div class="roman-num">I.</div>
+          <h3><em>Harvest</em></h3>
+          <p>We travel to the source. Cedar from the Aubrac, iris from Florence, oud from Hainan. Materials are selected at origin, then sealed and labelled by the grower before shipping.</p>
+          <div class="step-meta">
+            <span>Stage One</span>
+            <span>Six origins</span>
+          </div>
+        </article>
+        <article class="method-step">
+          <div class="roman-num">II.</div>
+          <h3><em>Macerate</em></h3>
+          <p>Raw materials rest in alcohol for sixteen weeks. Each week, Élise notes the change in character. The accord is built only after the materials have settled into themselves.</p>
+          <div class="step-meta">
+            <span>Stage Two</span>
+            <span>Sixteen weeks</span>
+          </div>
+        </article>
+        <article class="method-step">
+          <div class="roman-num">III.</div>
+          <h3><em>Bottle</em></h3>
+          <p>Bottles are filled, capped and signed by hand at the Paris atelier. Each carries an edition number, a date of bottling and the perfumer's mark. Forty per chapter, never more.</p>
+          <div class="step-meta">
+            <span>Stage Three</span>
+            <span>40 / edition</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PULL QUOTE ── -->
+  <section class="lp-quote">
+    <div class="container">
+      <span class="label-strong">From the Atelier Notebook</span>
+      <blockquote>A perfume is finished the moment a single drop says everything the room needed.</blockquote>
+      <div class="credit"><strong>Élise Marchand</strong> · Master Perfumer, Paris</div>
+    </div>
+  </section>
+
+  <!-- ── ATELIER ── -->
+  <section class="lp-atelier">
+    <div class="container-wide">
+      <div class="section-eyebrow">
+        <div class="left">
+          <span class="roman">III.</span>
+          <span class="label-strong">The Atelier</span>
+        </div>
+        <div class="right">By appointment only</div>
+      </div>
+
+      <div class="atelier-head">
+        <h2>Two rooms, two cities, <em>one</em> table.</h2>
+        <p>Visits are reserved for collectors and members of the journal. Write to the concierge at least two weeks before your stay. We will host you for a private appointment with the perfumer.</p>
+      </div>
+
+      <div class="atelier-grid">
+        <article class="atelier-card">
+          <h3 class="city"><em>Paris</em></h3>
+          <address>
+            <strong>Atelier Marchand</strong>
+            14, rue de l'Université<br>
+            75007 Paris, France<br>
+            paris@velvet-maison.fr
+          </address>
+          <div class="hours">By appointment · Tue to Sat</div>
+        </article>
+        <article class="atelier-card">
+          <h3 class="city"><em>Kyoto</em></h3>
+          <address>
+            <strong>Atelier Renault</strong>
+            Higashiyama Ward, Gion-Shimbashi<br>
+            Kyoto 605-0085, Japan<br>
+            kyoto@velvet-maison.jp
+          </address>
+          <div class="hours">By appointment · Wed to Sun</div>
+        </article>
+        <article class="atelier-card">
+          <h3 class="city"><em>Concierge</em></h3>
+          <address>
+            <strong>The Journal</strong>
+            For private requests, sample programmes,<br>
+            wedding compositions and gifts.<br>
+            concierge@velvet-maison.com
+          </address>
+          <div class="hours">Replies within 48 hours</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="lp-footer">
+  <div class="container-wide">
+    <div>
+      <div class="footer-brand">velvet</div>
+      <p class="footer-tag">A private atelier perfumery for collectors. Established in Paris, MMXIX.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Maison</h4>
+      <ul>
+        <li><a href="#">Compositions</a></li>
+        <li><a href="#">Method</a></li>
+        <li><a href="#">Journal</a></li>
+        <li><a href="#">Atelier visits</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Private</h4>
+      <ul>
+        <li><a href="#">Request invitation</a></li>
+        <li><a href="#">Concierge</a></li>
+        <li><a href="#">Sample programme</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container-wide">
+    <div class="footer-bottom">
+      <span>Paris <em>·</em> Kyoto <em>·</em> by invitation</span>
+      <span>&copy; MMXXVI velvet maison</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── THEME TOGGLE ── -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="dark">Dark</button>
+  <button data-theme-btn="light">Light</button>
+</div>
+
+<script>
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  document.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+</script>
+</body>
+</html>

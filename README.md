@@ -24,20 +24,29 @@ claude picks up the trigger and walks through the analysis.
 
 ## examples
 
-eight fictional brands live in `examples/` showing the kind of output hue produces:
+seventeen brands live in `examples/` showing the range of output hue produces. sixteen are fictional one-shots, one is real (meadow ↦ the mymind-design skill).
 
 | brand | character |
 |---|---|
+| atlas | ivory engineering, classical maritime charts |
 | auris | premium audio, monochrome dark |
 | drift | hot pink fashion commerce |
+| fizz | y2k pop photo-sharing, candy chrome |
 | halcyon | cool teal sculptural glass |
+| kiln | dark fired earth, molten terracotta |
+| ledger | newsprint editorial, financial broadsheet |
+| meadow | warm cream editorial (real, from mymind-design) |
 | orivion | luminous red-violet glow |
+| oxide | brutalist mono compute protocol |
+| prism | cyberpunk holographic shader engine |
+| relay | swiss transit, departure board precision |
 | ridge | slate emerald dev platform |
 | solvent | warm amber generative shader |
 | stint | muted violet productivity |
 | thrive | sage green wellness, light mode |
+| velvet | noir editorial fragrance house |
 
-each has a `design-model.yaml`, a `landing-page.html`, and (for ridge and stint) an `app-screen.html`. open them in a browser to see the full system rendered.
+each has a `design-model.yaml` + `landing-page.html`. ridge and stint also ship an `app-screen.html`. halcyon ships a full `component-library.html`. open them in a browser to see the system rendered.
 
 ## license
 

@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>atlas — A reference atlas for the systems your team ships.</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css">
+
+<style>
+  :root {
+    --bg:        #F5F1E8;
+    --surface1:  #EBE5D3;
+    --surface2:  #DED5BE;
+    --text1:     #0A2540;
+    --text2:     #3C5878;
+    --border:    #C9BFA3;
+    --accent:    #B8441F;
+    --accent-soft: #E8CFC0;
+
+    --bg-d:        #0A1628;
+    --surface1-d:  #142238;
+    --surface2-d:  #1E2F48;
+    --text1-d:     #F5F1E8;
+    --text2-d:     #9BB0C8;
+    --border-d:    #2A3E5C;
+    --accent-d:    #E8663F;
+    --accent-soft-d: #2A3E5C;
+
+    --hair: 1px;
+    --r: 2px;
+
+    --sp-1: 8px;
+    --sp-2: 16px;
+    --sp-3: 24px;
+    --sp-4: 32px;
+    --sp-5: 48px;
+    --sp-6: 64px;
+    --sp-7: 96px;
+    --sp-8: 128px;
+
+    --font-display: 'IBM Plex Serif', Georgia, serif;
+    --font-body:    'Inter', system-ui, sans-serif;
+    --font-mono:    'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  [data-theme="light"] {
+    --c-bg: var(--bg);
+    --c-surface1: var(--surface1);
+    --c-surface2: var(--surface2);
+    --c-text1: var(--text1);
+    --c-text2: var(--text2);
+    --c-border: var(--border);
+    --c-accent: var(--accent);
+    --c-accent-soft: var(--accent-soft);
+    --grid-color: rgba(184, 68, 31, 0.08);
+  }
+  [data-theme="dark"] {
+    --c-bg: var(--bg-d);
+    --c-surface1: var(--surface1-d);
+    --c-surface2: var(--surface2-d);
+    --c-text1: var(--text1-d);
+    --c-text2: var(--text2-d);
+    --c-border: var(--border-d);
+    --c-accent: var(--accent-d);
+    --c-accent-soft: var(--accent-soft-d);
+    --grid-color: rgba(155, 176, 200, 0.10);
+  }
+
+  * { box-sizing: border-box; }
+  *::selection { background: var(--c-accent); color: var(--c-bg); }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--c-bg);
+    color: var(--c-text1);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    transition: background 200ms linear, color 200ms linear;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--sp-5);
+    width: 100%;
+  }
+  .container-narrow {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 var(--sp-5);
+    width: 100%;
+  }
+
+  /* eyebrow / mono */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-text2);
+  }
+  .eyebrow .accent { color: var(--c-accent); }
+
+  /* buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 var(--sp-3);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    border: var(--hair) solid var(--c-text1);
+    border-radius: var(--r);
+    cursor: pointer;
+    transition: background 150ms, color 150ms;
+  }
+  .btn-primary {
+    background: var(--c-accent);
+    color: #F5F1E8;
+    border-color: var(--c-accent);
+  }
+  .btn-primary:hover {
+    background: var(--c-text1);
+    border-color: var(--c-text1);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--c-text1);
+  }
+  .btn-ghost:hover {
+    background: var(--c-text1);
+    color: var(--c-bg);
+  }
+  .link-arrow {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-text1);
+    border-bottom: var(--hair) solid var(--c-border);
+    padding-bottom: 2px;
+    transition: border-color 150ms, color 150ms;
+  }
+  .link-arrow:hover {
+    color: var(--c-accent);
+    border-color: var(--c-accent);
+  }
+
+  /* ── HEADER ── */
+  .lp-header {
+    border-bottom: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .lp-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+  .lp-wordmark {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--c-text1);
+  }
+  .lp-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-5);
+  }
+  .lp-nav a {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+    transition: color 150ms;
+  }
+  .lp-nav a:hover { color: var(--c-text1); }
+  .lp-header .btn {
+    height: 38px;
+    font-size: 13px;
+  }
+
+  /* ── HERO ── */
+  .lp-hero {
+    position: relative;
+    padding: var(--sp-8) 0 var(--sp-8);
+    overflow: hidden;
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .lp-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+  .lp-hero .container {
+    position: relative;
+    z-index: 1;
+  }
+  .hero-eyebrow-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-5);
+  }
+  .hero-eyebrow-row .crosshair {
+    width: 10px;
+    height: 10px;
+    border: var(--hair) solid var(--c-accent);
+    position: relative;
+  }
+  .hero-eyebrow-row .crosshair::before,
+  .hero-eyebrow-row .crosshair::after {
+    content: "";
+    position: absolute;
+    background: var(--c-accent);
+  }
+  .hero-eyebrow-row .crosshair::before {
+    left: 50%; top: -3px; bottom: -3px; width: 1px; transform: translateX(-50%);
+  }
+  .hero-eyebrow-row .crosshair::after {
+    top: 50%; left: -3px; right: -3px; height: 1px; transform: translateY(-50%);
+  }
+  .hero-headline {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(56px, 7vw, 104px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: var(--c-text1);
+    margin: 0 0 var(--sp-5) 0;
+    max-width: 16ch;
+  }
+  .hero-headline .accent {
+    color: var(--c-accent);
+    font-style: italic;
+    font-weight: 500;
+  }
+  .hero-sub {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--c-text2);
+    max-width: 56ch;
+    margin: 0 0 var(--sp-5) 0;
+  }
+  .hero-cta-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+    flex-wrap: wrap;
+  }
+  .hero-meta {
+    margin-top: var(--sp-7);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-4);
+    border-top: var(--hair) solid var(--c-border);
+    padding-top: var(--sp-3);
+  }
+  .hero-meta .item .lbl {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--c-text2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .hero-meta .item .val {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-text1);
+  }
+
+  /* ── FEATURES ── */
+  .lp-feature {
+    padding: var(--sp-8) 0;
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .lp-feature .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-7);
+    align-items: center;
+  }
+  .lp-feature.reverse .feature-text { order: 2; }
+  .feature-text .eyebrow { display: block; margin-bottom: var(--sp-3); }
+  .feature-heading {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(34px, 4vw, 48px);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--c-text1);
+    margin: 0 0 var(--sp-3) 0;
+    max-width: 18ch;
+  }
+  .feature-body {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--c-text2);
+    margin: 0 0 var(--sp-4) 0;
+    max-width: 50ch;
+  }
+  .feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--sp-4) 0;
+  }
+  .feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-2);
+    padding: var(--sp-2) 0;
+    border-top: var(--hair) solid var(--c-border);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--c-text1);
+    letter-spacing: 0.02em;
+  }
+  .feature-list li:last-child { border-bottom: var(--hair) solid var(--c-border); }
+  .feature-list .marker {
+    color: var(--c-text2);
+    font-size: 10px;
+    margin-top: 2px;
+    min-width: 32px;
+  }
+
+  /* ── FEATURE VISUALS ── */
+  .feature-visual {
+    position: relative;
+    border: var(--hair) solid var(--c-border);
+    border-radius: var(--r);
+    background: var(--c-surface1);
+    padding: var(--sp-4);
+    min-height: 380px;
+  }
+  .visual-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: var(--hair) solid var(--c-accent);
+  }
+  .visual-corner.tl { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+  .visual-corner.tr { top: -1px; right: -1px; border-left: 0; border-bottom: 0; }
+  .visual-corner.bl { bottom: -1px; left: -1px; border-right: 0; border-top: 0; }
+  .visual-corner.br { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+  .visual-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: var(--sp-2);
+    margin-bottom: var(--sp-3);
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .visual-head .title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--c-text1);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .visual-head .meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+  }
+
+  /* waypoint cards (feature 1) */
+  .waypoint-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+  }
+  .waypoint {
+    background: var(--c-bg);
+    border: var(--hair) solid var(--c-border);
+    border-radius: var(--r);
+    padding: var(--sp-3);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--sp-3);
+    align-items: center;
+  }
+  .waypoint .coord {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+    min-width: 60px;
+  }
+  .waypoint .body .name {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--c-text1);
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .waypoint .body .sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--c-text2);
+    letter-spacing: 0.02em;
+  }
+  .waypoint .status {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border: var(--hair) solid var(--c-border);
+    border-radius: var(--r);
+    color: var(--c-text2);
+  }
+  .waypoint .status.active {
+    color: var(--c-accent);
+    border-color: var(--c-accent);
+  }
+
+  /* longitude search panel (feature 2) */
+  .search-panel { padding-top: var(--sp-2); }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: var(--sp-3);
+    background: var(--c-bg);
+    border: var(--hair) solid var(--c-border);
+    border-radius: var(--r);
+    margin-bottom: var(--sp-3);
+  }
+  .search-bar i { color: var(--c-text2); font-size: 16px; }
+  .search-bar .query {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--c-text1);
+    flex: 1;
+  }
+  .search-bar .key {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--c-text2);
+    border: var(--hair) solid var(--c-border);
+    padding: 2px 6px;
+    border-radius: var(--r);
+    letter-spacing: 0.04em;
+  }
+  .search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .search-row {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: var(--sp-2);
+    padding: var(--sp-2) var(--sp-2);
+    border-bottom: var(--hair) solid var(--c-border);
+    align-items: center;
+  }
+  .search-row:last-child { border-bottom: 0; }
+  .search-row .type {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-text2);
+  }
+  .search-row .title {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--c-text1);
+  }
+  .search-row .title em {
+    font-style: normal;
+    background: var(--c-accent-soft);
+    padding: 1px 3px;
+    color: var(--c-text1);
+  }
+  .search-row .ref {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--c-text2);
+  }
+
+  /* log entries (feature 3) */
+  .log-stack {
+    display: flex;
+    flex-direction: column;
+  }
+  .log-entry {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--sp-3);
+    padding: var(--sp-3) 0;
+    border-bottom: var(--hair) dashed var(--c-border);
+  }
+  .log-entry:last-child { border-bottom: 0; }
+  .log-entry .ts {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    min-width: 84px;
+  }
+  .log-entry .body .head {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-text1);
+    margin-bottom: 4px;
+  }
+  .log-entry .body .meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--c-text2);
+    letter-spacing: 0.02em;
+  }
+  .log-entry .body .meta .author { color: var(--c-text1); }
+  .log-entry.incident .head::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--c-accent);
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* ── PULL QUOTE ── */
+  .lp-quote {
+    padding: var(--sp-8) 0;
+    text-align: center;
+    border-bottom: var(--hair) solid var(--c-border);
+    background: var(--c-surface1);
+  }
+  .lp-quote .container-narrow {}
+  .lp-quote .eyebrow {
+    display: block;
+    margin-bottom: var(--sp-4);
+  }
+  .lp-quote blockquote {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(28px, 3.4vw, 40px);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--c-text1);
+    margin: 0 0 var(--sp-5) 0;
+  }
+  .lp-quote .attribution {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+  }
+  .lp-quote .attribution .name {
+    color: var(--c-text1);
+    font-weight: 500;
+  }
+
+  /* ── PRICING ── */
+  .lp-pricing {
+    padding: var(--sp-8) 0;
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .lp-pricing .section-head {
+    text-align: center;
+    margin-bottom: var(--sp-7);
+  }
+  .lp-pricing .eyebrow { display: block; margin-bottom: var(--sp-3); }
+  .lp-pricing h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(36px, 4.5vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--c-text1);
+    margin: 0;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-4);
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .price-card {
+    border: var(--hair) solid var(--c-border);
+    border-radius: var(--r);
+    background: var(--c-bg);
+    padding: var(--sp-5);
+    display: flex;
+    flex-direction: column;
+  }
+  .price-card.featured {
+    border-color: var(--c-accent);
+    background: var(--c-bg);
+  }
+  .price-tier {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text2);
+    margin-bottom: var(--sp-2);
+  }
+  .price-card.featured .price-tier { color: var(--c-accent); }
+  .price-name {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--c-text1);
+    margin: 0 0 var(--sp-2) 0;
+    letter-spacing: -0.01em;
+  }
+  .price-amount {
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 500;
+    color: var(--c-text1);
+    line-height: 1;
+    margin-bottom: var(--sp-1);
+  }
+  .price-amount .per {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--c-text2);
+    margin-left: 4px;
+    font-weight: 400;
+  }
+  .price-desc {
+    font-size: 14px;
+    color: var(--c-text2);
+    line-height: 1.5;
+    margin: var(--sp-3) 0 var(--sp-4) 0;
+    padding-top: var(--sp-3);
+    border-top: var(--hair) solid var(--c-border);
+  }
+  .price-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--sp-5) 0;
+    flex: 1;
+  }
+  .price-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 14px;
+    color: var(--c-text1);
+  }
+  .price-features li i {
+    font-size: 14px;
+    color: var(--c-text2);
+    margin-top: 3px;
+  }
+  .price-card .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ── FINAL CTA ── */
+  .lp-cta {
+    position: relative;
+    padding: var(--sp-8) 0;
+    text-align: center;
+    overflow: hidden;
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .lp-cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+  .lp-cta .container-narrow {
+    position: relative;
+    z-index: 1;
+  }
+  .lp-cta .eyebrow {
+    display: block;
+    margin-bottom: var(--sp-4);
+  }
+  .lp-cta h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(44px, 5.5vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--c-text1);
+    margin: 0 0 var(--sp-4) 0;
+  }
+  .lp-cta p {
+    font-size: 17px;
+    color: var(--c-text2);
+    max-width: 48ch;
+    margin: 0 auto var(--sp-5) auto;
+  }
+  .lp-cta .cta-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+  }
+  .lp-cta .small {
+    display: block;
+    margin-top: var(--sp-3);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── FOOTER ── */
+  .lp-footer {
+    padding: var(--sp-7) 0 var(--sp-5);
+    background: var(--c-bg);
+  }
+  .lp-footer .container {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: var(--sp-5);
+    margin-bottom: var(--sp-6);
+  }
+  .lp-footer .brand {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--c-text1);
+    margin-bottom: var(--sp-2);
+  }
+  .lp-footer .tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+    max-width: 28ch;
+    line-height: 1.6;
+  }
+  .lp-footer .col h4 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--c-text1);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 var(--sp-3) 0;
+  }
+  .lp-footer .col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .lp-footer .col li {
+    margin-bottom: var(--sp-2);
+  }
+  .lp-footer .col a {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--c-text2);
+    transition: color 150ms;
+  }
+  .lp-footer .col a:hover { color: var(--c-text1); }
+  .lp-footer .legal {
+    border-top: var(--hair) solid var(--c-border);
+    padding-top: var(--sp-4);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--c-text2);
+    letter-spacing: 0.02em;
+  }
+  .lp-footer .legal .container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    grid-template-columns: none;
+  }
+
+  /* ── THEME TOGGLE ── */
+  .theme-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0;
+    padding: 0;
+    background: var(--c-bg);
+    border: var(--hair) solid var(--c-border);
+    border-radius: var(--r);
+    z-index: 1000;
+  }
+  .theme-bar button {
+    padding: 10px 18px;
+    border: 0;
+    background: transparent;
+    color: var(--c-text2);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .theme-bar button + button {
+    border-left: var(--hair) solid var(--c-border);
+  }
+  .theme-bar button.active {
+    background: var(--c-text1);
+    color: var(--c-bg);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 880px) {
+    .lp-nav { display: none; }
+    .container, .container-narrow { padding: 0 var(--sp-4); }
+    .lp-hero { padding: var(--sp-7) 0 var(--sp-7); }
+    .hero-headline { font-size: clamp(44px, 11vw, 72px); max-width: none; }
+    .hero-meta { grid-template-columns: repeat(2, 1fr); }
+    .lp-feature { padding: var(--sp-7) 0; }
+    .lp-feature .container { grid-template-columns: 1fr; gap: var(--sp-5); }
+    .lp-feature.reverse .feature-text { order: 0; }
+    .lp-feature.reverse .feature-visual { order: 1; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .lp-footer .container { grid-template-columns: 1fr 1fr; }
+    .feature-visual { min-height: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="lp-header">
+  <div class="container">
+    <a href="#" class="lp-wordmark">atlas</a>
+    <nav class="lp-nav">
+      <a href="#">Charts</a>
+      <a href="#">Fleet</a>
+      <a href="#">Coordinates</a>
+      <a href="#">Log</a>
+    </nav>
+    <a href="#" class="btn btn-primary">Open atlas</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ── HERO ── -->
+<section class="lp-hero">
+  <div class="container">
+    <div class="hero-eyebrow-row">
+      <span class="crosshair" aria-hidden="true"></span>
+      <span class="eyebrow">LAT 40.7128&deg; N &middot; LON 74.0060&deg; W</span>
+    </div>
+    <h1 class="hero-headline">Chart the systems your team ships.</h1>
+    <p class="hero-sub">
+      atlas is a reference platform for engineering teams who write runbooks, architecture notes, and incident logs. Every page has a coordinate. Every change leaves a bearing. Nothing drifts.
+    </p>
+    <div class="hero-cta-row">
+      <a href="#" class="btn btn-primary">Chart your systems</a>
+      <a href="#" class="link-arrow">View the fleet &rarr;</a>
+    </div>
+
+    <div class="hero-meta">
+      <div class="item">
+        <span class="lbl">Edition</span>
+        <div class="val">v4 / Spring 2026</div>
+      </div>
+      <div class="item">
+        <span class="lbl">Bearing</span>
+        <div class="val">N 04&deg; 12'</div>
+      </div>
+      <div class="item">
+        <span class="lbl">Depth</span>
+        <div class="val">2,148 fathoms</div>
+      </div>
+      <div class="item">
+        <span class="lbl">Status</span>
+        <div class="val">In service</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURE 1 ── -->
+<section class="lp-feature">
+  <div class="container">
+    <div class="feature-text">
+      <span class="eyebrow">CHART I &middot; <span class="accent">WAYPOINTS</span></span>
+      <h2 class="feature-heading">Every service has a coordinate.</h2>
+      <p class="feature-body">
+        Pin services, queues, and dependencies as waypoints on the chart. Each one carries an owner, a depth reading, and the exact bearing that points to its runbook. New engineers find their footing in an afternoon.
+      </p>
+      <ul class="feature-list">
+        <li><span class="marker">01</span>Owner, on-call, and escalation in one pin</li>
+        <li><span class="marker">02</span>Cross-link to the upstream and downstream waypoints</li>
+        <li><span class="marker">03</span>Depth marks degrade-gracefully when the system can</li>
+      </ul>
+      <a href="#" class="link-arrow">Plot a waypoint &rarr;</a>
+    </div>
+    <div class="feature-visual">
+      <span class="visual-corner tl"></span><span class="visual-corner tr"></span>
+      <span class="visual-corner bl"></span><span class="visual-corner br"></span>
+      <div class="visual-head">
+        <span class="title">Fleet / Waypoints</span>
+        <span class="meta">12 in service</span>
+      </div>
+      <div class="waypoint-stack">
+        <div class="waypoint">
+          <div class="coord">40.71&deg;N<br>74.00&deg;W</div>
+          <div class="body">
+            <div class="name">Checkout gateway</div>
+            <div class="sub">payments &middot; tier 0 &middot; depth 12f</div>
+          </div>
+          <div class="status active">Active</div>
+        </div>
+        <div class="waypoint">
+          <div class="coord">37.77&deg;N<br>122.41&deg;W</div>
+          <div class="body">
+            <div class="name">Vector index</div>
+            <div class="sub">search &middot; tier 1 &middot; depth 6f</div>
+          </div>
+          <div class="status">Watch</div>
+        </div>
+        <div class="waypoint">
+          <div class="coord">51.50&deg;N<br>0.12&deg;W</div>
+          <div class="body">
+            <div class="name">Webhook fanout</div>
+            <div class="sub">platform &middot; tier 2 &middot; depth 4f</div>
+          </div>
+          <div class="status">Drift</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURE 2 ── -->
+<section class="lp-feature reverse">
+  <div class="container">
+    <div class="feature-visual">
+      <span class="visual-corner tl"></span><span class="visual-corner tr"></span>
+      <span class="visual-corner bl"></span><span class="visual-corner br"></span>
+      <div class="visual-head">
+        <span class="title">Coordinates / Find</span>
+        <span class="meta">4 results &middot; 12ms</span>
+      </div>
+      <div class="search-panel">
+        <div class="search-bar">
+          <i class="ph ph-magnifying-glass"></i>
+          <span class="query">retry budget for checkout</span>
+          <span class="key">cmd K</span>
+        </div>
+        <div class="search-results">
+          <div class="search-row">
+            <span class="type">Runbook</span>
+            <span class="title">Checkout gateway: <em>retry</em> ladder</span>
+            <span class="ref">CHK-014</span>
+          </div>
+          <div class="search-row">
+            <span class="type">Postmortem</span>
+            <span class="title">2026-02-11 &middot; <em>retry</em> storm</span>
+            <span class="ref">PM-077</span>
+          </div>
+          <div class="search-row">
+            <span class="type">ADR</span>
+            <span class="title">Adopt token <em>budget</em> per merchant</span>
+            <span class="ref">ADR-042</span>
+          </div>
+          <div class="search-row">
+            <span class="type">Note</span>
+            <span class="title">Why the <em>checkout</em> queue cost-caps</span>
+            <span class="ref">N-211</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="feature-text">
+      <span class="eyebrow">CHART II &middot; <span class="accent">CROSS-REFERENCES</span></span>
+      <h2 class="feature-heading">Press cmd K. Land on the right page.</h2>
+      <p class="feature-body">
+        Search reads the chart, not just the title. Type a half-remembered phrase from a postmortem you wrote two years ago, and atlas surfaces the runbook, the ADR, and the incident that drew the line between them. Every result carries its coordinate.
+      </p>
+      <ul class="feature-list">
+        <li><span class="marker">01</span>Backlinks from runbooks to incidents to ADRs</li>
+        <li><span class="marker">02</span>Coordinate breadcrumbs on every result</li>
+        <li><span class="marker">03</span>Hot-key access from any page, any time</li>
+      </ul>
+      <a href="#" class="link-arrow">Try the index &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURE 3 ── -->
+<section class="lp-feature">
+  <div class="container">
+    <div class="feature-text">
+      <span class="eyebrow">CHART III &middot; <span class="accent">THE LOG</span></span>
+      <h2 class="feature-heading">Keep a ship's log of what changed.</h2>
+      <p class="feature-body">
+        Every edit, every incident, every bearing-change is recorded against the page it touched. Open the log on any waypoint and read the last six months of decisions in a single column. No search archeology, no Slack scrolls.
+      </p>
+      <ul class="feature-list">
+        <li><span class="marker">01</span>Diff view between any two bearings</li>
+        <li><span class="marker">02</span>Incidents thread directly into the runbook they fixed</li>
+        <li><span class="marker">03</span>Export the log for postmortem review in one click</li>
+      </ul>
+      <a href="#" class="link-arrow">Open the log &rarr;</a>
+    </div>
+    <div class="feature-visual">
+      <span class="visual-corner tl"></span><span class="visual-corner tr"></span>
+      <span class="visual-corner bl"></span><span class="visual-corner br"></span>
+      <div class="visual-head">
+        <span class="title">Log / Checkout gateway</span>
+        <span class="meta">last 30 days</span>
+      </div>
+      <div class="log-stack">
+        <div class="log-entry incident">
+          <div class="ts">04 / 11<br>14:22 UTC</div>
+          <div class="body">
+            <div class="head">Incident: retry storm on EU shard</div>
+            <div class="meta"><span class="author">m. okafor</span> &middot; PM-077 &middot; resolved 14:48</div>
+          </div>
+        </div>
+        <div class="log-entry">
+          <div class="ts">04 / 09<br>09:14 UTC</div>
+          <div class="body">
+            <div class="head">Bearing: lower retry budget to 3</div>
+            <div class="meta"><span class="author">k. tanaka</span> &middot; CHK-014 &middot; +12 &minus;7</div>
+          </div>
+        </div>
+        <div class="log-entry">
+          <div class="ts">04 / 02<br>17:51 UTC</div>
+          <div class="body">
+            <div class="head">Note: token bucket cost-cap merged</div>
+            <div class="meta"><span class="author">l. ferreira</span> &middot; ADR-042 &middot; new doc</div>
+          </div>
+        </div>
+        <div class="log-entry">
+          <div class="ts">03 / 27<br>08:03 UTC</div>
+          <div class="body">
+            <div class="head">Waypoint moved: tier 1 &rarr; tier 0</div>
+            <div class="meta"><span class="author">e. wright</span> &middot; CHK-014 &middot; depth +6f</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PULL QUOTE ── -->
+<section class="lp-quote">
+  <div class="container-narrow">
+    <span class="eyebrow">FROM THE LOG</span>
+    <blockquote>
+      &ldquo;A runbook should read like a chart, not a memoir. atlas is the first tool that gets that. We onboard new engineers in a week now, not a quarter.&rdquo;
+    </blockquote>
+    <div class="attribution">
+      <span class="name">Mara Okafor</span> &middot; Principal Engineer, North Star Logistics
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section class="lp-pricing">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">FARE</span>
+      <h2>Two berths. No surprises.</h2>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier">Crew</div>
+        <div class="price-name">Crew</div>
+        <div class="price-amount">$12<span class="per">/ engineer / month</span></div>
+        <p class="price-desc">For teams up to thirty. Everything you need to chart a single product surface.</p>
+        <ul class="price-features">
+          <li><i class="ph ph-check"></i>Unlimited charts and waypoints</li>
+          <li><i class="ph ph-check"></i>Cross-reference search with cmd K</li>
+          <li><i class="ph ph-check"></i>The log, kept forever</li>
+          <li><i class="ph ph-check"></i>GitHub and Linear bridges</li>
+        </ul>
+        <a href="#" class="btn btn-ghost">Take the helm</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-tier">Recommended</div>
+        <div class="price-name">Admiralty</div>
+        <div class="price-amount">$28<span class="per">/ engineer / month</span></div>
+        <p class="price-desc">For platform groups and SRE fleets. Audit trails, SSO, and a chart for every product line.</p>
+        <ul class="price-features">
+          <li><i class="ph ph-check"></i>Everything in Crew</li>
+          <li><i class="ph ph-check"></i>SSO, SCIM, and audit logs</li>
+          <li><i class="ph ph-check"></i>Multi-fleet workspaces</li>
+          <li><i class="ph ph-check"></i>Custom bearings and depth metrics</li>
+          <li><i class="ph ph-check"></i>Priority support from the chart room</li>
+        </ul>
+        <a href="#" class="btn btn-primary">Open atlas</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ── -->
+<section class="lp-cta">
+  <div class="container-narrow">
+    <span class="eyebrow">LAT 40.7128&deg; N &middot; LON 74.0060&deg; W</span>
+    <h2>Ship with a chart.</h2>
+    <p>Stop relying on tribal memory and Slack threads from 2023. Give every system a coordinate, every decision a bearing, every page a place on the chart.</p>
+    <div class="cta-row">
+      <a href="#" class="btn btn-primary">Chart your systems</a>
+      <a href="#" class="link-arrow">Read the field manual &rarr;</a>
+    </div>
+    <span class="small">Free for the first ten engineers &middot; No credit card &middot; Sail in under five minutes</span>
+  </div>
+</section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="lp-footer">
+  <div class="container">
+    <div class="col">
+      <div class="brand">atlas</div>
+      <div class="tag">A reference atlas for the systems your team ships. Made on quiet afternoons in the chart room.</div>
+    </div>
+    <div class="col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#">Charts</a></li>
+        <li><a href="#">Fleet</a></li>
+        <li><a href="#">Coordinates</a></li>
+        <li><a href="#">The log</a></li>
+        <li><a href="#">Bridges</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="#">Field manual</a></li>
+        <li><a href="#">Runbook patterns</a></li>
+        <li><a href="#">Incident library</a></li>
+        <li><a href="#">Changelog</a></li>
+        <li><a href="#">Status</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Customers</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="legal">
+    <div class="container">
+      <span>&copy; 2026 Atlas Cartography Co. &middot; All bearings reserved</span>
+      <span>Charted from 40.7128&deg; N, 74.0060&deg; W</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Theme toggle -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="light">Light</button>
+  <button data-theme-btn="dark">Dark</button>
+</div>
+
+<script>
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  document.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+</script>
+</body>
+</html>

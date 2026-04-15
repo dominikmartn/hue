@@ -1,0 +1,169 @@
+name: "Ledger"
+description: "Fictional newsprint-editorial broadsheet for traders and analysts. The hero is a typographic masthead — Playfair Display Black at 128px sitting between two double-rules on a cream paper field. No image, no glyph, no gradient — the typography IS the hero. Proves that an editorial broadsheet identity can carry a landing on type alone."
+philosophy: "Print discipline for a screen-only world. Ledger is a working broadsheet for people who price the open — filed by analysts, edited by traders, delivered before the bell. Every column carries a byline. Every number carries a footnote. The visual identity borrows from the morning paper: cream stock, halftone dot texture, double-rule dividers, a red accent that only marks what matters."
+primary_mode: "light"
+brand_source: "INVENTED — fictional brand for hue carousel"
+brand_domain: "financial broadsheet / editorial (fictional)"
+brand_type: "content-rich"
+mono_for_data: false
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    cream:               # warm newsprint stock — the canvas
+      50:  "#F6F1E0"
+      100: "#F0EAD6"    # canvas (light mode background)
+      200: "#E8DFC2"
+      300: "#DED3AC"
+    ink:                 # near-black for type and rules
+      500: "#A8A092"    # muted newsprint gray
+      700: "#3A3A3A"
+      800: "#1E1E1E"
+      900: "#141414"
+      950: "#0A0A0A"    # primary text on cream
+    halftone:            # dot-texture mid-tone
+      500: "#8C8578"
+    red:                 # press-red accent — used sparingly
+      light: "#C8102E"  # accent in light mode
+      dark:  "#E8234E"  # accent in dark mode
+  spacing: [4, 8, 16, 24, 40, 64, 96, 128]
+  radii:   [0]           # no radii — square corners throughout
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    light:
+      background:     "{cream.100}"
+      surface1:       "{cream.200}"
+      surface2:       "{cream.300}"
+      text1:          "{ink.950}"
+      text2:          "{ink.700}"
+      text3:          "#6B6558"
+      border:         "#2A2A2A"
+      rule:           "#2A2A2A"
+      hairline:       "rgba(10, 10, 10, 0.18)"
+      accent:         "{red.light}"
+      halftone:       "{halftone.500}"
+      paper_tint:     "rgba(10, 10, 10, 0.04)"
+    dark:
+      background:     "{ink.950}"
+      surface1:       "{ink.900}"
+      surface2:       "{ink.800}"
+      text1:          "{cream.100}"
+      text2:          "{ink.500}"
+      text3:          "#6B6558"
+      border:         "{ink.700}"
+      rule:           "#5A5A5A"
+      hairline:       "rgba(240, 234, 214, 0.16)"
+      accent:         "{red.dark}"
+      halftone:       "#6B6558"
+      paper_tint:     "rgba(240, 234, 214, 0.03)"
+
+  radii:
+    element:   0
+    control:   0
+    component: 0
+    container: 0
+    pill:      0
+
+  typography:
+    display:
+      family: "Playfair Display"   # high-contrast didone serif, masthead workhorse
+      size:   "128px"
+      weight: 900
+      line_height: 0.95
+      letter_spacing: "-0.025em"
+      google_fonts: "Playfair+Display:wght@700;900"
+    body:
+      family: "PT Serif"           # workhorse reading serif for columns and ledes
+      size:   "17px"
+      weight: 400
+      line_height: 1.65
+      letter_spacing: "0em"
+      google_fonts: "PT+Serif:wght@400;700"
+    mono:
+      family: "Inter"              # not a true mono — sans is used for kickers, labels, bylines
+      size:   "11px"
+      weight: 600
+      google_fonts: "Inter:wght@400;500;600"
+
+# ── HERO STAGE ─── typographic-masthead preset
+# Demonstrates:
+#   background.medium: paper, halftone-dot recipe
+#   hero.subject: typography — the masthead headline IS the hero
+#   relation.type: flat — type sits on paper, no depth, no glow
+#
+# Ledger proves that an editorial broadsheet can land entirely on type.
+# No image, no glyph, no gradient. The 128px Playfair Black headline
+# between two double-rules carries the whole identity. The cream paper
+# and faint halftone dots are the field; the headline is the subject.
+hero_stage:
+  preset: "typographic-masthead"
+  observed_style:
+    description: "INVENTED for testing: a centered editorial masthead. Above the headline sits a small kicker eyebrow framed by single hairline rules ('MORNING EDITION · APRIL 14, 2026 · FILED 04:37 ET') with red accent dots between segments. Below the kicker, a double-rule divider (2px over 0.5px). Then the headline itself: Playfair Display Black at clamp(64px, 8vw, 128px), line-height 0.95, with the second line set in italic 700 ('machine-readable.'). A second double-rule below, then the standfirst in PT Serif at 19px, then two CTAs (a square solid button and a ghost link). A faint halftone dot texture (8px grid, 3.5% opacity, multiply blend) sits over the entire hero field on cream #F0EAD6."
+    where_used: ["hero", "feature section headlines", "final cta"]
+    notes: "Fictional composition inspired by classic financial broadsheets (FT, WSJ, Barron's) but not a copy of any specific masthead. All effects are pure CSS — Google Fonts for Playfair Display + PT Serif + Inter, radial-gradient for the halftone dots, no imported assets."
+  background:
+    medium: "paper"               # flat newsprint field, not a gradient or scene
+    color_mode: "palette"
+    saturation: "muted"
+    light_source: "ambient"       # no directional light — paper is flat
+    falloff: "none"
+    vignette: "none"
+    texture: "halftone"           # 8px radial-dot grid at 3.5% opacity, multiply blend
+    motion: "static"
+    intensity: "subtle"           # the field is quiet so the type can shout
+    safe_zone: "centered"
+    color_palette:
+      - "#F0EAD6"   # cream canvas
+      - "#E8DFC2"   # cream surface
+      - "#0A0A0A"   # ink (headline + rules)
+      - "#3A3A3A"   # ink secondary (standfirst)
+      - "#C8102E"   # red accent (kicker dots, hover)
+      - "#8C8578"   # halftone mid-tone
+    recipe: "halftone-dot"        # halftone-dot / paper-grain / newsprint-bleed
+    recipe_params:
+      dot_size: "0.7px"
+      grid: "8px"
+      opacity: 0.035
+      blend_mode: "multiply"
+  hero:
+    subject: "typography"          # the masthead headline IS the hero
+    form: "headline"
+    placement: "center"
+    scale: "dominant"              # 128px — the largest element on the page by far
+    tint: "ink"                    # near-black on cream, italic accent in second line
+  relation:
+    type: "flat"                   # type sits on paper, no depth, no glow
+    bleed: 0
+  disclaimer: "Fictional brand created for the hue example carousel. Not affiliated with any real publication. Playfair Display and PT Serif are Google Fonts (open license). The newsprint-broadsheet aesthetic is genre, not a copy of any specific paper."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Fictional: icons are nearly absent. Ledger leans on rules, dots, and double-dividers instead of glyphs. Where icons appear (CTA arrows, nav chrome) they are Phosphor bold — small, geometric, used as punctuation on a button rather than as standalone marks."
+    stroke_weight: "bold"
+    corner_treatment: "sharp"
+    fill_style: "outline"
+    form_language: "geometric"
+    visual_density: "minimal"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "bold"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2.1.2/src/bold/style.css"
+    icon_class_prefix: "ph-bold ph-"
+
+# ── BRAND VOICE ─────────────────────────────────────────
+voice:
+  samples:
+    - "The morning edition, machine-readable."
+    - "A working broadsheet for people who price the open. Filed by analysts, edited by traders, delivered before the bell. Every column carries a byline. Every number carries a footnote."
+    - "Filed by name. Not by feed."
+    - "Numbers with a paper trail."
+    - "Eleven hundred editions, one search box."
+  attributes:
+    register: "editorial broadsheet"
+    formality: "formal"
+    bylined: true
+    sentence_shape: "short, declarative, paired clauses ('Filed by name. Not by feed.')"
+    typographic_devices: ["double-rules", "kicker eyebrows", "halftone dots", "section numerals", "italic emphasis on second line"]

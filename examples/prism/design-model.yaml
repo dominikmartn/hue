@@ -1,0 +1,174 @@
+name: "Prism"
+description: "Fictional cyberpunk holographic shader engine. The hero is a centered iridescent orb stack — a blurred conic-gradient field overlaid with a radial bloom and a thin spinning rim — sitting behind a chromatic-aberration title (cyan + magenta offsets over white). Proves the holographic-orb preset: medium: gradient (iridescent-orb) + subject: text + relation: layered. The whole identity is light bleeding through purple."
+philosophy: "Write a line, see a frame. Prism is a browser-native GPU playground for shader artists where every keystroke recompiles in under 12ms. The identity is iridescence under glass — vivid neon trapped in deep violet, shifted just enough by chromatic aberration to feel like a hologram you're looking through, not at."
+primary_mode: "dark"
+brand_source: "INVENTED — fictional brand for hue carousel"
+brand_domain: "cyberpunk holographic shader engine (fictional)"
+brand_type: "content-rich"
+mono_for_data: true
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    neutral:             # deep violet-black canvas, never pure gray
+      bg:                "#0B0014"   # canvas
+      surface:           "#120022"
+      surface_elevated:  "#1B0033"
+      text_1:            "#F3E9FF"   # near-white with violet bias
+      text_2:            "#9B8BB8"
+      text_3:            "#5E4F80"
+    brand:               # iridescent neon trio — the hologram
+      cyan:    "#00F0FF"
+      magenta: "#FF00D4"
+      violet:  "#9B3BFF"   # primary accent
+      chrome:  "#E8E5F0"   # cool off-white for primary buttons
+    syntax:              # editor token colors, used in the live-preview mockup
+      keyword:  "#FF00D4"   # magenta
+      function: "#00F0FF"   # cyan
+      type:     "#C8A6FF"
+      number:   "#FFB86B"
+      string:   "#B6FF9E"
+    border:
+      subtle: "rgba(155, 59, 255, 0.25)"
+      strong: "rgba(155, 59, 255, 0.45)"
+    # holographic-specific: the orb stack uses these as its conic stops.
+    # The core bleeds white-cyan, the body is violet, the rim is magenta.
+    holographic:
+      core:     "#FFFFFF"   # white-hot center bleed
+      inner:    "#00F0FF"   # cyan inner ring
+      body:     "#9B3BFF"   # violet body
+      rim:      "#FF00D4"   # magenta outer rim
+      canvas:   "#0B0014"   # falls back into the canvas
+  spacing: [4, 8, 16, 24, 32, 48, 64, 96, 128]
+  radii:   [8, 14, 24, 999]
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    dark:
+      background:     "{neutral.bg}"
+      surface1:       "{neutral.surface}"
+      surface2:       "{neutral.surface_elevated}"
+      surface3:       "{neutral.surface_elevated}"
+      border:         "{border.subtle}"
+      border_visible: "{border.strong}"
+      text1:          "{neutral.text_1}"
+      text2:          "{neutral.text_2}"
+      text3:          "{neutral.text_3}"
+      text4:          "{neutral.text_3}"
+      accent:         "{brand.violet}"
+      accent_hover:   "{brand.magenta}"
+      accent_subtle:  "{neutral.surface_elevated}"
+
+  radii:
+    element:   8     # --r-sm
+    control:   8     # buttons use pill but cards/chrome use 8/14
+    component: 14    # --r-md
+    container: 24    # --r-lg
+    pill:      999   # --r-pill
+
+  typography:
+    display:
+      family: "Space Grotesk"     # geometric grotesk, slight futurist edge
+      size:   "clamp(72px, 11vw, 144px)"
+      weight: 500
+      line_height: 0.92
+      letter_spacing: "-0.045em"
+      google_fonts: "Space+Grotesk:wght@400;500;700"
+    body:
+      family: "Inter"
+      size:   "15px"
+      weight: 400
+      line_height: 1.6
+      letter_spacing: "0em"
+      google_fonts: "Inter:wght@400;500"
+    mono:
+      family: "Space Mono"        # square-shouldered mono for HUD/eyebrows/code
+      size:   "12.5px"
+      weight: 400
+      google_fonts: "Space+Mono:wght@400;700"
+
+# ── HERO STAGE ─── holographic-orb preset
+# Demonstrates:
+#   background.medium: gradient, iridescent-orb recipe
+#   hero.subject: text — chromatic-aberration title sits over the orb
+#   relation.type: layered — three z-stacked title copies (cyan / magenta / white)
+#
+# The hero is a centered glow stack: a 900px conic-gradient orb blurred to 120px,
+# a 520px radial bloom, and a thin 460px spinning rim. A vignette frames it
+# against the violet canvas. The title sits on z-index 10 with two offset
+# aberration copies (cyan -2px, magenta +2px) blended in screen mode.
+hero_stage:
+  preset: "holographic-orb"
+  observed_style:
+    description: "INVENTED for hue carousel: a centered iridescent orb stack fills the viewport behind the hero. A 900px conic-gradient field (cyan → violet → magenta → violet → cyan) is blurred to 120px and drifts on a 14s loop. A 520px radial bloom with a white-cyan core sits on top. A 460px masked rim ring spins on a 60s loop in screen blend. A radial vignette pulls everything back into the violet canvas. The h1 sits above it with two offset aberration copies — cyan translated -2px, magenta translated +2px — blended in screen mode for chromatic shift."
+    where_used: ["hero", "live-preview canvas (echo)", "final cta (background bloom)"]
+    notes: "Pure CSS — conic-gradient + radial-gradient + filter:blur + mix-blend-mode:screen + transform offsets. No WebGL, no imported assets. Proves that a holographic identity can be built entirely from gradient layers and z-stacked text."
+  background:
+    medium: "gradient"           # holographic-orb is a gradient recipe
+    color_mode: "palette"
+    saturation: "vibrant"
+    light_source: "center"       # the white-cyan core sits at the visual center
+    falloff: "radial"
+    vignette: "strong"           # radial vignette pulls the orb into the canvas
+    texture: "grain"             # SVG fractalNoise overlay at 0.08 opacity
+    motion: "ambient"            # 14s drift + 60s rim spin + 8s hue shimmer
+    intensity: "bold"            # holographic fields earn bold; the orb IS the brand
+    safe_zone: "vignetted"       # vignette protects the title from the bloom
+    color_palette:
+      - "#FFFFFF"   # core bleed
+      - "#00F0FF"   # cyan inner
+      - "#9B3BFF"   # violet body
+      - "#FF00D4"   # magenta rim
+      - "#0B0014"   # canvas
+    recipe: "iridescent-orb"     # iridescent-orb / chromatic-stack / hologram-bloom
+    recipe_params:
+      orb_size: "900px"
+      orb_blur: "120px"
+      bloom_size: "520px"
+      bloom_blur: "28px"
+      rim_size: "460px"
+      rim_blend: "screen"
+      drift_duration: "14s"
+      spin_duration: "60s"
+      hue_shimmer_duration: "8s"
+  hero:
+    subject: "text"                # the chromatic-aberration h1 is the subject
+    form: "headline"
+    placement: "center"
+    scale: "huge"
+    tint: "white-with-aberration"
+    aberration:
+      cyan_offset:    "-2px, 0"
+      magenta_offset: "+2px, 0"
+      blend_mode:     "screen"
+  relation:
+    type: "layered"                # three z-stacked title copies + orb behind
+    bleed: 0
+  disclaimer: "Fictional brand created for the hue example carousel. Not affiliated with any real company. The iridescent-orb recipe is a pure-CSS approximation — real holographic shader tools typically use WebGPU or rendered imagery we cannot redistribute."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Fictional: thin geometric outlines, used sparingly for action affordances (play button, export). The orb carries the identity, not the glyphs."
+    stroke_weight: "regular"
+    corner_treatment: "sharp"
+    fill_style: "outline"
+    form_language: "geometric"
+    visual_density: "minimal"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "regular"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css"
+    icon_class_prefix: "ph ph-"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  tone: "futurist, glitchy, holographic — confident but not cold; the prose has the same shimmer as the orb"
+  samples:
+    - "Shaders at the speed of thought."
+    - "Write a line, see a frame."
+    - "Every keystroke recompiles in under 12ms. The compositor never blinks, the canvas never stalls."
+    - "Four primitives, infinite combinations. The whole stack is yours, none of it is hidden."
+    - "Branch a happy accident, merge it back when it earns its place."
+    - "Made by eight people in a basement in Berlin."

@@ -1,0 +1,172 @@
+name: "Oxide"
+description: "Fictional brutalist monospace compute protocol. The whole landing is JetBrains Mono, hairline borders, and a single radioactive green accent on a pure white canvas. No radii, no gradients, no shadows — the typography and the 1px grid ARE the identity. Proves the brutalist-grid preset: medium: typographic + subject: none + relation: flat."
+philosophy: "Read the source. Oxide is an open protocol for verifiable compute — the kind of brand that thinks documentation is design. Everything is monospace, every section is bordered, every number is a stat. The contract is twelve lines. If you can't read it in one sitting, it isn't a protocol, it's a product."
+primary_mode: "light"
+brand_source: "INVENTED — fictional brand for hue carousel"
+brand_domain: "compute protocol / brutalist mono (fictional)"
+brand_type: "content-rich"
+mono_for_data: true
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    neutral:
+      0:   "#FFFFFF"    # canvas (light)
+      50:  "#F5F5F5"    # canvas (dark) text
+      500: "#757575"    # muted
+      900: "#050505"    # canvas (dark)
+      1000: "#000000"   # text (light), all borders
+    accent:              # radioactive lime green — the only chromatic note
+      500: "#00FF66"
+    alert:               # used once, on the manifesto's loudest line
+      500: "#FF3B00"
+  spacing: [8, 16, 24, 32, 48, 64, 96, 128]   # --sp-1 through --sp-8
+  radii:   [0]                                 # brutalist: --r is 0, full stop
+  borders:
+    hair: "1px"                                # --hair, the only stroke weight
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    light:
+      background:     "{neutral.0}"      # --bg #FFFFFF
+      surface1:       "{neutral.0}"      # everything is on the canvas; no elevations
+      surface2:       "{neutral.0}"
+      surface3:       "{neutral.0}"
+      border:         "{neutral.1000}"   # --border #000000 (same weight everywhere)
+      border_visible: "{neutral.1000}"
+      text1:          "{neutral.1000}"   # --text #000000
+      text2:          "{neutral.1000}"
+      text3:          "{neutral.500}"    # --muted #757575
+      text4:          "{neutral.500}"
+      accent:         "{accent.500}"     # --accent #00FF66
+      accent_hover:   "{accent.500}"
+      accent_subtle:  "{accent.500}"
+      alert:          "{alert.500}"      # --alert #FF3B00
+    dark:
+      background:     "{neutral.900}"    # --bg-dark #050505
+      surface1:       "{neutral.900}"
+      surface2:       "{neutral.900}"
+      surface3:       "{neutral.900}"
+      border:         "{neutral.50}"     # --border-dark #F5F5F5
+      border_visible: "{neutral.50}"
+      text1:          "{neutral.50}"     # --text-dark #F5F5F5
+      text2:          "{neutral.50}"
+      text3:          "{neutral.500}"
+      text4:          "{neutral.500}"
+      accent:         "{accent.500}"
+      accent_hover:   "{accent.500}"
+      accent_subtle:  "{accent.500}"
+      alert:          "{alert.500}"
+
+  radii:
+    element:   0
+    control:   0
+    component: 0
+    container: 0
+    pill:      0
+
+  typography:
+    display:
+      family: "JetBrains Mono"
+      size:   "clamp(64px, 11vw, 152px)"   # .hero-title
+      weight: 700
+      line_height: 0.92
+      letter_spacing: "-0.04em"
+      google_fonts: "JetBrains+Mono:wght@400;500;700"
+    body:
+      family: "JetBrains Mono"             # mono everywhere — no sans
+      size:   "14px"                        # html base font-size
+      weight: 400
+      line_height: 1.5
+      letter_spacing: "0em"
+      google_fonts: "JetBrains+Mono:wght@400;500;700"
+    mono:
+      family: "JetBrains Mono"
+      size:   "13px"                        # code blocks
+      weight: 400
+      google_fonts: "JetBrains+Mono:wght@400;500;700"
+    label:
+      family: "JetBrains Mono"
+      size:   "11px"                        # .label, .label-muted
+      weight: 500
+      letter_spacing: "0.08em"
+      transform: "uppercase"
+  font_fallbacks:
+    mono: "'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace"
+
+# ── HERO STAGE ─── brutalist-grid preset
+# Demonstrates:
+#   background.medium: typographic — the type IS the field
+#   hero.subject: none — no centered glyph, no product shot
+#   relation.type: flat — bordered sections stacked, no z-depth
+#
+# The hero is a left-aligned monospace headline at clamp(64,11vw,152)px,
+# pinned over a 12-column 1px grid overlay at 8% opacity. Below it sits a
+# bordered cta-shell that looks exactly like a terminal prompt.
+hero_stage:
+  preset: "brutalist-grid"
+  observed_style:
+    description: "Pure white canvas, full-bleed. A 12-column hairline grid overlay sits behind the content at 8% opacity (border-left: 1px solid #000, opacity 0.08). The hero headline is JetBrains Mono 700 at clamp(64px, 11vw, 152px), letter-spacing -0.04em, line-height 0.92, max-width 14ch, left-aligned. An eyebrow row above the title shows an 8x8px solid #00FF66 square next to a [v0.8.2 · MAINNET] label. Below the headline sits a bordered cta-shell (height 48px, 1px black border, no radius) split into a $ prompt segment and a black 'copy' button — it reads as a literal terminal command. A 4-column hero-meta row with 1px top border closes the section. Every section across the page repeats this rhythm: 1px black border, sp-7 (96px) vertical padding, label-muted eyebrow in [BRACKETS], left-aligned content. The proof: typography + a 1px grid + one green dot is the entire hero."
+    where_used: ["hero", "code blocks", "step grid", "stats row", "footer prompt line"]
+    notes: "Fictional. No images, no gradients, no shadows, no radii. The only chromatic notes on the entire page are the green accent dot/$/π and a single red manifesto line. Theme toggle ships light + dark, but light is the default and the brand's natural state."
+  background:
+    medium: "typographic"
+    color_mode: "monochrome"
+    saturation: "neutral"
+    light_source: "none"
+    falloff: "none"
+    vignette: "none"
+    texture: "clean"
+    motion: "static"
+    intensity: "minimal"
+    safe_zone: "full-bleed"
+    color_palette:
+      - "#FFFFFF"   # canvas
+      - "#000000"   # borders, text, grid lines
+      - "#757575"   # muted labels and meta
+      - "#00FF66"   # accent — dot, $, π, hr-accent
+    recipe: "hairline-grid"
+    recipe_params:
+      grid_columns: 12
+      grid_line_weight: "1px"
+      grid_line_color: "#000000"
+      grid_line_opacity: 0.08
+      section_border: "1px solid #000000"
+      section_padding_y: "96px"
+  hero:
+    subject: "none"                # the headline + grid IS the hero
+  relation:
+    type: "flat"
+    bleed: 0
+  disclaimer: "Fictional brand created for the hue carousel. Not affiliated with any real company. Light mode is the default; dark mode is a near-black canvas (#050505) with the same #00FF66 accent."
+
+# ── BRAND VOICE ─────────────────────────────────────────
+voice:
+  tone: "terse, technical, command-line minimalism — reads like a man page with opinions"
+  samples:
+    - "Compute you can verify. Protocol you can read."
+    - "oxide is an open protocol for verifiable compute. No servers to trust, no opaque runtimes, no silicon lottery."
+    - "The contract is twelve lines. If you can't read it in one sitting, it isn't a protocol, it's a product."
+    - "Trust is a debt. Proof is a payment."
+    - "Open the protocol or get out of the way."
+  conventions:
+    - "section headers in [BRACKETS], uppercase, letter-spacing 0.1em"
+    - "lowercase nav, lowercase wordmark, lowercase shell prompts"
+    - "stats are bare numbers with tiny uppercase labels (14,902 / nodes online)"
+    - "version always in square brackets next to the wordmark — oxide [0.8.2]"
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Almost no icons. The brand uses typographic marks instead: a green 8x8px square as the live dot, a green $ as the shell prompt, a green π as the proof glyph, and a blinking 8x14px black caret in the footer. Phosphor regular is loaded as a fallback kit but barely used."
+    stroke_weight: "regular"
+    corner_treatment: "sharp"
+    fill_style: "outline"
+    form_language: "geometric"
+    visual_density: "minimal"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "regular"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css"
+    icon_class_prefix: "ph ph-"

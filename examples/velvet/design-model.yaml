@@ -1,0 +1,177 @@
+name: "Velvet"
+description: "Fictional noir editorial fragrance house. The hero has no product shot — a Cormorant Garamond display in champagne italics on near-black IS the hero, with a faint Roman-numeral ornament drifting in the corner. Proves the typographic-hero preset: medium: surface (warm-noir) + subject: typography + relation: flat. Editorial typography alone carries the identity."
+philosophy: "Hushed, late-night confidence. Velvet is a private atelier perfumery for collectors — the landing doesn't sell a bottle, it sets a room. The identity is editorial rather than commercial: a quiet display serif, a champagne accent, hairline rules, Roman numerals, and copy that reads like an atelier notebook."
+primary_mode: "dark"
+brand_source: "INVENTED — fictional brand for hue carousel"
+brand_domain: "noir editorial fragrance (fictional)"
+brand_type: "editorial"
+mono_for_data: false
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    neutral:             # warm-noir near-blacks and bone whites — never pure gray
+      950: "#0A0907"     # canvas — near-black with warm undertone
+      900: "#14120E"     # surface dark
+      800: "#1C1A14"     # surface
+      700: "#2A271F"     # surface elevated
+      bone_50:  "#FAF7F1"
+      bone_100: "#F5F1EA"   # warm bone (text1 on dark)
+      bone_200: "#ECE5D8"
+      bone_300: "#D8D0C0"
+      taupe:    "#8A8578"   # text3
+      taupe_dk: "#6B675B"   # text4
+    brand:               # champagne — the single accent that carries the identity
+      champagne:      "#D4B896"   # primary accent
+      rose_gold:      "#C9A76E"   # secondary warm accent
+      champagne_soft: "rgba(212, 184, 150, 0.55)"
+    accent_light:        # light-mode shifts the accent darker for contrast on bone
+      bronze:      "#8B6E3F"
+      bronze_warm: "#A48148"
+  spacing: [4, 8, 16, 24, 40, 64, 96, 128, 176]   # --sp-xs through --sp-5xl
+  radii:   [2, 4]                                  # only two radii — editorial restraint
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    dark:
+      background:     "{neutral.950}"
+      surface1:       "{neutral.900}"
+      surface2:       "{neutral.800}"
+      surface3:       "{neutral.700}"
+      border:         "rgba(212, 184, 150, 0.15)"
+      border_visible: "rgba(212, 184, 150, 0.28)"
+      hairline:       "rgba(245, 241, 234, 0.10)"
+      text1:          "{neutral.bone_100}"
+      text2:          "#C5C0B3"
+      text3:          "{neutral.taupe}"
+      text4:          "{neutral.taupe_dk}"
+      accent:         "{brand.champagne}"
+      accent_2:       "{brand.rose_gold}"
+    light:
+      background:     "{neutral.bone_100}"
+      surface1:       "{neutral.bone_50}"
+      surface2:       "{neutral.bone_200}"
+      surface3:       "{neutral.bone_300}"
+      border:         "rgba(10, 9, 7, 0.12)"
+      border_visible: "rgba(10, 9, 7, 0.22)"
+      hairline:       "rgba(10, 9, 7, 0.10)"
+      text1:          "{neutral.950}"
+      text2:          "#2A271F"
+      text3:          "{neutral.taupe_dk}"
+      text4:          "{neutral.taupe}"
+      accent:         "{accent_light.bronze}"
+      accent_2:       "{accent_light.bronze_warm}"
+
+  radii:
+    element:   2     # --r-xs (buttons)
+    control:   4     # --r-sm (frames, cards)
+    component: 4
+    container: 4
+    pill:      999   # only the floating theme bar
+
+  typography:
+    display:
+      family: "Cormorant Garamond"   # editorial serif, italic-forward
+      size:   "clamp(56px, 7.2vw, 112px)"
+      weight: 300
+      line_height: 0.98
+      letter_spacing: "-0.015em"
+      google_fonts: "Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400"
+      notes: "Italic span carries the accent color — italic IS the emphasis treatment."
+    body:
+      family: "Inter"
+      size:   "14px"
+      weight: 400
+      line_height: 1.65
+      letter_spacing: "0em"
+      google_fonts: "Inter:wght@300;400;500"
+    label:
+      family: "Inter"
+      size:   "10px"
+      weight: 500
+      text_transform: "uppercase"
+      letter_spacing: "0.25em"     # --tracking-label, very wide
+    mono: null                      # no mono — editorial fragrance, not a data product
+
+# ── HERO STAGE ─── typographic-hero preset
+# Demonstrates:
+#   background.medium: surface (warm-noir, no imagery, no gradient field)
+#   hero.subject: typography — the display serif IS the hero
+#   relation.type: flat — no product shot, no scene, no relation layer
+#
+# The hero is a Cormorant Garamond h1 in clamp(56–112px), light weight 300,
+# with one italic word in champagne for emphasis. A Roman numeral ornament
+# (the letter "N") sits in the corner at 3.5% opacity as a ghosted serif mark.
+# No product photo, no model, no gradient mass. Typography alone.
+hero_stage:
+  preset: "typographic-hero"
+  observed_style:
+    description: "INVENTED for testing: a near-black warm-noir canvas with a single Cormorant Garamond display headline, light weight 300, with one italic word in champagne. A short hairline rule and uppercase wide-tracked eyebrow label sit above. Below, a four-column meta strip (Founded / Edition / Compositions / Ateliers) separated by hairlines uses display-serif numerals with italic accents. A faint Roman-numeral ornament (the letter N) sits in the top-right corner at ~3.5% opacity as a ghosted serif mark. No product shot. No model. The typography is the hero."
+    where_used: ["hero", "section headlines (compositions, method, atelier)"]
+    notes: "Fictional editorial perfumery composition. Pure HTML + CSS, one Google Font (Cormorant Garamond + Inter). Proves that subject: typography on medium: surface can carry an entire identity without imagery."
+  background:
+    medium: "surface"            # flat surface, no gradient field, no imagery
+    color_mode: "palette"
+    saturation: "muted"          # warm-noir is desaturated by design
+    light_source: "none"
+    falloff: "none"
+    vignette: "none"
+    texture: "clean"
+    motion: "static"
+    intensity: "quiet"           # editorial-hushed — bold would betray the brand
+    safe_zone: "full-canvas"
+    color_palette:
+      - "#0A0907"   # canvas (noir-950)
+      - "#14120E"   # surface1
+      - "#F5F1EA"   # bone text
+      - "#D4B896"   # champagne accent
+      - "#C9A76E"   # rose gold
+    recipe: "warm-noir-flat"
+    recipe_params:
+      ornament: "roman-numeral"
+      ornament_opacity: 0.035
+      ornament_size: "clamp(180px, 28vw, 360px)"
+      ornament_position: "top-right"
+  hero:
+    subject: "typography"
+    form: "display-serif headline"
+    placement: "left, max-width 12ch"
+    scale: "clamp(56px, 7.2vw, 112px)"
+    weight: 300
+    italic_emphasis: true        # one italic word in accent color
+    tint: "{tokens.colors.dark.text1}"
+  relation:
+    type: "flat"                  # no subject layer, nothing to relate
+    bleed: 0
+  disclaimer: "Fictional brand created for the hue carousel. Not affiliated with any real maison. The warm-noir typographic-hero is a pure-CSS composition using Google Fonts (Cormorant Garamond + Inter) — no proprietary assets."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Fictional: icons are nearly absent. The identity is carried by serif typography, hairline rules, and Roman numerals. The only iconographic gestures are the hairline `rule` separators, Roman numerals (I., II., III.) marking sections, the small bullet mark in the brand wordmark, and an italic arrow (→) on read-more links."
+    stroke_weight: "hairline"
+    corner_treatment: "sharp"
+    fill_style: "outline"
+    form_language: "editorial"
+    visual_density: "minimal"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "regular"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css"
+    icon_class_prefix: "ph ph-"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  tone: "editorial, hushed, late-night confidence"
+  cadence: "short declarative sentences. fragments allowed. roman numerals over arabic. uppercase wide-tracked labels. italic for the one word that matters."
+  samples:
+    - "Scents composed for the unrepeated evening."
+    - "Each composition begins with a place. Then a memory of weather. Then the smallest possible cast of materials."
+    - "We finish a perfume only when nothing further can be removed without losing the room it was built for."
+    - "A perfume is finished the moment a single drop says everything the room needed."
+    - "Slow work, by hand, in three movements."
+    - "Forty per chapter, never more."
+  vocabulary:
+    prefer: ["composition", "chapter", "atelier", "edition", "concierge", "by appointment", "MMXXVI"]
+    avoid:  ["product", "scent", "buy now", "shop", "subscribe", "fragrance launch"]

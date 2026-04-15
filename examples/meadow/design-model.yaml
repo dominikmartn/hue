@@ -1,0 +1,382 @@
+name: "Meadow"
+description: "Cool cream canvas with a coral accent and editorial serif warmth. Generous spacing, soft-cornered surfaces, and a single pinpoint of color that feels like a bookmark pinned in sunlight."
+philosophy: "Organic collecting. Editorial serif display, neo-grotesque body, airy spacing, rounded-rectangle cards, and one coral pinpoint."
+primary_mode: "light"
+brand_source: "mymind.com"
+brand_domain: "personal knowledge / visual bookmarking"
+brand_type: "ui-rich"
+mono_for_data: false
+
+# ── PRIMITIVES ──────────────────────────────────────────
+# Derived by inspecting mymind.com's inline CSS + typekit
+# font imports. Observed values are marked; derived ones
+# are filled in to complete the ramp.
+primitives:
+  colors:
+    neutral:           # Cool — mymind's observed gray temperature
+      0:   "#FFFFFF"   # observed (44 occurrences) — page background
+      50:  "#F5F7F9"   # observed (18)   — primary surface tint
+      100: "#F0F2F5"   # observed (9)    — secondary surface
+      200: "#E5EAF2"   # observed (4)    — tertiary surface / subtle border
+      300: "#D4DCE5"   # derived         — visible border
+      400: "#BCC3CC"   # derived         — placeholder / disabled text
+      500: "#8892A1"   # derived         — tertiary text
+      600: "#748297"   # observed (38)   — secondary text
+      700: "#4A5465"   # observed (57)   — dark surface / strong text
+      800: "#343552"   # observed (11)   — darker (has slight cool purple shift, authentic)
+      900: "#1A1C2E"   # derived         — near-black
+      950: "#000000"   # observed (241)  — primary text (pure black)
+    brand:             # Coral — #FF5924 is 500
+      50:  "#FFF1F1"   # observed (7)    — accent-bg tint (slightly pink, not orange)
+      100: "#FFDDD4"   # derived
+      200: "#FFC2A8"   # derived
+      300: "#FFA47C"   # derived
+      400: "#FF8550"   # derived         — lighter coral for dark mode
+      500: "#FF5924"   # observed (99)   — primary accent
+      600: "#E04414"   # derived
+      700: "#B83408"   # derived
+      800: "#8F2A06"   # derived
+      900: "#6B1F04"   # derived
+      950: "#451302"   # derived
+    red:
+      50:  "#FDF0F0"
+      500: "#E5484D"
+      900: "#7F1D1D"
+    green:
+      50:  "#F0F9EC"
+      500: "#5CB13E"   # observed (4) — also used as decorative green
+      900: "#14532D"
+    amber:
+      50:  "#FFFBEB"
+      500: "#E5A73B"
+      900: "#78350F"
+    # Decorative dot-system — mymind's category indicators.
+    # Categorical, not scalar. All observed on the homepage.
+    decorative:
+      yellow: "#FFE926"   # observed (4)
+      pink:   "#FF7DD3"   # observed (4)
+      green:  "#5CB13E"   # observed (4) — shares hex with green.500
+    # Outlier: one warm border tint used sparingly on mymind.com
+    # alongside the otherwise cool palette. Kept as a named value
+    # so it doesn't pollute the cool neutral ramp.
+    warm_border: "#E6DBDB"   # observed (8)
+
+  spacing: [0, 2, 4, 8, 12, 16, 20, 24, 32, 48, 64, 96]
+  radii:   [0, 6, 12, 16, 30, 100, 999]   # observed values — mymind uses 16/30/100
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    light:
+      background:     "{neutral.0}"       # #FFFFFF — observed pure white
+      surface1:       "{neutral.50}"      # #F5F7F9 — observed
+      surface2:       "{neutral.100}"     # #F0F2F5 — observed
+      surface3:       "{neutral.200}"     # #E5EAF2 — observed
+      border:         "{neutral.200}"     # #E5EAF2
+      border_visible: "{neutral.300}"     # #D4DCE5
+      text1:          "{neutral.950}"     # #000000 — observed (pure black)
+      text2:          "{neutral.600}"     # #748297 — observed
+      text3:          "{neutral.500}"     # #8892A1
+      text4:          "{neutral.400}"     # #BCC3CC
+      accent:         "{brand.500}"       # #FF5924 — observed
+      accent_subtle:  "{brand.50}"        # #FFF1F1 — observed
+    dark:
+      # Dark mode is DERIVED — mymind.com marketing has no dark mode.
+      background:     "{neutral.950}"     # #000000
+      surface1:       "{neutral.900}"
+      surface2:       "{neutral.800}"
+      surface3:       "{neutral.700}"
+      border:         "{neutral.800}"
+      border_visible: "{neutral.700}"
+      text1:          "{neutral.0}"       # #FFFFFF
+      text2:          "{neutral.400}"
+      text3:          "{neutral.500}"
+      text4:          "{neutral.600}"
+      accent:         "{brand.400}"       # #FF8550
+      accent_subtle:  "{brand.950}"
+    status:
+      success:          "{green.500}"
+      success_bg_light: "{green.50}"
+      success_bg_dark:  "{green.900}"
+      warning:          "{amber.500}"
+      warning_bg_light: "{amber.50}"
+      warning_bg_dark:  "{amber.900}"
+      error:            "{red.500}"
+      error_bg_light:   "{red.50}"
+      error_bg_dark:    "{red.900}"
+
+  spacing:
+    2xs: 2
+    xs:  4
+    sm:  8
+    md:  16
+    lg:  24
+    xl:  32
+    2xl: 48
+    3xl: 64
+    4xl: 96
+
+  radii:
+    element:   6     # small controls
+    control:   30    # observed — CTA buttons are rounded rectangles, not pills
+    component: 16    # observed — cards are 16px, NOT 24 as previously guessed
+    container: 30    # modals / sheets
+    pill:      100   # observed — true pills use ~100px (5.55rem at 18px base)
+
+  typography:
+    # Real stack on mymind.com is Miller Display + Neue Haas Grotesk Display
+    # via Adobe Typekit. Both are commercial — the skill uses closest
+    # Google Fonts approximations with an honest `real_font` field.
+    display:
+      family: "Lora"
+      real_font: "Miller Display (Adobe Typekit)"
+      approximation_note: "Lora is a humanist editorial serif — slightly warmer and less high-contrast than Miller, but closer on the 'warm-editorial' personality axis than Playfair Display, which is structurally closer but visually more dramatic than mymind actually reads."
+      fallback: "Georgia, 'Times New Roman', serif"
+      size: "36px"
+      weight: 500
+      line_height: 1.1
+      letter_spacing: "-0.02em"
+      google_fonts: "Lora:wght@400;500;600;700"
+    body:
+      family: "Inter"
+      real_font: "Neue Haas Grotesk Display (Adobe Typekit)"
+      approximation_note: "Inter is the closest Google Fonts match to Neue Haas Grotesk — both are neo-grotesque screen-optimized sans-serifs. Previous Meadow used DM Sans (geometric-humanist) which was structurally wrong."
+      fallback: "'Helvetica Neue', Helvetica, Arial, sans-serif"
+      size: "16px"
+      weight: 400
+      line_height: 1.5
+      letter_spacing: "-0.005em"
+      google_fonts: "Inter:wght@400;500;600;700"
+    # No mono — mymind uses no mono font anywhere on the site.
+    mono:
+      family: null
+      fallback: "ui-monospace, 'SF Mono', 'Menlo', monospace"
+      note: "Reserved for actual code only. Never use for data values."
+
+  type_scale:
+    display:   { size: "48px", line_height: 1.1,  letter_spacing: "-0.02em",  weight: 400, use: "Hero numbers, screen titles (Lora)" }
+    h1:        { size: "32px", line_height: 1.15, letter_spacing: "-0.015em", weight: 500, use: "Section headings (Inter)" }
+    h2:        { size: "22px", line_height: 1.25, letter_spacing: "-0.01em",  weight: 500, use: "Card titles (Inter)" }
+    h3:        { size: "18px", line_height: 1.35, letter_spacing: "-0.005em", weight: 500, use: "Widget headers (Inter)" }
+    body:      { size: "16px", line_height: 1.5,  letter_spacing: "-0.005em", weight: 400, use: "Body text, descriptions (Inter)" }
+    body_sm:   { size: "14px", line_height: 1.45, letter_spacing: "0",        weight: 400, use: "Secondary text (Inter)" }
+    caption:   { size: "12px", line_height: 1.4,  letter_spacing: "0",        weight: 400, use: "Timestamps, footnotes (Inter)" }
+    label:     { size: "11px", line_height: 1.3,  letter_spacing: "0.04em",   weight: 500, use: "Widget labels, uppercase metadata (Inter)" }
+
+  elevation:
+    strategy: "subtle"
+    shadows:
+      # All three light shadows are VERIFIED observed values from mymind.com.
+      level1:
+        light: "0px 4px 22px rgba(116, 130, 151, 0.14)"   # observed
+        dark:  "0px 4px 22px rgba(0, 0, 0, 0.3)"          # derived
+      level2:
+        light: "0px 8px 32px rgba(116, 130, 151, 0.18)"   # derived from level1 ratio
+        dark:  "0px 8px 32px rgba(0, 0, 0, 0.4)"          # derived
+      level3:
+        light: "0px 16px 48px rgba(116, 130, 151, 0.22)"  # derived
+        dark:  "0px 16px 48px rgba(0, 0, 0, 0.5)"         # derived
+      # Brand-colored hover shadow for coral CTAs — observed.
+      accent_hover: "0px 8px 16px rgba(255, 89, 36, 0.2)"  # observed
+
+  motion:
+    # Corrected from observed CSS — mymind uses plain ease-in-out
+    # at ~250ms for the primary CTA button, not cubic-bezier.
+    personality: "smooth-simple"
+    easing:
+      fast:   "ease-in-out"          # observed on CTA transitions
+      medium: "ease-in-out"
+      slow:   "cubic-bezier(0.16, 1, 0.3, 1)"   # derived for larger transitions
+    duration:
+      fast:   "250ms"                # observed: "all 0.25s ease-in-out"
+      medium: "400ms"
+      slow:   "600ms"
+
+  # Hero stage — composed background + optional hero subject + relation.
+  # Meadow collapses to just the painterly background; no hero subject.
+  # See references/hero-stage.md for the full dial reference.
+  hero_stage:
+    preset: "painterly-no-hero"
+    observed_style:
+      description: "Hand-painted, dreamy landscape scenes with warm earthy tones and botanical motifs. Colors blend softly with painterly irregularities that feel like commissioned artwork. The backgrounds feel like memory itself: warm, slightly out of focus, organic. No foreground hero subject — the painted field IS the hero."
+      where_used:
+        - "hero (full-bleed behind headline)"
+        - "feature area backgrounds (subtle)"
+      notes: "mymind uses commissioned illustrations with specific compositions we can't reproduce; our fallback captures the vibe but not the authorship."
+    background:
+      medium: "painterly"
+      color_mode: "palette"
+      saturation: "muted"
+      light_source: "ambient"
+      falloff: "soft"
+      vignette: "off"
+      texture: "paint"
+      motion: "static"
+      intensity: "subtle"
+      safe_zone: "full-bleed"
+      color_palette:
+        - "#FFA47C"   # warm coral-peach
+        - "#FFE926"   # yellow
+        - "#FF7DD3"   # pink
+        - "#FFC2A8"   # soft coral
+        - "#5CB13E"   # sage green
+      svg_filter_id: "bg-painterly"
+      rendering_notes: "Layered radial-gradient ellipses in brand palette, displaced by feTurbulence (baseFrequency 0.012, scale 60), blurred stdDeviation 8, opacity 0.85 light / 0.5 dark"
+    hero:
+      subject: "none"
+      # placement / scale / tint ignored when subject: none
+    relation:
+      type: "flat"
+      bleed: 0
+    disclaimer: "Approximated with SVG + CSS. mymind's real backgrounds are commissioned illustrations not redistributed with this skill."
+
+  iconography:
+    observed_style:
+      description: "mymind uses a proprietary, slightly hand-drawn icon set. Icons have ~1.5-1.75px outline stroke with rounded terminals, minor irregularities, and a humanist personality. They feel sketched rather than drawn on a grid."
+      stroke_weight: "regular (~1.5-1.75px)"
+      corner_treatment: "soft"
+      fill_style: "outline"
+      form_language: "humanist, leaning hand-drawn"
+      visual_density: "minimal"
+    fallback_kit:
+      name: "Phosphor"
+      weight: "regular"
+      match_score: "medium-high"
+      match_reasoning: "Phosphor regular matches observed stroke weight (1.5px) and humanist form language. It is less hand-drawn than mymind's real icons — Iconoir would be closer on the wobbly axis, but Phosphor's broader glyph coverage wins for general preview work. Known gap: Phosphor's curves are perfectly regular, mymind's have intentional irregularity that the fallback cannot reproduce."
+      cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
+      icon_class_prefix: "ph ph-"
+    sizes:
+      inline: "16px"
+      button: "20px"
+      nav: "24px"
+    disclaimer: "Icons rendered in the Meadow preview are a best-match fallback from the Phosphor kit. mymind's actual icons are proprietary and not redistributed with this skill."
+
+# ── COMPONENTS ──────────────────────────────────────────
+# Values traced to mymind.com where possible.
+components:
+  button_primary:
+    source: "observed"
+    teardown: ".standard.navbar-right .menu li:last-child on mymind.com — Sign in CTA"
+    background:  "{colors.light.accent}"      # #FF5924
+    color:       "#FFFFFF"
+    font_family: "{typography.body.family}"
+    font_size:   "{type_scale.body.size}"
+    font_weight: 500
+    padding:     "11px 20px"                  # observed
+    radius:      "{radii.control}"            # 30px — observed (NOT pill)
+    border:      "none"
+    transition:  "all 250ms ease-in-out"      # observed
+    hover:       { shadow: "{elevation.shadows.accent_hover}" }
+    active:      { transform: "scale(0.97)" }
+    disabled:    { opacity: 0.4 }
+
+  button_secondary:
+    source: "derived"
+    justification: "mymind has link-style secondary actions in nav. Bordered variant added for contexts needing more visual weight, using same 30px radius and accent color."
+    background:  "transparent"
+    color:       "{colors.light.accent}"
+    font_size:   "{type_scale.body.size}"
+    font_weight: 500
+    padding:     "11px 20px"
+    radius:      "{radii.control}"            # 30
+    border:      "1.5px solid {colors.light.accent}"
+    transition:  "all 250ms ease-in-out"
+    hover:       { background: "rgba(255, 89, 36, 0.06)" }
+
+  button_ghost:
+    source: "observed"
+    teardown: "mymind.com navigation links"
+    background:  "transparent"
+    color:       "{colors.light.text2}"
+    font_size:   "{type_scale.body_sm.size}"
+    font_weight: 400
+    padding:     "8px 16px"
+    radius:      "{radii.control}"
+    hover:       { color: "{colors.light.text1}" }
+
+  card:
+    source: "observed"
+    teardown: "mymind.com feature sections — 16px border-radius observed in inline CSS"
+    background: "{colors.light.surface1}"     # #F5F7F9
+    radius:     "{radii.component}"           # 16 — observed, NOT 24
+    padding:    "{spacing.lg}"                # 24
+    border:     "none"
+    shadow:     "none"
+    hover:
+      shadow:     "{elevation.shadows.level1.light}"
+      transition: "250ms ease-in-out"
+
+  input:
+    source: "derived"
+    justification: "Input styling not inspected on marketing page. Derived from button language + pill heritage."
+    background:     "{colors.light.surface2}"
+    radius:         "{radii.pill}"            # 100 — pill for inputs, matches brand pill usage
+    height:         "48px"
+    padding:        "12px 20px"
+    border_default: "1.5px solid {colors.light.border}"
+    border_focus:   "1.5px solid {colors.light.accent}"
+    focus_ring:     "0px 0px 0px 3px {colors.light.accent_subtle}"
+    font_size:      "{type_scale.body.size}"
+    placeholder_color: "{colors.light.text3}"
+
+  tag:
+    source: "observed + derived"
+    justification: "Dot colors observed directly (yellow/pink/green). Pill-tag geometry derived from mymind's pill language."
+    background:  "{colors.light.accent_subtle}"  # #FFF1F1
+    color:       "{colors.light.accent}"
+    radius:      "{radii.pill}"
+    padding:     "4px 12px"
+    font_size:   "{type_scale.caption.size}"
+    font_weight: 500
+    variants:
+      - { name: "yellow", background: "rgba(255, 233, 38, 0.15)", color: "#C4A800" }
+      - { name: "pink",   background: "rgba(255, 125, 211, 0.15)", color: "#D64DA0" }
+      - { name: "green",  background: "rgba(92, 177, 62, 0.15)",  color: "#4A9432" }
+
+  toggle:
+    source: "derived"
+    justification: "Billing toggle exists on pricing page but not inspected. Geometry derived from pill language."
+    track_width:  "44px"
+    track_height: "24px"
+    track_radius: "{radii.pill}"
+    track_off:    "{colors.light.surface3}"
+    track_on:     "{colors.light.accent}"
+    thumb_size:   "20px"
+    thumb_color:  "#FFFFFF"
+    transition:   "250ms ease-in-out"
+
+  progress:
+    source: "derived"
+    justification: "Not found on mymind.com. Derived from pill-shape language."
+    height:  "6px"
+    radius:  "{radii.pill}"
+    track:   "{colors.light.surface2}"
+    fill:    "{colors.light.accent}"
+
+  list_row:
+    source: "derived"
+    justification: "Feature lists observed. Derived data row from generous spacing + borders-are-rare principle."
+    min_height: "48px"
+    padding:    "12px 0"
+    divider:    "none"
+    hover_bg:   "{colors.light.surface1}"
+    transition: "200ms ease"
+
+  modal:
+    source: "derived"
+    background: "{colors.light.surface1}"
+    radius:     "{radii.container}"           # 30
+    shadow:     "{elevation.shadows.level3.light}"
+    backdrop:   "rgba(0, 0, 0, 0.3)"
+    max_width:  "480px"
+    padding:    "{spacing.xl}"                # 32
+
+  navigation:
+    source: "observed"
+    teardown: "mymind.com sticky navbar"
+    background: "{colors.light.background}"
+    shadow:     "{elevation.shadows.level1.light}"
+    radius:     "{radii.pill}"
+    height:     "60px"
+    colored_dots: true
+    dot_size:   "6px"

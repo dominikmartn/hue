@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>relay — The schedule, on time.</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css">
+
+<style>
+  :root {
+    --bg:        #FFFFFF;
+    --surface1:  #F2F2F2;
+    --surface2:  #E6E6E6;
+    --text1:     #000000;
+    --text2:     #595959;
+    --border:    #000000;
+    --grid:      #E0E0E0;
+    --accent:    #DD0000;
+
+    --sp-1: 8px;
+    --sp-2: 16px;
+    --sp-3: 24px;
+    --sp-4: 32px;
+    --sp-5: 48px;
+    --sp-6: 64px;
+    --sp-7: 96px;
+    --sp-8: 128px;
+
+    --hair: 1px;
+    --rule: 2px;
+    --r: 0;
+
+    --font-sans: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  }
+
+  [data-theme="light"] {
+    --c-bg:       #FFFFFF;
+    --c-surface1: #F2F2F2;
+    --c-surface2: #E6E6E6;
+    --c-text1:    #000000;
+    --c-text2:    #595959;
+    --c-border:   #000000;
+    --c-grid:     #E0E0E0;
+    --c-accent:   #DD0000;
+    --c-on-accent:#FFFFFF;
+  }
+  [data-theme="dark"] {
+    --c-bg:       #000000;
+    --c-surface1: #0A0A0A;
+    --c-surface2: #141414;
+    --c-text1:    #FFFFFF;
+    --c-text2:    #A6A6A6;
+    --c-border:   #FFFFFF;
+    --c-grid:     #1A1A1A;
+    --c-accent:   #FF2222;
+    --c-on-accent:#FFFFFF;
+  }
+
+  * { box-sizing: border-box; }
+  *::selection { background: var(--c-accent); color: #FFFFFF; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--c-bg);
+    color: var(--c-text1);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: 'tnum' 0;
+    transition: background 200ms linear, color 200ms linear;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+  img { max-width: 100%; display: block; }
+
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--sp-4);
+  }
+
+  .mono { font-family: var(--font-mono); font-feature-settings: 'tnum' 1; }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-text1);
+  }
+  .eyebrow-muted {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-text2);
+  }
+  .eyebrow-mono {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-text1);
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-1);
+    height: 48px;
+    padding: 0 var(--sp-3);
+    border: var(--hair) solid var(--c-border);
+    background: transparent;
+    color: var(--c-text1);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background 120ms linear, color 120ms linear;
+  }
+  .btn:hover { background: var(--c-text1); color: var(--c-bg); }
+  .btn-primary {
+    background: var(--c-accent);
+    color: var(--c-on-accent);
+    border-color: var(--c-accent);
+  }
+  .btn-primary:hover {
+    background: var(--c-text1);
+    color: var(--c-bg);
+    border-color: var(--c-text1);
+  }
+  .btn-sm { height: 36px; padding: 0 var(--sp-2); font-size: 11px; }
+  .btn-lg { height: 56px; padding: 0 var(--sp-4); font-size: 14px; }
+
+  /* ── HEADER ── */
+  .lp-header {
+    border-bottom: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .lp-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: var(--c-text1);
+  }
+  .wordmark .red-square {
+    width: 14px;
+    height: 14px;
+    background: var(--c-accent);
+    display: inline-block;
+  }
+  .lp-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+  .lp-nav a {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-text1);
+    padding: 0 var(--sp-2);
+  }
+  .lp-nav a:hover { color: var(--c-text2); }
+  .lp-nav .pipe {
+    color: var(--c-text2);
+    font-weight: 400;
+  }
+  .lp-header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+  }
+
+  /* ── HERO ── */
+  .lp-hero {
+    position: relative;
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-8) 0 var(--sp-7);
+    overflow: hidden;
+    background: var(--c-bg);
+  }
+  .lp-hero .grid-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, var(--c-grid) var(--hair), transparent var(--hair)),
+      linear-gradient(to bottom, var(--c-grid) var(--hair), transparent var(--hair));
+    background-size: 48px 48px;
+    background-position: -1px -1px;
+    z-index: 0;
+  }
+  .lp-hero .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: 6px var(--sp-2);
+    border: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+    margin-bottom: var(--sp-4);
+  }
+  .hero-eyebrow .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--c-accent);
+    display: inline-block;
+  }
+  .hero-eyebrow span.txt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--c-text1);
+    text-transform: uppercase;
+  }
+
+  .lp-hero h1 {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: clamp(56px, 7.5vw, 128px);
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+    margin: 0 0 var(--sp-5) 0;
+    color: var(--c-text1);
+    max-width: 14ch;
+  }
+  .lp-hero .hero-sub {
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--c-text2);
+    max-width: 56ch;
+    margin: 0 0 var(--sp-5) 0;
+  }
+  .hero-cta-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+    margin-bottom: var(--sp-7);
+  }
+  .ghost-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 48px;
+    padding: 0 var(--sp-2);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-text1);
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+
+  /* ── DEPARTURE BOARD ── */
+  .dep-board {
+    border: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+    position: relative;
+    z-index: 2;
+  }
+  .dep-board .head {
+    display: grid;
+    grid-template-columns: 90px 1fr 110px 90px 110px;
+    gap: 0;
+    padding: var(--sp-2) var(--sp-3);
+    border-bottom: var(--hair) solid var(--c-border);
+    background: var(--c-text1);
+    color: var(--c-bg);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .dep-board .head span:nth-child(3),
+  .dep-board .head span:nth-child(4) { text-align: center; }
+  .dep-board .head span:nth-child(5) { text-align: right; }
+
+  .dep-row {
+    display: grid;
+    grid-template-columns: 90px 1fr 110px 90px 110px;
+    gap: 0;
+    padding: var(--sp-3);
+    border-bottom: var(--hair) solid var(--c-border);
+    align-items: center;
+    font-family: var(--font-mono);
+    font-feature-settings: 'tnum' 1;
+  }
+  .dep-row:last-child { border-bottom: 0; }
+  .dep-row .time {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--c-text1);
+    letter-spacing: -0.01em;
+  }
+  .dep-row .dest {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--c-text1);
+    letter-spacing: -0.01em;
+  }
+  .dep-row .dest .via {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .dep-row .service {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-text2);
+    text-align: center;
+    letter-spacing: 0.06em;
+  }
+  .dep-row .platform {
+    font-family: var(--font-mono);
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--c-text1);
+    text-align: center;
+    line-height: 1;
+  }
+  .dep-row .status {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-text2);
+    text-align: right;
+  }
+  .dep-row .status.delay { color: var(--c-accent); }
+  .dep-row .status.boarding {
+    color: var(--c-text1);
+    border: var(--hair) solid var(--c-border);
+    padding: 4px 8px;
+    display: inline-block;
+    margin-left: auto;
+  }
+
+  /* ── FEATURE SECTIONS ── */
+  .lp-feature {
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-8) 0;
+  }
+  .lp-feature .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-7);
+    align-items: center;
+  }
+  .lp-feature.reverse .feature-text { order: 2; }
+  .lp-feature.reverse .feature-visual { order: 1; }
+
+  .feature-text .eyebrow-mono {
+    display: inline-block;
+    margin-bottom: var(--sp-3);
+    padding-bottom: 4px;
+    border-bottom: var(--rule) solid var(--c-accent);
+  }
+  .lp-feature.no-accent .feature-text .eyebrow-mono {
+    border-bottom-color: var(--c-border);
+  }
+  .feature-text h2 {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: clamp(36px, 4.6vw, 64px);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    margin: 0 0 var(--sp-3) 0;
+    color: var(--c-text1);
+    max-width: 14ch;
+  }
+  .feature-text p {
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--c-text2);
+    margin: 0 0 var(--sp-4) 0;
+    max-width: 44ch;
+  }
+  .feature-text ul {
+    list-style: none;
+    margin: 0 0 var(--sp-4) 0;
+    padding: 0;
+    border-top: var(--hair) solid var(--c-border);
+  }
+  .feature-text li {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: var(--sp-3);
+    padding: var(--sp-2) 0;
+    border-bottom: var(--hair) solid var(--c-border);
+    font-size: 14px;
+    color: var(--c-text1);
+  }
+  .feature-text li .k {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-text2);
+  }
+
+  /* feature 1 visual: timetable card */
+  .timetable {
+    border: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+  }
+  .timetable .tt-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sp-2) var(--sp-3);
+    border-bottom: var(--hair) solid var(--c-border);
+    background: var(--c-surface1);
+  }
+  .timetable .tt-head .title {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-text1);
+  }
+  .timetable .tt-head .meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+  }
+  .tt-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 60px 70px;
+    gap: var(--sp-2);
+    padding: var(--sp-2) var(--sp-3);
+    border-bottom: var(--hair) solid var(--c-border);
+    align-items: center;
+    font-family: var(--font-mono);
+    font-feature-settings: 'tnum' 1;
+    font-size: 13px;
+  }
+  .tt-row:last-child { border-bottom: 0; }
+  .tt-row .t { font-weight: 500; color: var(--c-text1); }
+  .tt-row .arrow { color: var(--c-text2); text-align: center; }
+  .tt-row .name { font-family: var(--font-sans); font-weight: 600; color: var(--c-text1); }
+  .tt-row .gl {
+    font-family: var(--font-mono);
+    color: var(--c-text2);
+    text-align: right;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+
+  /* feature 2 visual: platform map */
+  .pmap {
+    border: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+    padding: var(--sp-4);
+  }
+  .pmap .pmap-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--sp-3);
+    padding-bottom: var(--sp-2);
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .pmap .pmap-head h4 {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0;
+    color: var(--c-text1);
+  }
+  .pmap .pmap-head .meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+  }
+  .pmap-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    color: var(--c-text1);
+  }
+  .pmap-svg .pmap-fill-solid {
+    fill: var(--c-text1);
+    stroke: var(--c-text1);
+    stroke-width: 1.5;
+  }
+  .pmap-svg .pmap-text-inverse {
+    fill: var(--c-bg);
+  }
+  .pmap-legend {
+    display: flex;
+    gap: var(--sp-3);
+    margin-top: var(--sp-3);
+    padding-top: var(--sp-2);
+    border-top: var(--hair) solid var(--c-border);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    flex-wrap: wrap;
+  }
+  .pmap-legend .lg {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pmap-legend .lg .sw {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border: var(--hair) solid var(--c-border);
+  }
+  .pmap-legend .lg .sw.on { background: var(--c-text1); }
+  .pmap-legend .lg .sw.delay { background: var(--c-accent); border-color: var(--c-accent); }
+
+  /* feature 3 visual: api / status panel */
+  .api-block {
+    border: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+  }
+  .api-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sp-2) var(--sp-3);
+    border-bottom: var(--hair) solid var(--c-border);
+    background: var(--c-surface1);
+  }
+  .api-head .title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--c-text1);
+    text-transform: uppercase;
+  }
+  .api-head .meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+  }
+  .api-body {
+    padding: var(--sp-3);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--c-text1);
+    overflow-x: auto;
+  }
+  .api-body pre {
+    margin: 0;
+    font-family: inherit;
+    white-space: pre;
+  }
+  .c-com { color: var(--c-text2); }
+  .c-key { color: var(--c-text1); font-weight: 500; }
+  .c-num { color: var(--c-text1); font-weight: 500; }
+  .api-foot {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: var(--hair) solid var(--c-border);
+  }
+  .api-foot .cell {
+    padding: var(--sp-2) var(--sp-3);
+    border-right: var(--hair) solid var(--c-border);
+  }
+  .api-foot .cell:last-child { border-right: 0; }
+  .api-foot .lbl {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-text2);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .api-foot .val {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-text1);
+    letter-spacing: -0.01em;
+  }
+
+  /* ── PULL QUOTE ── */
+  .lp-quote {
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-8) 0;
+    background: var(--c-surface1);
+  }
+  .lp-quote .container {
+    max-width: 880px;
+    text-align: center;
+  }
+  .lp-quote .eyebrow-muted {
+    display: block;
+    margin-bottom: var(--sp-4);
+  }
+  .lp-quote blockquote {
+    margin: 0 0 var(--sp-4) 0;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(28px, 3.6vw, 44px);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--c-text1);
+  }
+  .lp-quote .attr {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-text2);
+  }
+  .lp-quote .attr .name {
+    color: var(--c-text1);
+  }
+
+  /* ── PRICING ── */
+  .lp-pricing {
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-8) 0;
+  }
+  .lp-pricing .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: var(--sp-3);
+    border-bottom: var(--rule) solid var(--c-border);
+    margin-bottom: var(--sp-5);
+  }
+  .lp-pricing .head h2 {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 0;
+    color: var(--c-text1);
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: var(--hair) solid var(--c-border);
+  }
+  .tier {
+    padding: var(--sp-5) var(--sp-4);
+    border-right: var(--hair) solid var(--c-border);
+    display: flex;
+    flex-direction: column;
+  }
+  .tier:last-child { border-right: 0; }
+  .tier .tier-key {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-text2);
+    margin-bottom: var(--sp-2);
+  }
+  .tier .tier-name {
+    font-family: var(--font-sans);
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: var(--sp-3);
+    color: var(--c-text1);
+  }
+  .tier .price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: var(--sp-2);
+    padding-bottom: var(--sp-3);
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .tier .price .amount {
+    font-family: var(--font-mono);
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--c-text1);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-feature-settings: 'tnum' 1;
+  }
+  .tier .price .per {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .tier .blurb {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--c-text2);
+    margin: var(--sp-3) 0 var(--sp-4) 0;
+    min-height: 84px;
+  }
+  .tier ul {
+    list-style: none;
+    margin: 0 0 var(--sp-5) 0;
+    padding: 0;
+  }
+  .tier li {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: var(--sp-2);
+    align-items: baseline;
+    font-size: 13px;
+    color: var(--c-text1);
+    padding: 6px 0;
+    border-bottom: var(--hair) solid var(--c-grid);
+  }
+  .tier li:last-child { border-bottom: 0; }
+  .tier li .mk {
+    font-family: var(--font-mono);
+    color: var(--c-text2);
+    font-size: 11px;
+  }
+  .tier .btn { width: 100%; margin-top: auto; }
+  .tier.featured {
+    background: var(--c-text1);
+    color: var(--c-bg);
+  }
+  .tier.featured .tier-key { color: var(--c-bg); opacity: 0.6; }
+  .tier.featured .tier-name { color: var(--c-bg); }
+  .tier.featured .price { border-bottom-color: var(--c-bg); }
+  .tier.featured .price .amount { color: var(--c-bg); }
+  .tier.featured .price .per { color: var(--c-bg); opacity: 0.6; }
+  .tier.featured .blurb { color: var(--c-bg); opacity: 0.7; }
+  .tier.featured li { color: var(--c-bg); border-bottom-color: rgba(255,255,255,0.1); }
+  .tier.featured li .mk { color: var(--c-bg); opacity: 0.6; }
+  .tier.featured .btn {
+    background: var(--c-bg);
+    color: var(--c-text1);
+    border-color: var(--c-bg);
+  }
+  .tier.featured .btn:hover {
+    background: var(--c-accent);
+    color: var(--c-on-accent);
+    border-color: var(--c-accent);
+  }
+
+  /* ── FINAL CTA ── */
+  .lp-cta {
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-8) 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .lp-cta .grid-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, var(--c-grid) var(--hair), transparent var(--hair)),
+      linear-gradient(to bottom, var(--c-grid) var(--hair), transparent var(--hair));
+    background-size: 48px 48px;
+    background-position: -1px -1px;
+    z-index: 0;
+  }
+  .lp-cta .container { position: relative; z-index: 2; }
+  .lp-cta .eyebrow-mono {
+    display: inline-block;
+    margin-bottom: var(--sp-4);
+    padding: 6px var(--sp-2);
+    background: var(--c-bg);
+    border: var(--hair) solid var(--c-border);
+  }
+  .lp-cta h2 {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: clamp(56px, 8vw, 144px);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    margin: 0 0 var(--sp-4) 0;
+    color: var(--c-text1);
+  }
+  .lp-cta p {
+    font-size: 18px;
+    color: var(--c-text2);
+    max-width: 56ch;
+    margin: 0 auto var(--sp-5) auto;
+    line-height: 1.5;
+  }
+  .lp-cta .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+  }
+
+  /* ── FOOTER ── */
+  .lp-footer {
+    padding: var(--sp-7) 0 var(--sp-5);
+    background: var(--c-bg);
+  }
+  .lp-footer .top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+    gap: var(--sp-5);
+    padding-bottom: var(--sp-5);
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .lp-footer .col h4 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-text2);
+    margin: 0 0 var(--sp-3) 0;
+  }
+  .lp-footer .col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .lp-footer .col li {
+    padding: 4px 0;
+  }
+  .lp-footer .col a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-text1);
+    letter-spacing: -0.01em;
+  }
+  .lp-footer .col a:hover { color: var(--c-text2); }
+  .lp-footer .brand-col .wordmark { margin-bottom: var(--sp-3); }
+  .lp-footer .brand-col p {
+    font-size: 13px;
+    color: var(--c-text2);
+    line-height: 1.5;
+    margin: 0 0 var(--sp-3) 0;
+    max-width: 30ch;
+  }
+  .lp-footer .punktlich {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border: var(--hair) solid var(--c-border);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-text1);
+  }
+  .lp-footer .punktlich .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--c-accent);
+    display: inline-block;
+  }
+  .lp-footer .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    padding-top: var(--sp-4);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--c-text2);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .lp-footer .bottom .legal-row {
+    display: flex;
+    gap: var(--sp-3);
+  }
+  .lp-footer .bottom .legal-row a:hover { color: var(--c-text1); }
+
+  /* ── THEME TOGGLE ── */
+  .theme-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0;
+    background: var(--c-bg);
+    border: var(--hair) solid var(--c-border);
+    z-index: 1000;
+  }
+  .theme-bar button {
+    padding: 10px 18px;
+    border: 0;
+    background: transparent;
+    color: var(--c-text2);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 0;
+  }
+  .theme-bar button + button {
+    border-left: var(--hair) solid var(--c-border);
+  }
+  .theme-bar button.active {
+    background: var(--c-text1);
+    color: var(--c-bg);
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 880px) {
+    .lp-nav .pipe,
+    .lp-nav a:nth-child(2),
+    .lp-nav a:nth-child(4),
+    .lp-nav a:nth-child(6) { display: none; }
+    .lp-header-right .btn { display: none; }
+    .lp-header-right { gap: var(--sp-2); }
+
+    .lp-hero { padding: var(--sp-7) 0 var(--sp-6); }
+    .lp-hero h1 { font-size: clamp(44px, 11vw, 80px); }
+
+    .dep-board .head,
+    .dep-row {
+      grid-template-columns: 70px 1fr 70px 80px;
+    }
+    .dep-board .head span:nth-child(3),
+    .dep-row .service { display: none; }
+    .dep-row .platform { font-size: 22px; }
+    .dep-row .time { font-size: 18px; }
+    .dep-row .dest { font-size: 14px; }
+
+    .lp-feature .container {
+      grid-template-columns: 1fr;
+      gap: var(--sp-5);
+    }
+    .lp-feature.reverse .feature-text { order: 1; }
+    .lp-feature.reverse .feature-visual { order: 2; }
+
+    .pricing-grid {
+      grid-template-columns: 1fr;
+    }
+    .tier {
+      border-right: 0;
+      border-bottom: var(--hair) solid var(--c-border);
+    }
+    .tier:last-child { border-bottom: 0; }
+
+    .lp-cta h2 { font-size: clamp(44px, 13vw, 88px); }
+
+    .lp-footer .top {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-4);
+    }
+    .lp-footer .brand-col { grid-column: 1 / -1; }
+
+    .tt-row {
+      grid-template-columns: 60px 1fr 50px 50px;
+      font-size: 12px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="lp-header">
+  <div class="container">
+    <a href="#" class="wordmark">
+      <span class="red-square"></span>relay
+    </a>
+    <nav class="lp-nav">
+      <a href="#">Schedule</a>
+      <span class="pipe">|</span>
+      <a href="#">Routes</a>
+      <span class="pipe">|</span>
+      <a href="#">Stations</a>
+      <span class="pipe">|</span>
+      <a href="#">API</a>
+    </nav>
+    <div class="lp-header-right">
+      <a href="#" class="btn btn-sm">Sign in</a>
+      <a href="#" class="btn btn-primary btn-sm">Plan a route</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ── HERO ── -->
+<section class="lp-hero">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      <span class="txt">DEP 14:00 · GLEIS 3 · ON TIME</span>
+    </div>
+    <h1>The schedule, on time.</h1>
+    <p class="hero-sub">
+      relay is the dispatch and timetable platform for operations teams. Departures, arrivals, platforms, connections. One service. No detours.
+    </p>
+    <div class="hero-cta-row">
+      <a href="#" class="btn btn-primary btn-lg">View the schedule</a>
+      <a href="#" class="ghost-link">API docs &nbsp;→</a>
+    </div>
+
+    <!-- departure board -->
+    <div class="dep-board" role="table" aria-label="Live departures">
+      <div class="head" role="row">
+        <span>Departure</span>
+        <span>Destination</span>
+        <span>Service</span>
+        <span>Track</span>
+        <span>Status</span>
+      </div>
+      <div class="dep-row" role="row">
+        <span class="time">14:03</span>
+        <span class="dest">Zürich HB<span class="via">via Olten · Aarau</span></span>
+        <span class="service">IC 723</span>
+        <span class="platform">07</span>
+        <span class="status">On time</span>
+      </div>
+      <div class="dep-row" role="row">
+        <span class="time">14:11</span>
+        <span class="dest">Bern<span class="via">via Biel · Solothurn</span></span>
+        <span class="service">IR 16</span>
+        <span class="platform">12</span>
+        <span class="status">On time</span>
+      </div>
+      <div class="dep-row" role="row">
+        <span class="time">14:18</span>
+        <span class="dest">Geneva Airport<span class="via">via Lausanne · Nyon</span></span>
+        <span class="service">ICE 504</span>
+        <span class="platform">03</span>
+        <span class="status delay">+2 min</span>
+      </div>
+      <div class="dep-row" role="row">
+        <span class="time">14:24</span>
+        <span class="dest">Luzern<span class="via">via Zug · Rotkreuz</span></span>
+        <span class="service">S 1</span>
+        <span class="platform">05</span>
+        <span class="status">On time</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURE 1 — text left, timetable right ── -->
+<section class="lp-feature">
+  <div class="container">
+    <div class="feature-text">
+      <span class="eyebrow-mono">01 · Schedule</span>
+      <h2>Every departure, accounted for.</h2>
+      <p>
+        Build the timetable once. relay holds it as the source of truth. Add a service, change a platform, push a substitution. The board updates in the same second across every screen, every API consumer, every operator.
+      </p>
+      <ul>
+        <li><span class="k">Cadence</span><span>Hourly, half-hourly, custom intervals</span></li>
+        <li><span class="k">Calendar</span><span>Weekday, weekend, holiday rosters</span></li>
+        <li><span class="k">Versions</span><span>Drafted, posted, archived</span></li>
+        <li><span class="k">Audit</span><span>Every change is signed and timestamped</span></li>
+      </ul>
+    </div>
+    <div class="feature-visual">
+      <div class="timetable">
+        <div class="tt-head">
+          <span class="title">Route 07 · Hauptbahnhof → Flughafen</span>
+          <span class="meta">Mon–Fri · v.214</span>
+        </div>
+        <div class="tt-row"><span class="t">06:13</span><span class="arrow">→</span><span class="name">Hauptbahnhof</span><span class="gl">Gl. 3</span></div>
+        <div class="tt-row"><span class="t">06:21</span><span class="arrow">→</span><span class="name">Stadelhofen</span><span class="gl">Gl. 1</span></div>
+        <div class="tt-row"><span class="t">06:29</span><span class="arrow">→</span><span class="name">Oerlikon</span><span class="gl">Gl. 7</span></div>
+        <div class="tt-row"><span class="t">06:36</span><span class="arrow">→</span><span class="name">Glattbrugg</span><span class="gl">Gl. 2</span></div>
+        <div class="tt-row"><span class="t">06:42</span><span class="arrow">→</span><span class="name">Flughafen</span><span class="gl">Gl. 4</span></div>
+        <div class="tt-row"><span class="t">06:55</span><span class="arrow">→</span><span class="name">Hauptbahnhof</span><span class="gl">Gl. 3</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURE 2 — visual left, text right ── -->
+<section class="lp-feature reverse no-accent">
+  <div class="container">
+    <div class="feature-visual">
+      <div class="pmap">
+        <div class="pmap-head">
+          <h4>Platform map · Hauptbahnhof</h4>
+          <span class="meta">14:18 · live</span>
+        </div>
+        <svg class="pmap-svg" viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- grid -->
+          <g stroke="currentColor" stroke-width="1" opacity="0.12">
+            <line x1="0" y1="40" x2="480" y2="40"/>
+            <line x1="0" y1="80" x2="480" y2="80"/>
+            <line x1="0" y1="120" x2="480" y2="120"/>
+            <line x1="0" y1="160" x2="480" y2="160"/>
+            <line x1="0" y1="200" x2="480" y2="200"/>
+            <line x1="0" y1="240" x2="480" y2="240"/>
+          </g>
+          <!-- track lines -->
+          <g stroke="currentColor" stroke-width="2" fill="none">
+            <line x1="60" y1="60" x2="420" y2="60"/>
+            <line x1="60" y1="100" x2="420" y2="100"/>
+            <line x1="60" y1="140" x2="420" y2="140"/>
+            <line x1="60" y1="180" x2="420" y2="180"/>
+            <line x1="60" y1="220" x2="420" y2="220"/>
+          </g>
+          <!-- connectors -->
+          <g stroke="currentColor" stroke-width="2" fill="none">
+            <line x1="60" y1="60" x2="60" y2="220"/>
+            <line x1="420" y1="60" x2="420" y2="220"/>
+          </g>
+          <!-- platform numbers (left labels) -->
+          <g font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" fill="currentColor">
+            <text x="20" y="64">01</text>
+            <text x="20" y="104">03</text>
+            <text x="20" y="144">07</text>
+            <text x="20" y="184">12</text>
+            <text x="20" y="224">14</text>
+          </g>
+          <!-- service boxes on tracks -->
+          <g>
+            <rect x="120" y="50" width="80" height="20" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="124" y="64" font-family="JetBrains Mono, monospace" font-size="10" font-weight="500" fill="currentColor">IC 723</text>
+
+            <rect x="240" y="90" width="80" height="20" fill="#DD0000" stroke="#DD0000" stroke-width="1.5"/>
+            <text x="244" y="104" font-family="JetBrains Mono, monospace" font-size="10" font-weight="500" fill="#FFFFFF">ICE 504 +2</text>
+
+            <rect x="180" y="130" width="80" height="20" class="pmap-fill-solid"/>
+            <text x="184" y="144" font-family="JetBrains Mono, monospace" font-size="10" font-weight="500" class="pmap-text-inverse">RE 411</text>
+
+            <rect x="300" y="170" width="80" height="20" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="304" y="184" font-family="JetBrains Mono, monospace" font-size="10" font-weight="500" fill="currentColor">IR 16</text>
+
+            <rect x="100" y="210" width="80" height="20" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="104" y="224" font-family="JetBrains Mono, monospace" font-size="10" font-weight="500" fill="currentColor">S 1</text>
+          </g>
+          <!-- direction arrow -->
+          <g stroke="currentColor" stroke-width="1.5" fill="none">
+            <line x1="430" y1="140" x2="460" y2="140"/>
+            <polyline points="455,134 461,140 455,146"/>
+          </g>
+          <text x="432" y="130" font-family="JetBrains Mono, monospace" font-size="9" font-weight="500" fill="currentColor">N</text>
+        </svg>
+        <div class="pmap-legend">
+          <span class="lg"><span class="sw"></span>Available</span>
+          <span class="lg"><span class="sw on"></span>Occupied</span>
+          <span class="lg"><span class="sw delay"></span>Delayed</span>
+        </div>
+      </div>
+    </div>
+    <div class="feature-text">
+      <span class="eyebrow-mono">02 · Dispatch</span>
+      <h2>Platform assignments without the radio.</h2>
+      <p>
+        Tracks are a constraint. relay solves them. Inbound services are matched to the right platform by length, electrification, occupancy, and turnaround. Conflicts are flagged before they happen. Operators see one map. Passengers see one number.
+      </p>
+      <ul>
+        <li><span class="k">Constraints</span><span>Length, gauge, voltage, platform height</span></li>
+        <li><span class="k">Conflicts</span><span>Detected up to 90 minutes ahead</span></li>
+        <li><span class="k">Reassign</span><span>One click, broadcast in 200ms</span></li>
+        <li><span class="k">Failover</span><span>Manual override, always available</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURE 3 — text left, api right ── -->
+<section class="lp-feature">
+  <div class="container">
+    <div class="feature-text">
+      <span class="eyebrow-mono">03 · API</span>
+      <h2>Real-time data. Plain JSON.</h2>
+      <p>
+        Every departure, every arrival, every status change flows through one endpoint. Subscribe over WebSocket or poll over HTTP. No proprietary feed format. No dialect. Just the schedule, in the open.
+      </p>
+      <ul>
+        <li><span class="k">Latency</span><span>Sub-200ms from dispatch to client</span></li>
+        <li><span class="k">Format</span><span>JSON, GTFS-RT, Protobuf</span></li>
+        <li><span class="k">Auth</span><span>API key or mTLS</span></li>
+        <li><span class="k">Limit</span><span>10,000 req/min on standard</span></li>
+      </ul>
+    </div>
+    <div class="feature-visual">
+      <div class="api-block">
+        <div class="api-head">
+          <span class="title">GET /v1/departures?station=ZRH</span>
+          <span class="meta">200 · 47ms</span>
+        </div>
+        <div class="api-body">
+<pre><span class="c-com">// live feed · station ZRH · 14:18:04 CET</span>
+{
+  <span class="c-key">"station"</span>: <span class="c-key">"ZRH"</span>,
+  <span class="c-key">"as_of"</span>:   <span class="c-key">"2026-04-13T14:18:04+02:00"</span>,
+  <span class="c-key">"departures"</span>: [
+    {
+      <span class="c-key">"service"</span>:  <span class="c-key">"IC 723"</span>,
+      <span class="c-key">"to"</span>:       <span class="c-key">"Zürich HB"</span>,
+      <span class="c-key">"track"</span>:    <span class="c-num">7</span>,
+      <span class="c-key">"departs"</span>:  <span class="c-key">"14:03"</span>,
+      <span class="c-key">"status"</span>:   <span class="c-key">"on_time"</span>
+    },
+    {
+      <span class="c-key">"service"</span>:  <span class="c-key">"ICE 504"</span>,
+      <span class="c-key">"to"</span>:       <span class="c-key">"Geneva Airport"</span>,
+      <span class="c-key">"track"</span>:    <span class="c-num">3</span>,
+      <span class="c-key">"departs"</span>:  <span class="c-key">"14:18"</span>,
+      <span class="c-key">"delay_min"</span>: <span class="c-num">2</span>,
+      <span class="c-key">"status"</span>:   <span class="c-key">"delayed"</span>
+    }
+  ]
+}</pre>
+        </div>
+        <div class="api-foot">
+          <div class="cell">
+            <span class="lbl">Region</span>
+            <span class="val">eu-west-1</span>
+          </div>
+          <div class="cell">
+            <span class="lbl">Uptime 90d</span>
+            <span class="val">99.997%</span>
+          </div>
+          <div class="cell">
+            <span class="lbl">Median lat.</span>
+            <span class="val">142 ms</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PULL QUOTE ── -->
+<section class="lp-quote">
+  <div class="container">
+    <span class="eyebrow-muted">Field report</span>
+    <blockquote>
+      "We replaced a control room of seven monitors and three radios with one relay screen. The 06:42 has not been late since."
+    </blockquote>
+    <div class="attr">
+      <span class="name">M. Brunner</span> &nbsp;·&nbsp; Operations Lead &nbsp;·&nbsp; Verkehrsbetriebe Mittelland
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section class="lp-pricing">
+  <div class="container">
+    <div class="head">
+      <h2>Three services. One network.</h2>
+      <span class="eyebrow-muted">Per operator · billed monthly</span>
+    </div>
+    <div class="pricing-grid">
+      <div class="tier">
+        <div class="tier-key">S — Local</div>
+        <div class="tier-name">S-Bahn</div>
+        <div class="price">
+          <span class="amount">€49</span>
+          <span class="per">/ operator / mo</span>
+        </div>
+        <p class="blurb">For single-line and regional operators. Up to 24 services per day, one station, one operator seat.</p>
+        <ul>
+          <li><span class="mk">+</span><span>1 station, 1 line</span></li>
+          <li><span class="mk">+</span><span>Public departure board</span></li>
+          <li><span class="mk">+</span><span>JSON API, 1k req/min</span></li>
+          <li><span class="mk">+</span><span>Email support, weekday hours</span></li>
+        </ul>
+        <a href="#" class="btn">Start service</a>
+      </div>
+      <div class="tier featured">
+        <div class="tier-key">IC — Standard</div>
+        <div class="tier-name">InterCity</div>
+        <div class="price">
+          <span class="amount">€249</span>
+          <span class="per">/ operator / mo</span>
+        </div>
+        <p class="blurb">For multi-line operators with active dispatch. Up to 50 stations, full platform map, real-time API.</p>
+        <ul>
+          <li><span class="mk">+</span><span>50 stations, unlimited lines</span></li>
+          <li><span class="mk">+</span><span>Dispatch console, 5 seats</span></li>
+          <li><span class="mk">+</span><span>WebSocket feed, 10k req/min</span></li>
+          <li><span class="mk">+</span><span>SLA 99.95%, 24/7 paging</span></li>
+        </ul>
+        <a href="#" class="btn">Plan a route</a>
+      </div>
+      <div class="tier">
+        <div class="tier-key">ICE — Network</div>
+        <div class="tier-name">Network</div>
+        <div class="price">
+          <span class="amount">Talk</span>
+          <span class="per">to dispatch</span>
+        </div>
+        <p class="blurb">For national operators and intermodal networks. Custom topology, dedicated region, on-call engineering.</p>
+        <ul>
+          <li><span class="mk">+</span><span>Unlimited stations & lines</span></li>
+          <li><span class="mk">+</span><span>Dedicated region, mTLS</span></li>
+          <li><span class="mk">+</span><span>GTFS-RT, Protobuf, custom feeds</span></li>
+          <li><span class="mk">+</span><span>SLA 99.99%, named engineer</span></li>
+        </ul>
+        <a href="#" class="btn">Request connection</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ── -->
+<section class="lp-cta">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="container">
+    <span class="eyebrow-mono">DEP 14:00 · GLEIS 3</span>
+    <h2>Board the relay.</h2>
+    <p>Plan a route, post a schedule, run the network. One service, on time.</p>
+    <div class="row">
+      <a href="#" class="btn btn-primary btn-lg">Plan a route</a>
+      <a href="#" class="ghost-link">Read the timetable &nbsp;→</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="lp-footer">
+  <div class="container">
+    <div class="top">
+      <div class="col brand-col">
+        <a href="#" class="wordmark"><span class="red-square"></span>relay</a>
+        <p>A transit service for systems people. Est. 2026 · Zürich.</p>
+        <span class="punktlich"><span class="dot"></span>Pünktlich</span>
+      </div>
+      <div class="col">
+        <h4>Service</h4>
+        <ul>
+          <li><a href="#">Schedule</a></li>
+          <li><a href="#">Routes</a></li>
+          <li><a href="#">Stations</a></li>
+          <li><a href="#">Dispatch</a></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#">API</a></li>
+          <li><a href="#">GTFS-RT</a></li>
+          <li><a href="#">Webhooks</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Operator</h4>
+        <ul>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Onboarding</a></li>
+          <li><a href="#">Support</a></li>
+          <li><a href="#">SLA</a></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Network</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Manifest</a></li>
+          <li><a href="#">Imprint</a></li>
+          <li><a href="#">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom">
+      <span>© 2026 relay AG · Est. 2026 · A transit service for systems people</span>
+      <div class="legal-row">
+        <a href="#">Imprint</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Theme toggle -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="light">Light</button>
+  <button data-theme-btn="dark">Dark</button>
+</div>
+
+<script>
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  document.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+</script>
+
+</body>
+</html>

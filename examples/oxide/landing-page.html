@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>oxide — Compute you can verify.</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css">
+
+<style>
+  /* mockup polish — dead links don't fake broken flows */
+  .lp-nav a,
+  .lp-header a,
+  .lp-footer a,
+  .btn-primary,
+  .btn-ghost,
+  .btn-secondary,
+  .btn-hero,
+  .copy-btn,
+  a.ghost-link {
+    pointer-events: none;
+    cursor: default;
+  }
+  [data-theme-btn] {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+  :root {
+    /* tokens — flat, no scales */
+    --bg:        #FFFFFF;
+    --bg-dark:   #050505;
+    --text:      #000000;
+    --text-dark: #F5F5F5;
+    --muted:     #757575;
+    --border:    #000000;
+    --border-dark: #F5F5F5;
+    --accent:    #00FF66;
+    --alert:     #FF3B00;
+
+    --r: 0;
+    --hair: 1px;
+
+    --sp-1: 8px;
+    --sp-2: 16px;
+    --sp-3: 24px;
+    --sp-4: 32px;
+    --sp-5: 48px;
+    --sp-6: 64px;
+    --sp-7: 96px;
+    --sp-8: 128px;
+
+    --font-mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  [data-theme="light"] {
+    --c-bg: var(--bg);
+    --c-text: var(--text);
+    --c-border: var(--border);
+    --c-muted: var(--muted);
+    --c-inverse-bg: var(--bg-dark);
+    --c-inverse-text: var(--text-dark);
+  }
+  [data-theme="dark"] {
+    --c-bg: var(--bg-dark);
+    --c-text: var(--text-dark);
+    --c-border: var(--border-dark);
+    --c-muted: var(--muted);
+    --c-inverse-bg: var(--bg);
+    --c-inverse-text: var(--text);
+  }
+
+  * { box-sizing: border-box; }
+  *::selection { background: var(--accent); color: #000; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.5;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    transition: background 200ms linear, color 200ms linear;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--sp-4);
+  }
+
+  .label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-text);
+  }
+  .label-muted {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+  }
+
+  .hr-thick {
+    border: 0;
+    border-top: var(--hair) solid var(--c-border);
+    margin: 0;
+  }
+  .hr-accent {
+    border: 0;
+    border-top: var(--hair) solid var(--accent);
+    margin: 0;
+  }
+  .ascii-rule {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--c-muted);
+    overflow: hidden;
+    white-space: nowrap;
+    user-select: none;
+    line-height: 1;
+    padding: var(--sp-2) 0;
+  }
+
+  /* ── NAV ── */
+  .lp-nav {
+    border-bottom: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .lp-nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .lp-nav-left {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-2);
+  }
+  .lp-wordmark {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .lp-version {
+    font-size: 11px;
+    color: var(--c-muted);
+    font-weight: 500;
+  }
+  .lp-nav-right {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+  }
+  .lp-nav-right a {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-text);
+    letter-spacing: 0.02em;
+  }
+  .lp-nav-right a:hover { color: var(--c-muted); }
+
+  /* ── HERO ── */
+  .lp-hero {
+    position: relative;
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-7) 0 var(--sp-7);
+    overflow: hidden;
+  }
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--sp-4);
+    left: 0;
+    right: 0;
+  }
+  .grid-overlay span {
+    border-left: var(--hair) solid var(--c-border);
+    opacity: 0.08;
+  }
+  .grid-overlay span:last-child {
+    border-right: var(--hair) solid var(--c-border);
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-4);
+  }
+  .hero-eyebrow .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    display: inline-block;
+  }
+  .hero-eyebrow .label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-title {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(64px, 11vw, 152px);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    margin: 0 0 var(--sp-5) 0;
+    max-width: 14ch;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--c-text);
+    max-width: 64ch;
+    margin: 0 0 var(--sp-5) 0;
+  }
+  .hero-sub .muted { color: var(--c-muted); }
+
+  .hero-cta-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+    flex-wrap: wrap;
+  }
+  .cta-shell {
+    display: inline-flex;
+    align-items: stretch;
+    border: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+    height: 48px;
+    min-width: 360px;
+  }
+  .cta-shell .prompt {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--sp-3);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-text);
+    letter-spacing: 0;
+    border-right: var(--hair) solid var(--c-border);
+  }
+  .cta-shell .prompt .pf { color: var(--accent); margin-right: 6px; }
+  .cta-shell .copy-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--sp-3);
+    background: var(--c-text);
+    color: var(--c-bg);
+    border: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  a.ghost-link {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--c-text);
+    border-bottom: var(--hair) solid var(--c-border);
+    padding-bottom: 2px;
+  }
+
+  .hero-meta {
+    margin-top: var(--sp-7);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-4);
+    border-top: var(--hair) solid var(--c-border);
+    padding-top: var(--sp-3);
+  }
+  .hero-meta .item .label-muted { display: block; margin-bottom: 4px; }
+  .hero-meta .item .val { font-size: 13px; font-weight: 500; }
+
+  /* ── CODE MANIFESTO ── */
+  .lp-code {
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-7) 0;
+  }
+  .lp-code .container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: var(--sp-5);
+  }
+  .lp-code .col-label h2 {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 var(--sp-2) 0;
+  }
+  .lp-code .col-label p {
+    font-size: 13px;
+    color: var(--c-muted);
+    margin: 0;
+    max-width: 30ch;
+    line-height: 1.6;
+  }
+  .code-block {
+    border: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .code-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-1) var(--sp-3);
+    font-size: 11px;
+    color: var(--c-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .code-body {
+    padding: var(--sp-3);
+    overflow-x: auto;
+  }
+  .code-body pre {
+    margin: 0;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--c-text);
+    white-space: pre;
+  }
+  .c-com { color: var(--c-muted); }
+  .c-key { color: var(--c-text); font-weight: 700; }
+  .c-acc { color: var(--accent); font-weight: 700; }
+  .c-str { color: var(--c-text); }
+
+  /* ── STEPS ── */
+  .lp-steps {
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-7) 0;
+  }
+  .lp-steps .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--sp-5);
+    padding-bottom: var(--sp-3);
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .lp-steps .section-head h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .lp-steps .section-head .label-muted { font-size: 11px; }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: var(--hair) solid var(--c-border);
+  }
+  .step {
+    border-right: var(--hair) solid var(--c-border);
+    padding: var(--sp-4) var(--sp-3) var(--sp-5);
+  }
+  .step:last-child { border-right: 0; }
+  .step .num {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--c-muted);
+    letter-spacing: 0.08em;
+    margin-bottom: var(--sp-4);
+  }
+  .step h3 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--sp-3) 0;
+  }
+  .step p {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--c-text);
+    margin: 0 0 var(--sp-3) 0;
+  }
+  .step .hint {
+    font-size: 11px;
+    color: var(--c-muted);
+    letter-spacing: 0.04em;
+    border-top: var(--hair) solid var(--c-border);
+    padding-top: var(--sp-2);
+  }
+  .step .hint .tag {
+    color: var(--c-text);
+    font-weight: 500;
+  }
+
+  /* ── MANIFESTO ── */
+  .lp-manifesto {
+    border-top: var(--hair) solid var(--accent);
+    border-bottom: var(--hair) solid var(--accent);
+    padding: var(--sp-8) 0;
+    text-align: left;
+  }
+  .lp-manifesto .container {
+    max-width: 980px;
+  }
+  .lp-manifesto .label-muted {
+    margin-bottom: var(--sp-5);
+    display: block;
+  }
+  .lp-manifesto ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: roman;
+  }
+  .lp-manifesto li {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: var(--sp-3);
+    align-items: baseline;
+    padding: var(--sp-3) 0;
+    border-bottom: var(--hair) dashed var(--c-muted);
+  }
+  .lp-manifesto li:last-child { border-bottom: 0; }
+  .lp-manifesto .roman {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--c-muted);
+  }
+  .lp-manifesto .line {
+    font-size: clamp(28px, 4.4vw, 52px);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--c-text);
+  }
+  .lp-manifesto .line.alert { color: var(--alert); }
+
+  /* ── STATS ── */
+  .lp-stats {
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-6) 0;
+  }
+  .lp-stats .container {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .stat .num {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .stat .lbl {
+    font-size: 11px;
+    color: var(--c-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .lp-stats .pipe {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 400;
+    color: var(--c-muted);
+    line-height: 1;
+    align-self: center;
+  }
+
+  /* ── FOOTER ── */
+  .lp-footer {
+    padding: var(--sp-6) 0 var(--sp-5);
+  }
+  .lp-footer .container {
+    display: grid;
+    gap: var(--sp-5);
+  }
+  .lp-footer .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+  .lp-footer .brand {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .lp-footer nav {
+    display: flex;
+    gap: var(--sp-4);
+  }
+  .lp-footer nav a {
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .lp-footer .prompt-line {
+    font-size: 12px;
+    color: var(--c-muted);
+  }
+  .lp-footer .prompt-line .pf { color: var(--accent); }
+  .lp-footer .prompt-line .blink {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: var(--c-text);
+    margin-left: 4px;
+    vertical-align: -2px;
+    animation: blink 1s steps(2) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ── THEME TOGGLE ── */
+  .theme-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0;
+    padding: 0;
+    background: var(--c-bg);
+    border: var(--hair) solid var(--c-border);
+    z-index: 1000;
+  }
+  .theme-bar button {
+    padding: 8px 16px;
+    border: 0;
+    background: transparent;
+    color: var(--c-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .theme-bar button + button {
+    border-left: var(--hair) solid var(--c-border);
+  }
+  .theme-bar button.active {
+    background: var(--c-text);
+    color: var(--c-bg);
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 880px) {
+    .lp-nav-right { gap: var(--sp-2); }
+    .lp-nav-right a:nth-child(2),
+    .lp-nav-right a:nth-child(3) { display: none; }
+    .hero-title { font-size: clamp(48px, 14vw, 96px); }
+    .cta-shell { min-width: 0; width: 100%; }
+    .hero-meta { grid-template-columns: repeat(2, 1fr); }
+    .lp-code .container { grid-template-columns: 1fr; gap: var(--sp-4); }
+    .steps-grid { grid-template-columns: 1fr; }
+    .step { border-right: 0; border-bottom: var(--hair) solid var(--c-border); }
+    .step:last-child { border-bottom: 0; }
+    .lp-manifesto li { grid-template-columns: 48px 1fr; }
+    .lp-manifesto .line { font-size: clamp(22px, 7vw, 36px); }
+    .lp-stats .container { gap: var(--sp-2); }
+    .lp-stats .pipe { display: none; }
+    .stat { width: 47%; padding: var(--sp-2) 0; border-top: var(--hair) solid var(--c-border); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="lp-nav">
+  <div class="container">
+    <div class="lp-nav-left">
+      <span class="lp-wordmark">oxide</span>
+      <span class="lp-version">[0.8.2]</span>
+    </div>
+    <div class="lp-nav-right">
+      <a href="#">docs</a>
+      <a href="#">protocol</a>
+      <a href="#">runtime</a>
+      <a href="#">github</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ── HERO ── -->
+<section class="lp-hero">
+  <div class="grid-overlay" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <div class="container">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      <span class="label">[v0.8.2 · MAINNET]</span>
+    </div>
+    <h1 class="hero-title">Compute you can verify. Protocol you can read.</h1>
+    <p class="hero-sub">
+      oxide is an open protocol for verifiable compute. <span class="muted">No servers to trust, no opaque runtimes, no silicon lottery.</span> Your code runs on untrusted hardware and the proof comes with the result.
+    </p>
+    <div class="hero-cta-row">
+      <div class="cta-shell">
+        <span class="prompt"><span class="pf">$</span>curl oxide.sh | sh</span>
+        <button class="copy-btn">copy</button>
+      </div>
+      <a href="#" class="ghost-link">read the spec →</a>
+    </div>
+
+    <div class="hero-meta">
+      <div class="item">
+        <span class="label-muted">protocol</span>
+        <div class="val">open / mit licensed</div>
+      </div>
+      <div class="item">
+        <span class="label-muted">proof system</span>
+        <div class="val">stark + recursive</div>
+      </div>
+      <div class="item">
+        <span class="label-muted">runtime</span>
+        <div class="val">risc-v / wasm</div>
+      </div>
+      <div class="item">
+        <span class="label-muted">status</span>
+        <div class="val">mainnet, audited</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CODE MANIFESTO ── -->
+<section class="lp-code">
+  <div class="container">
+    <div class="col-label">
+      <h2>[ THE PROTOCOL ]</h2>
+      <p>The contract is twelve lines. If you can't read it in one sitting, it isn't a protocol, it's a product.</p>
+    </div>
+    <div class="code-block">
+      <div class="code-head">
+        <span>oxide / spec / commit.txt</span>
+        <span>0.8.2 · sha 7f3a91c</span>
+      </div>
+      <div class="code-body">
+<pre><span class="c-com">// [INFO] every job is a triple. nothing more.</span>
+<span class="c-key">job</span>      := { code, input, witness }
+
+<span class="c-com">// [INFO] the prover binds code + input to a transcript.</span>
+<span class="c-key">commit</span>(job)   ⇒  digest := H(code ‖ input)
+
+<span class="c-com">// [INFO] execution happens on untrusted hardware.</span>
+<span class="c-com">//        the runtime is risc-v. nothing exotic.</span>
+<span class="c-key">execute</span>(job)  ⇒  output, trace
+
+<span class="c-com">// [INFO] the result is useless without the proof.</span>
+<span class="c-key">prove</span>(trace)  ⇒  <span class="c-acc">π</span>          <span class="c-com">// [NOTE] recursive stark, ~1.2ms median</span>
+
+<span class="c-com">// [INFO] anyone can verify in milliseconds, on any device.</span>
+<span class="c-key">verify</span>(digest, output, π)  ⇒  bool
+
+<span class="c-com">// [EXAMPLE] the only thing you trust is math.</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STEPS ── -->
+<section class="lp-steps">
+  <div class="container">
+    <div class="section-head">
+      <h2>[ THE PROOFS ]</h2>
+      <span class="label-muted">three steps · zero trust</span>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="num">[01]</div>
+        <h3>COMMIT</h3>
+        <p>You sign the code and the input together. The protocol records a digest. Nobody can swap the binary later, not even the operator running it.</p>
+        <div class="hint">deterministic. <span class="tag">H(code ‖ input)</span></div>
+      </div>
+      <div class="step">
+        <div class="num">[02]</div>
+        <h3>EXECUTE</h3>
+        <p>Any node in the network can run the job. The runtime is plain risc-v. There is no special hardware, no enclave, no vendor lock-in. The trace is captured as it runs.</p>
+        <div class="hint">untrusted hardware. <span class="tag">~14k nodes online</span></div>
+      </div>
+      <div class="step">
+        <div class="num">[03]</div>
+        <h3>VERIFY</h3>
+        <p>The output ships with a recursive stark proof. A thousand-line verifier confirms it in milliseconds, on a phone if you want. The result is true, or it does not exist.</p>
+        <div class="hint">milliseconds. <span class="tag">verifier ≤ 1k LOC</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MANIFESTO ── -->
+<section class="lp-manifesto">
+  <div class="container">
+    <span class="label-muted">[ THE MANIFESTO ]</span>
+    <ol>
+      <li>
+        <span class="roman">I.</span>
+        <span class="line">Trust is a debt. Proof is a payment.</span>
+      </li>
+      <li>
+        <span class="roman">II.</span>
+        <span class="line">A black box is not a runtime, it is a story.</span>
+      </li>
+      <li>
+        <span class="roman">III.</span>
+        <span class="line alert">If you can't read the source, it's not yours.</span>
+      </li>
+      <li>
+        <span class="roman">IV.</span>
+        <span class="line">Open the protocol or get out of the way.</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<section class="lp-stats">
+  <div class="container">
+    <div class="stat">
+      <div class="num">14,902</div>
+      <div class="lbl">nodes online</div>
+    </div>
+    <span class="pipe">|</span>
+    <div class="stat">
+      <div class="num">1.2ms</div>
+      <div class="lbl">median proof</div>
+    </div>
+    <span class="pipe">|</span>
+    <div class="stat">
+      <div class="num">99.97%</div>
+      <div class="lbl">uptime / 90d</div>
+    </div>
+    <span class="pipe">|</span>
+    <div class="stat">
+      <div class="num">$0.003</div>
+      <div class="lbl">per proof</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RUNTIME / SECONDARY ── -->
+<section class="lp-code" style="border-top: var(--hair) solid var(--c-border);">
+  <div class="container">
+    <div class="col-label">
+      <h2>[ THE RUNTIME ]</h2>
+      <p>Bring any binary that compiles to risc-v or wasm. The runtime does the rest. No SDK, no wrapper, no sidecar.</p>
+    </div>
+    <div class="code-block">
+      <div class="code-head">
+        <span>~ / hello-oxide</span>
+        <span>shell</span>
+      </div>
+      <div class="code-body">
+<pre><span class="c-com"># [EXAMPLE] submit a job, get a verifiable result.</span>
+<span class="c-acc">$</span> oxide submit ./hello.elf --input data.bin
+
+<span class="c-com">  [INFO] committing job → 7f3a91c2…</span>
+<span class="c-com">  [INFO] dispatched to 3 prover nodes</span>
+<span class="c-com">  [INFO] proof π received in 1.184ms</span>
+<span class="c-com">  [INFO] verified locally ✓</span>
+
+<span class="c-acc">$</span> oxide verify result.bin --proof π.bin
+  ok. true.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="lp-footer">
+  <hr class="hr-thick">
+  <div class="container">
+    <div class="row">
+      <div class="brand">oxide [0.8.2]</div>
+      <nav>
+        <a href="#">docs</a>
+        <a href="#">protocol</a>
+        <a href="#">runtime</a>
+        <a href="#">github</a>
+        <a href="#">discord</a>
+        <a href="#">audit</a>
+      </nav>
+    </div>
+    <div class="row">
+      <span class="prompt-line"><span class="pf">$</span> oxide --version<span class="blink"></span></span>
+      <span class="prompt-line">© oxide labs / open protocol / fictional</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Theme toggle -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="light">Light</button>
+  <button data-theme-btn="dark">Dark</button>
+</div>
+
+<script>
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  document.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+</script>
+</body>
+</html>

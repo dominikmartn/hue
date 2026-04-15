@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kiln — A journal for the fired, not the fragile.</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.2/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.2/src/bold/style.css">
+
+<style>
+  /* ---------- mockup polish ---------- */
+  .lp-header a, .lp-footer a, .lp-nav a,
+  .btn-primary, .btn-secondary, .btn-ghost,
+  a.cta, a.link-arrow {
+    pointer-events: none;
+    cursor: default;
+  }
+  [data-theme-btn] {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+  /* ---------- tokens ---------- */
+  :root {
+    /* dark (primary) */
+    --d-bg:        #1C1410;
+    --d-surface1:  #251B15;
+    --d-surface2:  #2F241C;
+    --d-text1:     #F0E4D1;
+    --d-text2:     #A89582;
+    --d-border:    #3B2D22;
+    --d-accent:    #E0572A;
+    --d-accent2:   #C9A36D;
+
+    /* light (secondary) — warm clay, not white */
+    --l-bg:        #E8D8C0;
+    --l-surface1:  #DDCAAE;
+    --l-surface2:  #D0BB9B;
+    --l-text1:     #1C1410;
+    --l-text2:     #5A4638;
+    --l-border:    #B8A082;
+    --l-accent:    #C9431A;
+    --l-accent2:   #8A6A3B;
+
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body:    'Inter', -apple-system, system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+    --r-sm: 2px;
+    --r-md: 4px;
+    --hair: 1px;
+
+    --sp-1: 8px;
+    --sp-2: 16px;
+    --sp-3: 24px;
+    --sp-4: 32px;
+    --sp-5: 48px;
+    --sp-6: 64px;
+    --sp-7: 96px;
+    --sp-8: 128px;
+  }
+
+  [data-theme="dark"] {
+    --bg:        var(--d-bg);
+    --surface1:  var(--d-surface1);
+    --surface2:  var(--d-surface2);
+    --text1:     var(--d-text1);
+    --text2:     var(--d-text2);
+    --border:    var(--d-border);
+    --accent:    var(--d-accent);
+    --accent2:   var(--d-accent2);
+  }
+  [data-theme="light"] {
+    --bg:        var(--l-bg);
+    --surface1:  var(--l-surface1);
+    --surface2:  var(--l-surface2);
+    --text1:     var(--l-text1);
+    --text2:     var(--l-text2);
+    --border:    var(--l-border);
+    --accent:    var(--l-accent);
+    --accent2:   var(--l-accent2);
+  }
+
+  * { box-sizing: border-box; }
+  *::selection { background: var(--accent); color: var(--d-text1); }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text1);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px;
+    width: 100%;
+  }
+
+  /* ---------- type ---------- */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text2);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-style: normal;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    color: var(--text1);
+    margin: 0;
+  }
+
+  p { margin: 0; color: var(--text2); }
+
+  /* ---------- buttons ---------- */
+  .btn-primary, .btn-secondary, .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 22px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    border-radius: var(--r-sm);
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--d-text1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 0 var(--accent);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 40px -8px var(--accent);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text1);
+    border-color: var(--border);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text2);
+    padding: 14px 0;
+  }
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text1);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 4px;
+    transition: border-color 0.2s ease;
+  }
+  .link-arrow:hover { border-color: var(--accent); }
+
+  /* ---------- header ---------- */
+  .lp-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(28, 20, 16, 0.78);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] .lp-header {
+    background: rgba(232, 216, 192, 0.82);
+  }
+  .lp-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-style: normal;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    color: var(--text1);
+    text-decoration: none;
+    line-height: 1;
+  }
+  .wordmark::after {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    margin-left: 6px;
+    vertical-align: top;
+    margin-top: 8px;
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent);
+  }
+  .lp-nav {
+    display: flex;
+    gap: 36px;
+  }
+  .lp-nav a {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .lp-nav a:hover { color: var(--text1); }
+
+  /* ---------- hero ---------- */
+  .lp-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 128px 0 112px;
+    border-bottom: 1px solid var(--border);
+  }
+  .lp-hero .container {
+    position: relative;
+    z-index: 10;
+  }
+  /* molten kiln glow from bottom-right */
+  .lp-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(80vw 70vh at 88% 100%, rgba(224, 87, 42, 0.22) 0%, rgba(224, 87, 42, 0.10) 28%, transparent 60%),
+      radial-gradient(50vw 40vh at 95% 90%, rgba(201, 67, 26, 0.28) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  [data-theme="light"] .lp-hero::before {
+    background:
+      radial-gradient(80vw 70vh at 88% 100%, rgba(201, 67, 26, 0.16) 0%, rgba(201, 67, 26, 0.06) 30%, transparent 60%),
+      radial-gradient(50vw 40vh at 95% 90%, rgba(138, 106, 59, 0.14) 0%, transparent 55%);
+  }
+  /* clay grit noise overlay */
+  .lp-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.94  0 0 0 0 0.89  0 0 0 0 0.82  0 0 0 0.4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: 0.08;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 56px;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 32px;
+  }
+  .hero-eyebrow .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 16px var(--accent);
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  .hero-eyebrow .sep { color: var(--border); }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+  }
+
+  .lp-hero h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-style: normal;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    font-size: clamp(64px, 8vw, 132px);
+    line-height: 0.94;
+    letter-spacing: -0.015em;
+    color: var(--text1);
+    max-width: 980px;
+    margin: 0 0 36px;
+  }
+  .lp-hero h1 .line { display: block; }
+  .lp-hero h1 .accent-word {
+    color: var(--accent);
+    font-style: normal;
+  }
+  .lp-hero p.sub {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--text2);
+    max-width: 620px;
+    margin: 0 0 44px;
+  }
+  .hero-cta-row {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 72px;
+  }
+
+  /* firing log strip — THE hero visual */
+  .firing-log {
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    max-width: 820px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    box-shadow:
+      0 1px 0 0 rgba(240, 228, 209, 0.04) inset,
+      0 40px 80px -20px rgba(0, 0, 0, 0.5);
+  }
+  .firing-log-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .firing-log-head .title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text2);
+  }
+  .firing-log-head .meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent2);
+    letter-spacing: 0.06em;
+  }
+  .firing-log-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 140px 32px;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+  }
+  .firing-log-row:last-child { border-bottom: none; }
+  .firing-log-row .time {
+    color: var(--text2);
+    font-weight: 500;
+  }
+  .firing-log-row .stage {
+    color: var(--text1);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .firing-log-row .temp {
+    color: var(--accent);
+    font-weight: 500;
+    text-align: right;
+  }
+  .firing-log-row.current { background: rgba(224, 87, 42, 0.06); }
+  [data-theme="light"] .firing-log-row.current { background: rgba(201, 67, 26, 0.08); }
+  .firing-log-row .marker {
+    width: 8px;
+    height: 8px;
+    margin-left: auto;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+  }
+  .firing-log-row.current .marker {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+
+  /* ---------- features ---------- */
+  .lp-feature {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+    align-items: center;
+    padding: 112px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .lp-feature.reverse .feature-text { order: 2; }
+  .feature-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .feature-eyebrow .num {
+    font-variant-numeric: tabular-nums;
+    color: var(--text2);
+  }
+  .feature-eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .feature-heading {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    font-size: clamp(36px, 4.6vw, 58px);
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    color: var(--text1);
+    margin: 0 0 24px;
+  }
+  .feature-body {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--text2);
+    max-width: 480px;
+    margin: 0 0 32px;
+  }
+  .feature-points {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .feature-points li {
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+    font-size: 14px;
+    color: var(--text1);
+  }
+  .feature-points li .bullet {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    min-width: 28px;
+  }
+
+  /* visual — firing curve */
+  .vis-card {
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 28px;
+    font-family: var(--font-mono);
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.4);
+  }
+  .vis-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .vis-head .label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text2);
+  }
+  .vis-head .value {
+    font-size: 11px;
+    color: var(--accent2);
+    letter-spacing: 0.06em;
+  }
+  .chart-wrap {
+    position: relative;
+    height: 240px;
+  }
+  .chart-wrap svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .chart-grid { stroke: var(--border); stroke-width: 1; opacity: 0.5; }
+  .chart-line { stroke: var(--accent); stroke-width: 2; fill: none; }
+  .chart-fill { fill: url(#heat-grad); opacity: 0.18; }
+  .chart-dot { fill: var(--accent); }
+  .chart-cone-line { stroke: var(--accent2); stroke-width: 1; stroke-dasharray: 3 4; opacity: 0.6; }
+  .chart-cone-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--accent2);
+    letter-spacing: 0.1em;
+  }
+  .chart-axis {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--text2);
+    letter-spacing: 0.08em;
+  }
+
+  /* visual — scar log list */
+  .scar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.4);
+  }
+  .scar-row {
+    display: grid;
+    grid-template-columns: 20px 68px 1fr 90px 28px;
+    gap: 16px;
+    align-items: center;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .scar-row:last-child { border-bottom: none; }
+  .scar-row .idx {
+    color: var(--text2);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+  .scar-row .cone {
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+  .scar-row .name {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--text1);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .scar-row .name .meta {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text2);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .scar-row .atmos {
+    color: var(--text2);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: right;
+  }
+  .scar-row .swatch {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+  }
+
+  /* visual — timeline */
+  .timeline-card {
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.4);
+  }
+  .timeline-head {
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .timeline-head .left { color: var(--text2); }
+  .timeline-head .right { color: var(--accent2); }
+  .timeline-body {
+    padding: 18px 22px 22px;
+  }
+  .timeline-month {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 18px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .timeline-month:last-child { border-bottom: none; }
+  .timeline-month .m-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .timeline-bar {
+    display: flex;
+    gap: 3px;
+    height: 22px;
+    align-items: center;
+  }
+  .timeline-tick {
+    width: 5px;
+    height: 100%;
+    background: var(--border);
+    border-radius: 1px;
+  }
+  .timeline-tick.fire {
+    background: var(--accent);
+    box-shadow: 0 0 6px rgba(224, 87, 42, 0.5);
+  }
+  [data-theme="light"] .timeline-tick.fire {
+    background: var(--accent);
+    box-shadow: 0 0 6px rgba(201, 67, 26, 0.35);
+  }
+  .timeline-tick.peak {
+    height: 100%;
+    background: var(--accent2);
+    width: 6px;
+  }
+
+  /* ---------- pull quote ---------- */
+  .lp-quote {
+    padding: 128px 0;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .lp-quote .container { max-width: 860px; }
+  .lp-quote blockquote {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-style: normal;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    font-size: clamp(28px, 3.4vw, 44px);
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+    color: var(--text1);
+    margin: 0 0 40px;
+  }
+  .lp-quote blockquote em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .lp-quote .attrib {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .lp-quote .attrib::before,
+  .lp-quote .attrib::after {
+    content: "";
+    width: 32px;
+    height: 1px;
+    background: var(--border);
+  }
+  .lp-quote .attrib strong {
+    color: var(--text1);
+    font-weight: 500;
+  }
+
+  /* ---------- pricing ---------- */
+  .lp-pricing {
+    padding: 128px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .pricing-head {
+    max-width: 680px;
+    margin: 0 auto 64px;
+    text-align: center;
+  }
+  .pricing-head h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    margin: 20px 0 20px;
+  }
+  .pricing-head p {
+    font-size: 16px;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .price-card {
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .price-card.featured {
+    border-color: var(--accent);
+    background: var(--surface2);
+    position: relative;
+  }
+  .price-card.featured::before {
+    content: "RECOMMENDED";
+    position: absolute;
+    top: -10px;
+    left: 36px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    background: var(--accent);
+    color: var(--d-text1);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .price-card .tier {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text2);
+  }
+  .price-card .price {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    font-size: 68px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--text1);
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .price-card .price .cadence {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .price-card .desc {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text2);
+  }
+  .price-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .price-card li {
+    font-size: 14px;
+    color: var(--text1);
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+  .price-card li::before {
+    content: "▪";
+    color: var(--accent);
+    font-size: 14px;
+  }
+  .price-card .btn-primary,
+  .price-card .btn-secondary { margin-top: auto; }
+  .price-card .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 0;
+  }
+
+  /* ---------- final CTA ---------- */
+  .lp-cta-block {
+    position: relative;
+    overflow: hidden;
+    padding: 144px 0;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .lp-cta-block::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(60vw 50vh at 50% 100%, rgba(224, 87, 42, 0.14) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  [data-theme="light"] .lp-cta-block::before {
+    background:
+      radial-gradient(60vw 50vh at 50% 100%, rgba(201, 67, 26, 0.10) 0%, transparent 60%);
+  }
+  .lp-cta-block .container {
+    position: relative;
+    z-index: 10;
+    max-width: 820px;
+  }
+  .lp-cta-block .eyebrow {
+    margin: 0 auto 32px;
+  }
+  .lp-cta-block h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--text1);
+    margin: 0 0 28px;
+  }
+  .lp-cta-block p {
+    font-size: 18px;
+    max-width: 540px;
+    margin: 0 auto 44px;
+    color: var(--text2);
+  }
+  .lp-cta-block .cta-row {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .lp-cta-block .caption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ---------- footer ---------- */
+  .lp-footer {
+    padding: 80px 0 48px;
+  }
+  .lp-footer .top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 72px;
+  }
+  .lp-footer .brand-col .wordmark { display: inline-block; margin-bottom: 18px; }
+  .lp-footer .brand-col p {
+    font-size: 14px;
+    line-height: 1.55;
+    max-width: 320px;
+    color: var(--text2);
+  }
+  .lp-footer .col h4 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin: 0 0 22px;
+  }
+  .lp-footer .col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .lp-footer .col a {
+    font-size: 14px;
+    color: var(--text1);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .lp-footer .col a:hover { color: var(--accent); }
+  .lp-footer .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text2);
+    text-transform: uppercase;
+  }
+  .lp-footer .bottom .right {
+    color: var(--accent2);
+  }
+
+  /* ---------- theme toggle bar ---------- */
+  .theme-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    display: inline-flex;
+    background: var(--surface1);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 4px;
+    box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.6);
+    font-family: var(--font-mono);
+  }
+  .theme-bar button {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--text2);
+    border: none;
+    padding: 10px 18px;
+    cursor: pointer;
+    border-radius: 1px;
+    transition: all 0.2s ease;
+  }
+  .theme-bar button.active {
+    background: var(--accent);
+    color: var(--d-text1);
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 960px) {
+    .container { padding: 0 28px; }
+    .lp-hero { padding: 96px 0 80px; }
+    .lp-feature {
+      grid-template-columns: 1fr;
+      gap: 48px;
+      padding: 80px 0;
+    }
+    .lp-feature.reverse .feature-text { order: 0; }
+    .lp-feature.reverse .feature-visual { order: 1; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .lp-footer .top { grid-template-columns: 1fr 1fr; gap: 48px; }
+    .lp-nav { display: none; }
+    .firing-log-row { grid-template-columns: 64px 1fr 100px 24px; gap: 14px; padding: 12px 16px; font-size: 11px; }
+    .firing-log-head { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="lp-header">
+  <div class="container">
+    <a href="#" class="wordmark">kiln</a>
+    <nav class="lp-nav">
+      <a href="#">Firings</a>
+      <a href="#">Atmosphere</a>
+      <a href="#">Kiln</a>
+      <a href="#">Work</a>
+    </nav>
+    <a href="#" class="btn-primary">Start a firing</a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="lp-hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-eyebrow">
+            <span class="dot"></span>
+            <span>CONE 10</span>
+            <span class="sep">·</span>
+            <span>REDUCTION</span>
+            <span class="sep">·</span>
+            <span>1280°C</span>
+          </div>
+          <h1>
+            <span class="line">A journal for the fired,</span>
+            <span class="line">not the <span class="accent-word">fragile</span>.</span>
+          </h1>
+          <p class="sub">A studio log for ceramicists, glassblowers, and anyone whose practice moves through heat. Record firings, track atmospheres, return to a body. Built for the makers who work at temperature.</p>
+          <div class="hero-cta-row">
+            <a href="#" class="btn-primary">Start a firing</a>
+            <a href="#" class="link-arrow">Read a scar log →</a>
+          </div>
+
+          <div class="firing-log">
+            <div class="firing-log-head">
+              <span class="title">FIRING #0147 · BIZEN BODY · CONE 10</span>
+              <span class="meta">LIVE · 08H 04M</span>
+            </div>
+            <div class="firing-log-row">
+              <span class="time">14:00</span>
+              <span class="stage">Cool start · room</span>
+              <span class="temp">22°C</span>
+              <span class="marker"></span>
+            </div>
+            <div class="firing-log-row">
+              <span class="time">16:42</span>
+              <span class="stage">Body reduce</span>
+              <span class="temp">842°C</span>
+              <span class="marker"></span>
+            </div>
+            <div class="firing-log-row current">
+              <span class="time">19:31</span>
+              <span class="stage">Peak hold · C10</span>
+              <span class="temp">1280°C</span>
+              <span class="marker"></span>
+            </div>
+            <div class="firing-log-row">
+              <span class="time">22:04</span>
+              <span class="stage">Downfire</span>
+              <span class="temp">612°C</span>
+              <span class="marker"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE 1: text left, visual right — firing curve -->
+  <section class="lp-feature">
+    <div class="feature-text">
+      <div class="feature-eyebrow"><span class="num">01</span><span>LOG THE FIRE</span></div>
+      <h2 class="feature-heading">Every curve, every hold, every cone.</h2>
+      <p class="feature-body">Record the full shape of a firing the way it actually moved. Climb rates, reduction windows, peak holds, the slow descent. Watch two firings side by side and see where your kiln is repeating and where it is drifting.</p>
+      <ul class="feature-points">
+        <li><span class="bullet">01</span>Temperature curves with cone markers</li>
+        <li><span class="bullet">02</span>Atmosphere notes at every stage</li>
+        <li><span class="bullet">03</span>Hold-time and soak duration in seconds</li>
+        <li><span class="bullet">04</span>Side-by-side compare across firings</li>
+      </ul>
+      <a href="#" class="link-arrow">See a firing curve →</a>
+    </div>
+    <div class="feature-visual">
+      <div class="vis-card">
+        <div class="vis-head">
+          <span class="label">FIRING #0147 · CURVE</span>
+          <span class="value">PEAK 1284°C · C10</span>
+        </div>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 420 240" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="heat-grad" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#E0572A" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#E0572A" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- grid lines -->
+            <line class="chart-grid" x1="0" y1="48" x2="420" y2="48"/>
+            <line class="chart-grid" x1="0" y1="96" x2="420" y2="96"/>
+            <line class="chart-grid" x1="0" y1="144" x2="420" y2="144"/>
+            <line class="chart-grid" x1="0" y1="192" x2="420" y2="192"/>
+
+            <!-- cone markers -->
+            <line class="chart-cone-line" x1="0" y1="70" x2="420" y2="70"/>
+            <text class="chart-cone-label" x="6" y="66">C 10 · 1300°C</text>
+            <line class="chart-cone-line" x1="0" y1="130" x2="420" y2="130"/>
+            <text class="chart-cone-label" x="6" y="126">C 06 · 1000°C</text>
+
+            <!-- fill under curve -->
+            <path class="chart-fill" d="M 10 220 L 10 216 L 50 200 L 90 174 L 130 140 L 170 104 L 210 76 L 260 62 L 300 68 L 340 110 L 380 160 L 410 200 L 410 220 Z"/>
+
+            <!-- line -->
+            <path class="chart-line" d="M 10 216 L 50 200 L 90 174 L 130 140 L 170 104 L 210 76 L 260 62 L 300 68 L 340 110 L 380 160 L 410 200"/>
+
+            <!-- data dots -->
+            <circle class="chart-dot" cx="10"  cy="216" r="2.5"/>
+            <circle class="chart-dot" cx="90"  cy="174" r="2.5"/>
+            <circle class="chart-dot" cx="170" cy="104" r="2.5"/>
+            <circle class="chart-dot" cx="260" cy="62"  r="3"/>
+            <circle class="chart-dot" cx="340" cy="110" r="2.5"/>
+            <circle class="chart-dot" cx="410" cy="200" r="2.5"/>
+
+            <!-- axis labels -->
+            <text class="chart-axis" x="0"   y="236">14:00</text>
+            <text class="chart-axis" x="130" y="236">17:00</text>
+            <text class="chart-axis" x="250" y="236">19:30</text>
+            <text class="chart-axis" x="380" y="236">22:00</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE 2: visual left, text right — scar log -->
+  <section class="lp-feature reverse">
+    <div class="feature-text">
+      <div class="feature-eyebrow"><span class="num">02</span><span>KEEP THE SCARS</span></div>
+      <h2 class="feature-heading">The record is in the marks.</h2>
+      <p class="feature-body">A glaze log that remembers what actually happened — not the recipe card, the outcome. Ash drifts, crawls, flashes, reduction blushes. Colour swatches tied to the firings that made them. You will return to them.</p>
+      <ul class="feature-points">
+        <li><span class="bullet">01</span>Outcome-first glaze logs</li>
+        <li><span class="bullet">02</span>Swatch tied to firing atmosphere</li>
+        <li><span class="bullet">03</span>Notes on ash, flashing, crawls, runs</li>
+        <li><span class="bullet">04</span>Searchable by body, cone, or scar type</li>
+      </ul>
+      <a href="#" class="link-arrow">Browse scar logs →</a>
+    </div>
+    <div class="feature-visual">
+      <div class="scar-list">
+        <div class="scar-row">
+          <span class="idx">01</span>
+          <span class="cone">C10</span>
+          <span class="name">Ash drift · hakeme<span class="meta">26.11.25 · Bizen body</span></span>
+          <span class="atmos">Reduction</span>
+          <span class="swatch" style="background: linear-gradient(135deg, #8A6A3B 0%, #5A4638 100%);"></span>
+        </div>
+        <div class="scar-row">
+          <span class="idx">02</span>
+          <span class="cone">C9</span>
+          <span class="name">Shino blush<span class="meta">18.10.25 · Porcelain</span></span>
+          <span class="atmos">Reduction</span>
+          <span class="swatch" style="background: linear-gradient(135deg, #E8C4A0 0%, #C9431A 100%);"></span>
+        </div>
+        <div class="scar-row">
+          <span class="idx">03</span>
+          <span class="cone">C10</span>
+          <span class="name">Tenmoku rim pool<span class="meta">02.10.25 · Stoneware</span></span>
+          <span class="atmos">Oxidation</span>
+          <span class="swatch" style="background: linear-gradient(135deg, #3B2D22 0%, #0D0906 100%);"></span>
+        </div>
+        <div class="scar-row">
+          <span class="idx">04</span>
+          <span class="cone">C6</span>
+          <span class="name">Celadon crawl<span class="meta">14.09.25 · Porcelain</span></span>
+          <span class="atmos">Reduction</span>
+          <span class="swatch" style="background: linear-gradient(135deg, #A8C2A0 0%, #5A7860 100%);"></span>
+        </div>
+        <div class="scar-row">
+          <span class="idx">05</span>
+          <span class="cone">C10</span>
+          <span class="name">Iron red, salt flash<span class="meta">28.08.25 · Bizen body</span></span>
+          <span class="atmos">Salt</span>
+          <span class="swatch" style="background: linear-gradient(135deg, #E0572A 0%, #7A2410 100%);"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE 3: text left, visual right — timeline / long practice -->
+  <section class="lp-feature">
+    <div class="feature-text">
+      <div class="feature-eyebrow"><span class="num">03</span><span>RETURN TO A BODY</span></div>
+      <h2 class="feature-heading">Practice is years, not sessions.</h2>
+      <p class="feature-body">See how a body has behaved across a season, a year, a decade. The same clay under different atmospheres. The fired, the refired, the shelf-stored, the shard. Long memory, dense with firings.</p>
+      <ul class="feature-points">
+        <li><span class="bullet">01</span>Multi-year firing history per body</li>
+        <li><span class="bullet">02</span>Refires and second glazes tracked</li>
+        <li><span class="bullet">03</span>Shelf state · fired · refired · shard</li>
+        <li><span class="bullet">04</span>Dense weekly view, no empty calendars</li>
+      </ul>
+      <a href="#" class="link-arrow">Open a body history →</a>
+    </div>
+    <div class="feature-visual">
+      <div class="timeline-card">
+        <div class="timeline-head">
+          <span class="left">BODY · BIZEN RED · 2024–2026</span>
+          <span class="right">142 FIRINGS</span>
+        </div>
+        <div class="timeline-body">
+          <div class="timeline-month">
+            <span class="m-label">NOV 25</span>
+            <div class="timeline-bar">
+              <span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick peak"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span>
+            </div>
+          </div>
+          <div class="timeline-month">
+            <span class="m-label">OCT 25</span>
+            <div class="timeline-bar">
+              <span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick peak"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span>
+            </div>
+          </div>
+          <div class="timeline-month">
+            <span class="m-label">SEP 25</span>
+            <div class="timeline-bar">
+              <span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick peak"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span>
+            </div>
+          </div>
+          <div class="timeline-month">
+            <span class="m-label">AUG 25</span>
+            <div class="timeline-bar">
+              <span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick peak"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span>
+            </div>
+          </div>
+          <div class="timeline-month">
+            <span class="m-label">JUL 25</span>
+            <div class="timeline-bar">
+              <span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick peak"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span>
+            </div>
+          </div>
+          <div class="timeline-month">
+            <span class="m-label">JUN 25</span>
+            <div class="timeline-bar">
+              <span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick peak"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span><span class="timeline-tick fire"></span><span class="timeline-tick fire"></span><span class="timeline-tick"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PULL QUOTE -->
+  <section class="lp-quote">
+    <div class="container">
+      <blockquote>
+        Fire does not forgive, but it does <em>remember</em>. kiln is the first tool that keeps pace with how a body actually changes over a firing life.
+      </blockquote>
+      <div class="attrib">
+        <span><strong>Aiko Tamura</strong> · Potter, Bizen</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="lp-pricing">
+    <div class="container">
+      <div class="pricing-head">
+        <div class="eyebrow">PRICING</div>
+        <h2>One seat. One kiln. One journal.</h2>
+        <p>Priced like a good tool, not a streaming service. Own it. Use it for decades.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <span class="tier">Maker</span>
+          <div class="price">$9<span class="cadence">/ month</span></div>
+          <p class="desc">For the single studio. One maker, one kiln, every firing recorded.</p>
+          <div class="divider"></div>
+          <ul>
+            <li>Unlimited firings and curves</li>
+            <li>Unlimited scar logs</li>
+            <li>Body history across years</li>
+            <li>Export raw data anytime</li>
+          </ul>
+          <a href="#" class="btn-secondary">Start a firing</a>
+        </div>
+        <div class="price-card featured">
+          <span class="tier">Studio</span>
+          <div class="price">$28<span class="cadence">/ month</span></div>
+          <p class="desc">For shared studios, apprentices, and multi-kiln operations.</p>
+          <div class="divider"></div>
+          <ul>
+            <li>Everything in Maker</li>
+            <li>Up to 6 seats · 3 kilns</li>
+            <li>Shared atmosphere notes and curves</li>
+            <li>Firing schedule coordination</li>
+            <li>Shelf state and refire tracking</li>
+          </ul>
+          <a href="#" class="btn-primary">Start a firing</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="lp-cta-block">
+    <div class="container">
+      <div class="eyebrow">FIRE WELL</div>
+      <h2>Fire something worth keeping.</h2>
+      <p>Your next firing deserves a record that outlasts the shard. Start a journal tonight, before the kiln cools.</p>
+      <div class="cta-row">
+        <a href="#" class="btn-primary">Start a firing</a>
+        <a href="#" class="btn-secondary">Read the manual</a>
+      </div>
+      <span class="caption">FREE FOR THE FIRST FIRING · NO CARD</span>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="lp-footer">
+  <div class="container">
+    <div class="top">
+      <div class="brand-col">
+        <a href="#" class="wordmark">kiln</a>
+        <p>A studio journal for makers who work at temperature. Ceramics, glass, iron, forge. For the fired, not the fragile.</p>
+      </div>
+      <div class="col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">Firings</a></li>
+          <li><a href="#">Atmosphere</a></li>
+          <li><a href="#">Scar logs</a></li>
+          <li><a href="#">Body history</a></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Studio</h4>
+        <ul>
+          <li><a href="#">Field notes</a></li>
+          <li><a href="#">Cone guide</a></li>
+          <li><a href="#">Atmospheres</a></li>
+          <li><a href="#">Makers we love</a></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Kiln</h4>
+        <ul>
+          <li><a href="#">Manual</a></li>
+          <li><a href="#">Changelog</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Colophon</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom">
+      <span>© 2026 KILN · MADE IN A HOT ROOM</span>
+      <span class="right">CONE 10 · REDUCTION · 1280°C</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Theme toggle -->
+<div class="theme-bar">
+  <button data-theme-btn="light">Light</button>
+  <button class="active" data-theme-btn="dark">Dark</button>
+</div>
+
+<script>
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  document.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+</script>
+</body>
+</html>

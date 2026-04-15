@@ -1,0 +1,180 @@
+name: "Fizz"
+description: "Fictional y2k photo-sharing app for tiny friend groups. Cream canvas, candy pink + baby blue + citrus + mint, hand-tilted stickers, chrome bubble marks, italic accents in Hanken Grotesk Black. The hero centers a hard-outlined phone showing a 60-second countdown, surrounded by sticker doodles (chrome bubble, citrus star, candy heart, baby-blue blob). Light mode primary. Proves a candy / sticker preset where the playful subject is hero and the canvas stays warm and quiet."
+philosophy: "One minute a day with your closest people. Fizz is a daily photo burst app for crews of five — random ping, sixty seconds, no filters, no retakes. The identity is y2k optimism made tactile: cream paper, bubblegum colors, italic display type, and chrome bubble marks that feel like AIM buddy icons. Built for five friends, not five thousand."
+primary_mode: "light"
+brand_source: "INVENTED — fictional brand for hue carousel"
+brand_domain: "y2k photo-sharing app (fictional)"
+brand_type: "expressive"
+mono_for_data: false
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    neutral:              # warm cream paper + plum-ink, not gray
+      cream:        "#FFF8ED"   # canvas
+      cream_warm:   "#FFFDF7"   # surface2 light
+      surface:      "#FFFFFF"   # surface1 light
+      surface_dark: "#27182F"   # surface1 dark
+      surface2_dk:  "#321F3D"   # surface2 dark
+      text_muted:   "#7B6A85"   # light text2
+      text_muted_dk:"#B4A3BE"   # dark text2
+      plum_ink:     "#1A1120"   # primary text + border, near-black with violet bias
+    candy:                # the y2k pop palette, all four sit on the cream canvas
+      pink:         "#FF5EB8"   # candy-pink, primary accent
+      pink_soft:    "#FFAEDA"   # phone-screen gradient mid
+      pink_shadow:  "#C42E89"   # shadow-pop-pink light
+      pink_dk:      "#FF8FCB"   # shadow-pop-pink dark
+      blue:         "#74D8FF"   # baby-blue, secondary accent
+      blue_soft:    "#B0EAFF"   # feed gradient mid
+      citrus:       "#FFDC5E"   # citrus yellow
+      citrus_soft:  "#FFEFB0"   # citrus gradient end
+      mint:         "#7CF3B5"   # mint, eyebrow background
+      lilac:        "#B388FF"   # feed thumb only
+    chrome:               # 3-stop chrome gradient — the y2k bubble-mark surface
+      top:          "#F0F2F7"   # bright top
+      mid:          "#C8CCD6"   # silver mid
+      bottom:       "#9DA3B5"   # darker bottom
+      edge:         "#6E7488"   # chrome rim
+  spacing: [4, 8, 16, 24, 32, 48, 64, 96, 128]
+  radii:   [10, 18, 28, 40, 999]
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    light:
+      background:     "{neutral.cream}"
+      surface1:       "{neutral.surface}"
+      surface2:       "{neutral.cream_warm}"
+      border:         "{neutral.plum_ink}"
+      border_visible: "{neutral.plum_ink}"
+      text1:          "{neutral.plum_ink}"
+      text2:          "{neutral.text_muted}"
+      accent:         "{candy.pink}"
+      accent_alt:     "{candy.blue}"
+      accent_warm:    "{candy.citrus}"
+      accent_fresh:   "{candy.mint}"
+      shadow_pop:     "{neutral.plum_ink}"
+    dark:
+      background:     "{neutral.plum_ink}"
+      surface1:       "{neutral.surface_dark}"
+      surface2:       "{neutral.surface2_dk}"
+      border:         "{neutral.cream}"
+      border_visible: "{neutral.cream}"
+      text1:          "{neutral.cream}"
+      text2:          "{neutral.text_muted_dk}"
+      accent:         "{candy.pink}"
+      accent_alt:     "{candy.blue}"
+      accent_warm:    "{candy.citrus}"
+      accent_fresh:   "{candy.mint}"
+      shadow_pop:     "{neutral.cream}"
+
+  radii:
+    element:   10    # small chips, feed thumbs
+    control:   18    # how-icon, buttons inner
+    component: 28    # how-card, large containers
+    container: 40    # outermost cards
+    pill:      999
+
+  typography:
+    display:
+      family: "Hanken Grotesk"   # geometric humanist sans, Black 900 + italic, the y2k workhorse
+      size:   "108px"            # hero clamp(56px, 8.4vw, 108px)
+      weight: 900
+      line_height: 0.92
+      letter_spacing: "-0.025em"
+      google_fonts: "Hanken+Grotesk:ital,wght@0,400;0,500;0,700;0,800;0,900;1,700;1,800;1,900"
+    body:
+      family: "Inter"
+      size:   "15px"
+      weight: 400
+      line_height: 1.55
+      letter_spacing: "0em"
+      google_fonts: "Inter:wght@400;500;600"
+    italic:
+      family: "DM Sans"          # the italic accent face for word-italic spans
+      size:   "108px"
+      weight: 900
+      style:  "italic"
+      google_fonts: "DM+Sans:ital,wght@0,400;0,500;1,500;1,700"
+
+# ── HERO STAGE ─── candy / sticker preset
+# Demonstrates:
+#   background.medium: paper, cream canvas with sticker doodles
+#   hero.subject: phone-mockup — a hard-outlined device on a tilted stage
+#   relation.type: framed — stickers orbit the device with rotation offsets
+#
+# This is a candy / y2k pop hero. The cream canvas stays quiet; the phone
+# carries the product, and four sticker doodles (chrome bubble, citrus
+# star, candy heart, baby-blue blob) orbit it with hand-tilted rotations
+# from -10° to +15°. The brand mark is a chrome bubble with inset
+# highlights — pure CSS, no rendered assets. Italic display words punch
+# through the headline in candy pink.
+hero_stage:
+  preset: "candy-sticker"
+  observed_style:
+    description: "INVENTED for the hue carousel: a cream canvas hosts a hard-outlined phone mockup on the right (2px plum-ink border, 44px corner radius, candy-gradient screen showing a 60-second countdown alert). Four sticker doodles orbit the phone at hand-tilted angles: a chrome bubble top-left, a citrus 10-point star top-right, a candy heart bottom-right, and a baby-blue blob bottom-left. Each sticker has a 2px plum-ink outline and a 5-6px solid drop-shadow in the same plum-ink. Headline is Hanken Grotesk 900 with italic candy-pink accent words and a baby-blue underline-bubble swatch behind one word. The whole stage tilts about 1° off-axis to feel hand-pasted."
+    where_used: ["hero", "download cta (echoed sticker)"]
+    notes: "Fictional composition inspired by y2k AIM-era buddy-icon chrome and Polaroid-sticker scrapbooks (not a copy of any specific app). Stickers and chrome are pure CSS — clip-paths, radial gradients, and inset shadows. Proves that medium: paper + subject: phone-mockup + sticker orbit can carry a playful, expressive identity without a single rendered asset."
+  background:
+    medium: "paper"              # cream canvas, no gradient sky
+    color_mode: "warm"
+    saturation: "vibrant"        # the stickers themselves are saturated against quiet paper
+    light_source: "none"
+    falloff: "none"
+    vignette: "none"
+    texture: "clean"             # no grain, the canvas is flat cream
+    motion: "static"
+    intensity: "medium"
+    safe_zone: "left-column"     # text sits left, phone+stickers fill the right
+    color_palette:
+      - "#FFF8ED"   # cream canvas
+      - "#FF5EB8"   # candy pink — primary accent + sticker heart
+      - "#74D8FF"   # baby blue — sticker blob + underline-bubble
+      - "#FFDC5E"   # citrus — sticker star
+      - "#7CF3B5"   # mint — eyebrow chip
+      - "#1A1120"   # plum ink — every outline + drop-shadow
+    recipe: "sticker-orbit"      # candy-sticker / chrome-bubble / paper-pop
+    recipe_params:
+      sticker_count: 5
+      sticker_outline: "2px solid #1A1120"
+      sticker_drop_shadow: "5px 5px 0 #1A1120"
+      orbit_rotations: [-8, 12, 15, -10, 6]
+      device_tilt: "0deg"
+      headline_italic_color: "#FF5EB8"
+      underline_swatch_color: "#74D8FF"
+  hero:
+    subject: "phone-mockup"        # hard-outlined device, 280x560, 44px radius
+    form: "device-frame"
+    placement: "right-column"
+    scale: "medium"
+    tint: "candy-gradient"         # screen: linear-gradient #FF5EB8 → #FFAEDA → #FFDC5E → #FFEFB0
+  relation:
+    type: "framed"                 # stickers orbit + frame the device
+    bleed: 0
+  disclaimer: "Fictional brand created for the hue carousel. Not affiliated with any real company. The candy-sticker recipe is a pure-CSS y2k pop approximation — no rendered 3D, no licensed photography, no imported imagery."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Phosphor Fill icons, sat inside chunky tinted tiles (64px, 18px radius, 2px plum-ink outline, 4px solid drop-shadow). Each how-step uses a different candy fill behind the icon (pink, baby-blue, mint). Filled glyphs match the playful sticker language better than outline."
+    stroke_weight: "regular"
+    corner_treatment: "rounded"
+    fill_style: "fill"
+    form_language: "geometric"
+    visual_density: "medium"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "fill"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2.1.2/src/fill/style.css"
+    icon_class_prefix: "ph-fill ph-"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  samples:
+    - "One minute a day with your closest people."
+    - "At a random moment every day, fizz pings your friend group. You get 60 seconds to snap and share a real photo of whatever you're doing. No filters, no likes, just the week as it actually happened."
+    - "Three steps, sixty seconds."
+    - "Built for five friends, not five thousand."
+    - "Bring your people with you."
+    - "Made with sugar and caffeine in Lisbon."
+  tone: "y2k optimism, casual, fun, warm, slightly cheeky, sentence-case"

@@ -1,0 +1,167 @@
+name: "Atlas"
+description: "Fictional ivory engineering brand. A reference atlas for the systems engineering teams ship. Paper-ivory canvas, deep navy ink, rust accent, IBM Plex Serif display set against a quiet 80px coordinate grid. Proves the typography-driven, content-rich landing: no centered subject, no glow, just a chart room and a headline that earns its weight."
+philosophy: "Read like a chart, not a memoir. Atlas treats engineering knowledge the way a cartographer treats a coastline — every page has a coordinate, every change leaves a bearing, nothing drifts. The identity is classical engineering: paper, ink, hairlines, crosshairs, mono labels for instrument readings, a serif italic for the one word that matters."
+primary_mode: "light"
+brand_source: "INVENTED — fictional brand for hue carousel"
+brand_domain: "ivory engineering / maritime charts (fictional)"
+brand_type: "content-rich"
+mono_for_data: true
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    paper:               # ivory canvas ramp — warm, slightly dusty
+      bg:        "#F5F1E8"   # canvas
+      surface1:  "#EBE5D3"
+      surface2:  "#DED5BE"
+      border:    "#C9BFA3"
+    ink:                 # deep navy text on paper
+      text1:     "#0A2540"   # primary ink
+      text2:     "#3C5878"   # secondary ink
+    rust:                # single warm accent — oxidized iron on a chart
+      accent:      "#B8441F"
+      accent_soft: "#E8CFC0"
+    night:               # dark mode mirror — navy paper, ivory ink, brighter rust
+      bg:           "#0A1628"
+      surface1:     "#142238"
+      surface2:     "#1E2F48"
+      border:       "#2A3E5C"
+      text1:        "#F5F1E8"
+      text2:        "#9BB0C8"
+      accent:       "#E8663F"
+      accent_soft:  "#2A3E5C"
+  spacing: [0, 8, 16, 24, 32, 48, 64, 96, 128]
+  radii:   [0, 2]
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    light:
+      background:     "{paper.bg}"
+      surface1:       "{paper.surface1}"
+      surface2:       "{paper.surface2}"
+      border:         "{paper.border}"
+      border_visible: "{paper.border}"
+      text1:          "{ink.text1}"
+      text2:          "{ink.text2}"
+      accent:         "{rust.accent}"
+      accent_soft:    "{rust.accent_soft}"
+      grid:           "rgba(184, 68, 31, 0.08)"   # rust at 8% — the coordinate lattice
+    dark:
+      background:     "{night.bg}"
+      surface1:       "{night.surface1}"
+      surface2:       "{night.surface2}"
+      border:         "{night.border}"
+      border_visible: "{night.border}"
+      text1:          "{night.text1}"
+      text2:          "{night.text2}"
+      accent:         "{night.accent}"
+      accent_soft:    "{night.accent_soft}"
+      grid:           "rgba(155, 176, 200, 0.10)"
+
+  radii:
+    hairline:  0       # most edges are 1px borders, no rounding
+    element:   2       # buttons, cards, visuals — sharp, almost-square corners
+    control:   2
+    component: 2
+    container: 2
+    pill:      2
+
+  typography:
+    display:
+      family: "IBM Plex Serif"
+      size:   "clamp(56px, 7vw, 104px)"
+      weight: 500
+      line_height: 1.02
+      letter_spacing: "-0.02em"
+      italic_for_accent: true        # rust-colored italic span inside the headline
+      google_fonts: "IBM+Plex+Serif:wght@400;500;600"
+    body:
+      family: "Inter"
+      size:   "16px"
+      weight: 400
+      line_height: 1.6
+      letter_spacing: "0em"
+      google_fonts: "Inter:wght@400;500"
+    mono:
+      family: "IBM Plex Mono"
+      size:   "11px"
+      weight: 500
+      line_height: 1.4
+      letter_spacing: "0.08em"
+      uppercase: true                # mono is used for eyebrows, instrument readings, labels
+      google_fonts: "IBM+Plex+Mono:wght@400;500"
+
+# ── HERO STAGE ─── typographic-chart preset
+# Demonstrates:
+#   background.medium: grid (80px coordinate lattice in 8% rust)
+#   hero.subject: none — the headline IS the hero
+#   relation.type: flat — nothing sits on top of anything
+#
+# No centered render, no glow, no sculptural mass. The hero is a serif
+# headline on ivory paper, framed by a hairline coordinate grid and a
+# single rust crosshair eyebrow. A four-column instrument readout sits
+# below the CTA row to anchor the page like a chart cartouche.
+hero_stage:
+  preset: "typographic-chart"
+  observed_style:
+    description: "Ivory canvas with a faint 80px × 80px coordinate grid drawn in 8% rust. A single 10px crosshair sits to the left of a mono lat/lon eyebrow ('LAT 40.7128° N · LON 74.0060° W'). Below it: a 56–104px IBM Plex Serif headline in deep navy ink, with one italic rust-colored word carrying the accent. Sub-copy is 18px Inter at ~56ch in mid-navy. Beneath the CTA row, a hairline-bordered four-column 'instrument readout' (Edition / Bearing / Depth / Status) renders all values in IBM Plex Mono. No centered subject, no render, no glow."
+    where_used: ["hero", "final cta (eyebrow + serif headline echo, no grid)"]
+    notes: "Typography and the coordinate grid carry the identity. Pure CSS — two crossed linear-gradients for the lattice, a pseudo-element crosshair, no imported imagery."
+  background:
+    medium: "grid"               # coordinate lattice, not a sculptural field
+    color_mode: "palette"
+    saturation: "muted"
+    light_source: "none"
+    falloff: "none"
+    vignette: "none"
+    texture: "paper"             # ivory canvas reads as paper, not gradient
+    motion: "static"
+    intensity: "quiet"           # the grid is barely there — 8% rust on ivory
+    safe_zone: "full-bleed"      # text sits directly on the grid; no scrim needed
+    color_palette:
+      - "#F5F1E8"   # ivory canvas
+      - "#EBE5D3"   # paper surface
+      - "#C9BFA3"   # hairline border
+      - "#0A2540"   # navy ink
+      - "#3C5878"   # secondary ink
+      - "#B8441F"   # rust accent
+    recipe: "coordinate-grid"    # 80px square lattice, 1px lines at 8% accent
+    recipe_params:
+      grid_size: "80px"
+      line_width: "1px"
+      line_color: "rgba(184, 68, 31, 0.08)"
+      crosshair_size: "10px"
+      crosshair_color: "{rust.accent}"
+  hero:
+    subject: "none"                # the headline is the hero
+    # form, placement, scale, tint all ignored
+  relation:
+    type: "flat"                   # no subject, nothing to relate
+    bleed: 0
+  disclaimer: "Fictional brand created for the hue example carousel. Not affiliated with any real company. Maritime cartography vocabulary (waypoints, bearings, fathoms, the log) is invented atmosphere — atlas is a content-rich knowledge tool, not a navigation product."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Hairline geometric marks — crosshairs, corner brackets on every visual card, mono numerals as list markers (01, 02, 03). Phosphor regular weight is loaded for the few literal glyphs (magnifying-glass, check)."
+    stroke_weight: "regular"
+    corner_treatment: "sharp"
+    fill_style: "outline"
+    form_language: "geometric"
+    visual_density: "minimal"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "regular"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css"
+    icon_class_prefix: "ph ph-"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  tone: "precise, classical engineering, cartographer's restraint"
+  samples:
+    - "Chart the systems your team ships."
+    - "Every page has a coordinate. Every change leaves a bearing. Nothing drifts."
+    - "A runbook should read like a chart, not a memoir."
+    - "Two berths. No surprises."
+    - "Stop relying on tribal memory and Slack threads from 2023. Give every system a coordinate, every decision a bearing, every page a place on the chart."

@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ledger · The morning edition, machine-readable.</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=PT+Serif:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.2/src/bold/style.css">
+
+<style>
+  :root {
+    --cream-50: #F6F1E0;
+    --cream-100: #F0EAD6;
+    --cream-200: #E8DFC2;
+    --cream-300: #DED3AC;
+    --ink-950: #0A0A0A;
+    --ink-900: #141414;
+    --ink-800: #1E1E1E;
+    --ink-700: #3A3A3A;
+    --ink-500: #A8A092;
+    --halftone: #8C8578;
+    --red-light: #C8102E;
+    --red-dark: #E8234E;
+
+    --sp-xs: 4px;
+    --sp-sm: 8px;
+    --sp-md: 16px;
+    --sp-lg: 24px;
+    --sp-xl: 40px;
+    --sp-2xl: 64px;
+    --sp-3xl: 96px;
+    --sp-4xl: 128px;
+
+    --font-display: 'Playfair Display', 'Times New Roman', serif;
+    --font-serif: 'PT Serif', 'Georgia', serif;
+    --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+
+    --tracking-kicker: 0.08em;
+    --tracking-label: 0.12em;
+  }
+
+  [data-theme="light"] {
+    --bg: #F0EAD6;
+    --surface1: #E8DFC2;
+    --surface2: #DED3AC;
+    --text1: #0A0A0A;
+    --text2: #3A3A3A;
+    --text3: #6B6558;
+    --border: #2A2A2A;
+    --rule: #2A2A2A;
+    --hairline: rgba(10, 10, 10, 0.18);
+    --accent: #C8102E;
+    --halftone-c: #8C8578;
+    --paper-tint: rgba(10, 10, 10, 0.04);
+  }
+
+  [data-theme="dark"] {
+    --bg: #0A0A0A;
+    --surface1: #141414;
+    --surface2: #1E1E1E;
+    --text1: #F0EAD6;
+    --text2: #A8A092;
+    --text3: #6B6558;
+    --border: #3A3A3A;
+    --rule: #5A5A5A;
+    --hairline: rgba(240, 234, 214, 0.16);
+    --accent: #E8234E;
+    --halftone-c: #6B6558;
+    --paper-tint: rgba(240, 234, 214, 0.03);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text1);
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background 300ms ease, color 300ms ease;
+  }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+  ul { margin: 0; padding: 0; list-style: none; }
+
+  /* halftone dot texture for the page itself, very faint */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, var(--text1) 0.6px, transparent 1px);
+    background-size: 6px 6px;
+    opacity: 0.035;
+    z-index: 1;
+    mix-blend-mode: multiply;
+  }
+  [data-theme="dark"] body::before {
+    mix-blend-mode: screen;
+    opacity: 0.05;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--sp-2xl);
+    position: relative;
+    z-index: 2;
+  }
+
+  .narrow {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* ── KICKERS / LABELS ── */
+  .kicker {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-sm);
+  }
+  .kicker .dot {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    padding: 14px 24px;
+    border: 1.5px solid var(--text1);
+    background: var(--text1);
+    color: var(--bg);
+    cursor: pointer;
+    transition: all 180ms ease;
+    border-radius: 0;
+  }
+  .btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text1);
+  }
+  .btn-ghost:hover {
+    background: var(--text1);
+    color: var(--bg);
+    border-color: var(--text1);
+  }
+  .ghost-link {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text1);
+    border-bottom: 1px solid var(--text1);
+    padding-bottom: 2px;
+    transition: color 180ms ease, border-color 180ms ease;
+  }
+  .ghost-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* ── HEADER / MASTHEAD ── */
+  .lp-header {
+    border-bottom: 1.5px solid var(--rule);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .masthead-top {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: var(--sp-md) 0 var(--sp-sm);
+    gap: var(--sp-lg);
+  }
+  .masthead-meta {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+  }
+  .masthead-meta.right { text-align: right; }
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 38px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--text1);
+    position: relative;
+    padding: 0 var(--sp-md);
+  }
+  .wordmark::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    background: var(--accent);
+  }
+  .wordmark::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    background: var(--accent);
+  }
+  .double-divider {
+    border-top: 1.5px solid var(--rule);
+    border-bottom: 0.5px solid var(--rule);
+    height: 4px;
+  }
+  .masthead-nav {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: var(--sp-sm) 0;
+  }
+  .lp-nav {
+    display: flex;
+    gap: var(--sp-2xl);
+  }
+  .lp-nav a {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text1);
+    transition: color 180ms ease;
+    position: relative;
+    padding: var(--sp-sm) 0;
+  }
+  .lp-nav a:hover { color: var(--accent); }
+  .lp-nav a.current::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 2px;
+    height: 2px;
+    background: var(--text1);
+  }
+  .header-cta {
+    padding: 10px 18px;
+    font-size: 11px;
+  }
+
+  /* ── HERO ── */
+  .lp-hero {
+    padding: var(--sp-3xl) 0 var(--sp-3xl);
+    border-bottom: 2px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .lp-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--text1) 0.7px, transparent 1px);
+    background-size: 8px 8px;
+    opacity: 0.035;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+  }
+  [data-theme="dark"] .lp-hero::before {
+    mix-blend-mode: screen;
+    opacity: 0.06;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    width: 100%;
+  }
+  .hero-eyebrow-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--sp-xl);
+  }
+  .hero-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+    padding: var(--sp-sm) var(--sp-md);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-eyebrow .accent-dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin: 0 8px 1px;
+    vertical-align: middle;
+  }
+  .hero-rule-top {
+    border-top: 2px solid var(--rule);
+    border-bottom: 0.5px solid var(--rule);
+    height: 5px;
+    max-width: 760px;
+    margin: 0 auto var(--sp-xl);
+  }
+  .hero-content h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(64px, 8vw, 128px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    color: var(--text1);
+    margin: 0 auto var(--sp-xl);
+    max-width: 1080px;
+  }
+  .hero-content h1 .it {
+    font-style: italic;
+    font-weight: 700;
+  }
+  .hero-rule-bottom {
+    border-bottom: 2px solid var(--rule);
+    border-top: 0.5px solid var(--rule);
+    height: 5px;
+    max-width: 760px;
+    margin: 0 auto var(--sp-xl);
+  }
+  .hero-standfirst {
+    font-family: var(--font-serif);
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--text2);
+    max-width: 620px;
+    margin: 0 auto var(--sp-xl);
+  }
+  .hero-actions {
+    display: flex;
+    gap: var(--sp-lg);
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── HERO BYLINE STRIP (under headline area) ── */
+  .hero-byline-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: var(--sp-3xl);
+    max-width: 880px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .byline-cell {
+    padding: var(--sp-lg) var(--sp-md);
+    text-align: center;
+    border-right: 1px solid var(--hairline);
+  }
+  .byline-cell:last-child { border-right: 0; }
+  .byline-cell .num {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--text1);
+    display: block;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .byline-cell .num .change {
+    font-size: 12px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    color: var(--accent);
+    margin-left: 4px;
+    letter-spacing: 0;
+  }
+  .byline-cell .lbl {
+    font-family: var(--font-sans);
+    font-size: 9.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+  }
+
+  /* ── FEATURE SECTIONS ── */
+  .lp-feature {
+    padding: var(--sp-3xl) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3xl);
+    align-items: center;
+  }
+  .lp-feature.reverse .feature-text { order: 2; }
+  .feature-text .kicker { margin-bottom: var(--sp-lg); }
+  .feature-text h2 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(36px, 4vw, 56px);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: var(--text1);
+    margin: 0 0 var(--sp-lg);
+  }
+  .feature-text .lede {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text2);
+    margin: 0 0 var(--sp-lg);
+  }
+  .feature-text .body-cols {
+    column-count: 2;
+    column-gap: var(--sp-lg);
+    column-rule: 1px solid var(--hairline);
+    font-family: var(--font-serif);
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text2);
+  }
+  .feature-text .body-cols p { margin: 0 0 var(--sp-md); }
+  .feature-text .body-cols p:first-letter {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 38px;
+    float: left;
+    line-height: 0.85;
+    padding: 5px 6px 0 0;
+    color: var(--text1);
+  }
+
+  /* ── ARTICLE CARD MOCKUP (Feature 1) ── */
+  .article-card {
+    border: 1.5px solid var(--rule);
+    background: var(--bg);
+    padding: var(--sp-xl);
+    position: relative;
+  }
+  .article-card .corner-tag {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    background: var(--text1);
+    color: var(--bg);
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    padding: 6px 10px;
+  }
+  .article-card .ed-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-sans);
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+    padding-top: var(--sp-md);
+    margin-bottom: var(--sp-lg);
+  }
+  .article-card h3 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 1.0;
+    letter-spacing: -0.015em;
+    color: var(--text1);
+    margin: 0 0 var(--sp-md);
+  }
+  .article-card .deck {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text2);
+    margin: 0 0 var(--sp-lg);
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: var(--sp-lg);
+  }
+  .article-card .author-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-md);
+    margin-bottom: var(--sp-lg);
+  }
+  .halftone-avatar {
+    width: 52px;
+    height: 52px;
+    background: var(--halftone-c);
+    background-image:
+      radial-gradient(circle at 35% 35%, rgba(255,255,255,0.45), transparent 45%),
+      radial-gradient(circle, rgba(0,0,0,0.45) 0.8px, transparent 1.2px);
+    background-size: auto, 3px 3px;
+    flex-shrink: 0;
+    border: 1px solid var(--rule);
+  }
+  .author-row .author-name {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text1);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .author-row .author-title {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .article-card .body-preview {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text2);
+    column-count: 2;
+    column-gap: var(--sp-md);
+    column-rule: 0.5px solid var(--hairline);
+  }
+  .article-card .body-preview p { margin: 0 0 var(--sp-sm); }
+
+  /* ── TICKER / TAPE MOCKUP (Feature 2) ── */
+  .tape-card {
+    border: 2px solid var(--rule);
+    background: var(--bg);
+    overflow: hidden;
+  }
+  .tape-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sp-md) var(--sp-lg);
+    border-bottom: 1.5px solid var(--rule);
+    background: var(--surface1);
+  }
+  .tape-head .tape-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: var(--text1);
+  }
+  .tape-head .tape-stamp {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+  }
+  .tape-rows {}
+  .tape-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 90px 70px;
+    align-items: center;
+    padding: var(--sp-md) var(--sp-lg);
+    border-bottom: 1px solid var(--hairline);
+    font-family: var(--font-sans);
+    font-size: 12px;
+  }
+  .tape-row:last-child { border-bottom: 0; }
+  .tape-row .sym {
+    font-weight: 600;
+    color: var(--text1);
+    letter-spacing: 0.04em;
+  }
+  .tape-row .name {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .tape-row .price {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: var(--text1);
+  }
+  .tape-row .delta {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+  .tape-row .delta.up { color: var(--text1); }
+  .tape-row .delta.down { color: var(--accent); }
+  .tape-foot {
+    padding: var(--sp-md) var(--sp-lg);
+    border-top: 1.5px solid var(--rule);
+    background: var(--surface1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tape-foot .lbl {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+  }
+  .tape-foot .lbl .ind {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .mini-chart {
+    height: 70px;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1.5px solid var(--rule);
+    background: var(--bg);
+    position: relative;
+    display: flex;
+    align-items: end;
+    padding: 0 var(--sp-lg);
+    gap: 3px;
+  }
+  .mini-chart .bar {
+    flex: 1;
+    background: var(--text1);
+    min-width: 0;
+  }
+
+  /* ── ARCHIVE STACK (Feature 3) ── */
+  .archive-stack {
+    border: 2px solid var(--rule);
+    background: var(--bg);
+  }
+  .archive-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: var(--sp-lg);
+    border-bottom: 1.5px solid var(--rule);
+    background: var(--surface1);
+  }
+  .archive-head .a-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--text1);
+  }
+  .archive-head .a-count {
+    font-family: var(--font-sans);
+    font-size: 9.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+  }
+  .archive-row {
+    display: grid;
+    grid-template-columns: 70px 1fr 90px;
+    align-items: baseline;
+    padding: var(--sp-md) var(--sp-lg);
+    border-bottom: 1px solid var(--hairline);
+    gap: var(--sp-md);
+  }
+  .archive-row:last-child { border-bottom: 0; }
+  .archive-row .vol {
+    font-family: var(--font-sans);
+    font-size: 9.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+    font-variant-numeric: tabular-nums;
+  }
+  .archive-row .head {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.2;
+    color: var(--text1);
+    letter-spacing: -0.01em;
+  }
+  .archive-row .head .it { font-style: italic; font-weight: 700; }
+  .archive-row .read {
+    font-family: var(--font-sans);
+    font-size: 9.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .archive-foot {
+    padding: var(--sp-md) var(--sp-lg);
+    border-top: 1.5px solid var(--rule);
+    background: var(--surface1);
+    text-align: center;
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+  }
+
+  /* ── PULL QUOTE ── */
+  .lp-quote {
+    padding: var(--sp-4xl) 0;
+    border-bottom: 1px solid var(--rule);
+    text-align: center;
+    position: relative;
+  }
+  .lp-quote::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 0;
+    border-top: 2px solid var(--rule);
+  }
+  .lp-quote .quote-mark {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 220px;
+    line-height: 0.6;
+    color: var(--accent);
+    display: block;
+    margin: 0 auto var(--sp-md);
+    opacity: 0.85;
+  }
+  .lp-quote blockquote {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text1);
+    max-width: 920px;
+    margin: 0 auto var(--sp-2xl);
+    font-style: italic;
+  }
+  .lp-quote .attribution {
+    display: inline-block;
+    border-top: 1px solid var(--rule);
+    padding-top: var(--sp-md);
+  }
+  .lp-quote .attribution .name {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text1);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .lp-quote .attribution .title {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text2);
+  }
+
+  /* ── PRICING ── */
+  .lp-pricing {
+    padding: var(--sp-4xl) 0;
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface1);
+    border-top: 1px solid var(--rule);
+  }
+  .pricing-head {
+    text-align: center;
+    margin-bottom: var(--sp-3xl);
+  }
+  .pricing-head .kicker { margin-bottom: var(--sp-md); display: inline-flex; }
+  .pricing-head h2 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(40px, 5vw, 68px);
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    color: var(--text1);
+    margin: 0 auto var(--sp-md);
+    max-width: 760px;
+  }
+  .pricing-head p {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--text2);
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 2px solid var(--rule);
+    background: var(--bg);
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .price-card {
+    padding: var(--sp-2xl) var(--sp-xl);
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .price-card:last-child { border-right: 0; }
+  .price-card .tier-kicker {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+    margin-bottom: var(--sp-sm);
+  }
+  .price-card h3 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 38px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--text1);
+    margin: 0 0 var(--sp-md);
+  }
+  .price-card .tier-deck {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text2);
+    margin: 0 0 var(--sp-lg);
+    padding-bottom: var(--sp-lg);
+    border-bottom: 1px solid var(--hairline);
+    min-height: 64px;
+  }
+  .price-card .price {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--text1);
+    margin-bottom: var(--sp-xs);
+  }
+  .price-card .price .per {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+    margin-left: var(--sp-sm);
+  }
+  .price-card .billed {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+    margin-bottom: var(--sp-xl);
+  }
+  .price-card ul {
+    margin-bottom: var(--sp-xl);
+  }
+  .price-card ul li {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text2);
+    padding: var(--sp-sm) 0;
+    border-bottom: 1px dotted var(--hairline);
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-sm);
+  }
+  .price-card ul li::before {
+    content: '§';
+    font-family: var(--font-display);
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .price-card .price-cta {
+    width: 100%;
+    justify-content: center;
+  }
+  .price-card.featured {
+    background: var(--text1);
+    color: var(--bg);
+  }
+  .price-card.featured h3,
+  .price-card.featured .price { color: var(--bg); }
+  .price-card.featured .tier-kicker,
+  .price-card.featured .tier-deck,
+  .price-card.featured .billed,
+  .price-card.featured ul li,
+  .price-card.featured .price .per { color: var(--cream-300); }
+  .price-card.featured ul li::before { color: var(--accent); }
+  .price-card.featured .tier-deck {
+    border-bottom-color: rgba(240, 234, 214, 0.18);
+  }
+  .price-card.featured ul li {
+    border-bottom-color: rgba(240, 234, 214, 0.18);
+  }
+  .price-card.featured .btn {
+    background: var(--bg);
+    color: var(--text1);
+    border-color: var(--bg);
+  }
+  .price-card.featured .btn:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .price-card.featured .badge {
+    position: absolute;
+    top: var(--sp-md);
+    right: var(--sp-md);
+    background: var(--accent);
+    color: #fff;
+    padding: 4px 10px;
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+  }
+
+  /* ── FINAL CTA ── */
+  .lp-cta-block {
+    padding: var(--sp-4xl) 0;
+    text-align: center;
+    border-bottom: 2px solid var(--rule);
+    position: relative;
+  }
+  .lp-cta-block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--text1) 0.7px, transparent 1px);
+    background-size: 8px 8px;
+    opacity: 0.04;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+  }
+  [data-theme="dark"] .lp-cta-block::before {
+    mix-blend-mode: screen;
+    opacity: 0.05;
+  }
+  .cta-rule-top {
+    border-top: 2px solid var(--rule);
+    border-bottom: 0.5px solid var(--rule);
+    height: 5px;
+    max-width: 600px;
+    margin: 0 auto var(--sp-xl);
+  }
+  .cta-kicker { display: inline-flex; margin-bottom: var(--sp-lg); }
+  .lp-cta-block h2 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(48px, 6.5vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    color: var(--text1);
+    margin: 0 auto var(--sp-xl);
+    max-width: 1000px;
+    position: relative;
+    z-index: 2;
+  }
+  .lp-cta-block .cta-actions {
+    display: flex;
+    gap: var(--sp-lg);
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+    margin-bottom: var(--sp-md);
+  }
+  .lp-cta-block .legal {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: var(--sp-md);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── FOOTER ── */
+  .lp-footer {
+    background: var(--bg);
+    padding: var(--sp-3xl) 0 var(--sp-2xl);
+    position: relative;
+    z-index: 2;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: var(--sp-2xl);
+    padding-bottom: var(--sp-2xl);
+    border-bottom: 1.5px solid var(--rule);
+  }
+  .footer-mark .wordmark {
+    font-size: 32px;
+    padding: 0 var(--sp-md);
+  }
+  .footer-mark .tag {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text2);
+    margin-top: var(--sp-md);
+    max-width: 240px;
+    line-height: 1.5;
+  }
+  .footer-col h4 {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+    margin: 6px 0 var(--sp-md);
+    padding-bottom: var(--sp-sm);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .footer-col ul li {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    color: var(--text1);
+    padding: 5px 0;
+  }
+  .footer-col ul li a:hover { color: var(--accent); }
+  .footer-bottom {
+    padding-top: var(--sp-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    color: var(--text2);
+    flex-wrap: wrap;
+    gap: var(--sp-md);
+  }
+  .footer-bottom .legal-byline {
+    font-family: var(--font-serif);
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 11px;
+    color: var(--text2);
+    max-width: 540px;
+    line-height: 1.5;
+  }
+
+  /* ── THEME TOGGLE ── */
+  .theme-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: color-mix(in srgb, var(--surface1) 92%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1.5px solid var(--rule);
+    z-index: 1000;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  }
+  .theme-bar button {
+    padding: 8px 18px;
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-kicker);
+    cursor: pointer;
+    transition: all 200ms ease;
+  }
+  .theme-bar button.active {
+    background: var(--text1);
+    color: var(--bg);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 980px) {
+    .container { padding: 0 var(--sp-lg); }
+    .masthead-top { grid-template-columns: 1fr; text-align: center; }
+    .masthead-meta, .masthead-meta.right { text-align: center; }
+    .lp-nav { display: none; }
+    .feature-grid { grid-template-columns: 1fr; gap: var(--sp-2xl); }
+    .lp-feature.reverse .feature-text { order: 0; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .price-card { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .price-card:last-child { border-bottom: 0; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: var(--sp-xl); }
+    .hero-byline-strip { grid-template-columns: 1fr; }
+    .byline-cell { border-right: 0; border-bottom: 1px solid var(--hairline); }
+    .byline-cell:last-child { border-bottom: 0; }
+    .feature-text .body-cols { column-count: 1; }
+    .article-card .body-preview { column-count: 1; }
+  }
+  @media (max-width: 560px) {
+    .footer-top { grid-template-columns: 1fr; }
+    .header-cta { display: none; }
+    .lp-quote .quote-mark { font-size: 140px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER / MASTHEAD ── -->
+<header class="lp-header">
+  <div class="container">
+    <div class="masthead-top">
+      <div class="masthead-meta">Monday, April 14, 2026 &nbsp;·&nbsp; New York &nbsp;·&nbsp; 4:37 ET</div>
+      <div class="wordmark">ledger</div>
+      <div class="masthead-meta right">Vol. III &nbsp;·&nbsp; No. 107 &nbsp;·&nbsp; $4 at the newsstand</div>
+    </div>
+    <div class="double-divider"></div>
+    <div class="masthead-nav">
+      <nav class="lp-nav">
+        <a href="#" class="current">Markets</a>
+        <a href="#">Rates</a>
+        <a href="#">Desks</a>
+        <a href="#">Archive</a>
+        <a href="#">Wire</a>
+      </nav>
+      <a href="#" class="btn header-cta">Subscribe <i class="ph-bold ph-arrow-right"></i></a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── HERO ── -->
+  <section class="lp-hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-eyebrow-wrap">
+          <span class="hero-eyebrow">MORNING EDITION<span class="accent-dot"></span>APRIL 14, 2026<span class="accent-dot"></span>FILED 04:37 ET</span>
+        </div>
+        <div class="hero-rule-top"></div>
+        <h1>The morning edition,<br><span class="it">machine-readable.</span></h1>
+        <div class="hero-rule-bottom"></div>
+        <p class="hero-standfirst">A working broadsheet for people who price the open. Filed by analysts, edited by traders, delivered before the bell. Every column carries a byline. Every number carries a footnote.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn">Read today's edition <i class="ph-bold ph-arrow-right"></i></a>
+          <a href="#" class="ghost-link">Browse the archive →</a>
+        </div>
+
+        <div class="hero-byline-strip">
+          <div class="byline-cell">
+            <span class="num">14,420 <span class="change">+0.62%</span></span>
+            <span class="lbl">Subscribers across 47 desks</span>
+          </div>
+          <div class="byline-cell">
+            <span class="num">04:37 <span class="change">ET</span></span>
+            <span class="lbl">Today's edition went to wire</span>
+          </div>
+          <div class="byline-cell">
+            <span class="num">1,184</span>
+            <span class="lbl">Editions in the morgue, searchable</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURE 1 — DISPATCHES ── -->
+  <section class="lp-feature">
+    <div class="container">
+      <div class="feature-grid">
+        <div class="feature-text">
+          <div class="kicker"><span class="dot"></span>SECTION I &nbsp;·&nbsp; DISPATCHES</div>
+          <h2>Filed by name. Not by feed.</h2>
+          <p class="lede">Every column carries a byline. Every byline answers an inbox. The desk you read is the desk you can write back to.</p>
+          <div class="body-cols">
+            <p>We hire columnists who used to run trading books, not interns who scrape press releases. Our macro desk is six people. Rates is four. Credit is three. Each one has a beat, a phone number, and a face on the column header.</p>
+            <p>Dispatches arrive between 3 and 5 ET. They're short — eight hundred words at the long end. Built to be read in the cab to the office, not at the desk after.</p>
+          </div>
+        </div>
+        <div class="feature-visual">
+          <div class="article-card">
+            <div class="corner-tag">DISPATCH 04:21 ET</div>
+            <div class="ed-meta">
+              <span>RATES DESK · NY</span>
+              <span>4 MIN READ</span>
+            </div>
+            <h3>The two-year is telling on the Fed again.</h3>
+            <p class="deck">Six basis points overnight, no headline to blame, and a flattener nobody on the desk asked for. Here's what the curve is whispering before Powell speaks at ten.</p>
+            <div class="author-row">
+              <div class="halftone-avatar"></div>
+              <div>
+                <span class="author-name">Maren Volkov</span>
+                <span class="author-title">Rates columnist · former JPM</span>
+              </div>
+            </div>
+            <div class="body-preview">
+              <p>The tape opened with a quiet bid in the front end and a heavier one in the belly. By 04:00 the two-year was through 4.52, the five through 4.18, and the curve had flattened twelve basis points on the day with no economic print to point to.</p>
+              <p>Three desks I called this morning had three different stories. One traded it as positioning, one as a Fed leak, one as month-end mechanics. None of them sounded sure. That's usually when the trade is real.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURE 2 — THE TAPE ── -->
+  <section class="lp-feature reverse">
+    <div class="container">
+      <div class="feature-grid">
+        <div class="feature-visual">
+          <div class="tape-card">
+            <div class="tape-head">
+              <div class="tape-title">The Tape</div>
+              <div class="tape-stamp">PRINTED 04:37 ET · LIVE</div>
+            </div>
+            <div class="tape-rows">
+              <div class="tape-row">
+                <span class="sym">SPX</span>
+                <span class="name">S&amp;P 500 Index</span>
+                <span class="price">5,418.22</span>
+                <span class="delta up">+0.41%</span>
+              </div>
+              <div class="tape-row">
+                <span class="sym">DXY</span>
+                <span class="name">Dollar Index</span>
+                <span class="price">104.18</span>
+                <span class="delta down">−0.22%</span>
+              </div>
+              <div class="tape-row">
+                <span class="sym">UST10</span>
+                <span class="name">10Y Treasury</span>
+                <span class="price">4.184</span>
+                <span class="delta down">−6 bp</span>
+              </div>
+              <div class="tape-row">
+                <span class="sym">CL</span>
+                <span class="name">WTI Crude</span>
+                <span class="price">82.46</span>
+                <span class="delta up">+1.18%</span>
+              </div>
+              <div class="tape-row">
+                <span class="sym">XAU</span>
+                <span class="name">Gold spot</span>
+                <span class="price">2,418.20</span>
+                <span class="delta up">+0.34%</span>
+              </div>
+            </div>
+            <div class="mini-chart">
+              <div class="bar" style="height: 22%"></div>
+              <div class="bar" style="height: 38%"></div>
+              <div class="bar" style="height: 28%"></div>
+              <div class="bar" style="height: 52%"></div>
+              <div class="bar" style="height: 44%"></div>
+              <div class="bar" style="height: 64%"></div>
+              <div class="bar" style="height: 56%"></div>
+              <div class="bar" style="height: 72%"></div>
+              <div class="bar" style="height: 60%"></div>
+              <div class="bar" style="height: 80%"></div>
+              <div class="bar" style="height: 68%"></div>
+              <div class="bar" style="height: 88%"></div>
+              <div class="bar" style="height: 76%"></div>
+              <div class="bar" style="height: 92%"></div>
+              <div class="bar" style="height: 70%"></div>
+              <div class="bar" style="height: 84%"></div>
+              <div class="bar" style="height: 78%"></div>
+              <div class="bar" style="height: 90%"></div>
+            </div>
+            <div class="tape-foot">
+              <span class="lbl"><span class="ind"></span>FOOTNOTED &nbsp;·&nbsp; SOURCED &nbsp;·&nbsp; CITED</span>
+              <span class="lbl">EXPORT JSON</span>
+            </div>
+          </div>
+        </div>
+        <div class="feature-text">
+          <div class="kicker"><span class="dot"></span>SECTION II &nbsp;·&nbsp; THE TAPE</div>
+          <h2>Numbers with a paper trail.</h2>
+          <p class="lede">Every print on the tape carries a footnote. Click a price and you get the source, the timestamp, the desk that flagged it, and the column where it last appeared in print.</p>
+          <div class="body-cols">
+            <p>The tape isn't a feed. It's a column. Curated by a human at 04:00, footnoted before 04:30, on the wire by 04:37. The numbers are the same numbers Bloomberg ships. The difference is that ours come with reasoning attached.</p>
+            <p>Export it as JSON for your model. Print it as a column for the morning meeting. The schema is stable. The byline is too.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURE 3 — THE MORGUE ── -->
+  <section class="lp-feature">
+    <div class="container">
+      <div class="feature-grid">
+        <div class="feature-text">
+          <div class="kicker"><span class="dot"></span>SECTION III &nbsp;·&nbsp; THE MORGUE</div>
+          <h2>Eleven hundred editions, one search box.</h2>
+          <p class="lede">Every column we have ever printed lives in the morgue. Indexed by ticker, by columnist, by date, by the trade it called. Searchable from the terminal and the desk both.</p>
+          <div class="body-cols">
+            <p>The morgue is what newspapers used to call the back room — the cabinet of every issue ever printed. Ours is the same idea, except it answers grep.</p>
+            <p>Pull every column Volkov wrote about the curve in 2025. Pull every dispatch that mentioned XLF before April. Pull the morning edition from the day Lehman printed. It's all there, footnoted, sourced, and folded.</p>
+          </div>
+        </div>
+        <div class="feature-visual">
+          <div class="archive-stack">
+            <div class="archive-head">
+              <div class="a-title">The Morgue</div>
+              <div class="a-count">1,184 EDITIONS · INDEXED</div>
+            </div>
+            <div class="archive-row">
+              <span class="vol">VOL.III/106</span>
+              <span class="head">The dollar's <span class="it">quiet</span> Friday before the print.</span>
+              <span class="read">FRI · 7 MIN</span>
+            </div>
+            <div class="archive-row">
+              <span class="vol">VOL.III/105</span>
+              <span class="head">A flattener nobody on the desk ordered.</span>
+              <span class="read">THU · 5 MIN</span>
+            </div>
+            <div class="archive-row">
+              <span class="vol">VOL.III/104</span>
+              <span class="head">Powell, Lagarde, and the <span class="it">unsaid</span> half.</span>
+              <span class="read">WED · 9 MIN</span>
+            </div>
+            <div class="archive-row">
+              <span class="vol">VOL.III/103</span>
+              <span class="head">Crude calls the bluff on the Strait.</span>
+              <span class="read">TUE · 6 MIN</span>
+            </div>
+            <div class="archive-row">
+              <span class="vol">VOL.III/102</span>
+              <span class="head">Credit is yawning. We are not.</span>
+              <span class="read">MON · 8 MIN</span>
+            </div>
+            <div class="archive-row">
+              <span class="vol">VOL.III/101</span>
+              <span class="head">The hundredth edition: a small reckoning.</span>
+              <span class="read">FRI · 11 MIN</span>
+            </div>
+            <div class="archive-foot">SEARCH 1,184 EDITIONS &nbsp;·&nbsp; FILED BACK TO VOL. I</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PULL QUOTE ── -->
+  <section class="lp-quote">
+    <div class="container narrow">
+      <span class="quote-mark">&ldquo;</span>
+      <blockquote>I read three newspapers and four feeds before the open. Ledger replaced two of them inside a month, and I'm watching the third.</blockquote>
+      <div class="attribution">
+        <span class="name">Henrietta Marsh</span>
+        <span class="title">Head of Macro Strategy, Tudor Investment</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRICING ── -->
+  <section class="lp-pricing">
+    <div class="container">
+      <div class="pricing-head">
+        <div class="kicker"><span class="dot"></span>SUBSCRIPTIONS &nbsp;·&nbsp; HOME &amp; WIRE</div>
+        <h2>Two ways to take delivery.</h2>
+        <p>One for the desk that reads at six. One for the model that reads at four. Both edited by the same room.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="tier-kicker">TIER I &nbsp;·&nbsp; HOME DELIVERY</div>
+          <h3>Daily</h3>
+          <p class="tier-deck">The morning edition, in your inbox at 04:37 ET, every trading day, every issue, every byline.</p>
+          <div class="price">$48<span class="per">/ month</span></div>
+          <div class="billed">BILLED MONTHLY · CANCEL ANY MONDAY</div>
+          <ul>
+            <li>Morning edition, filed before the bell</li>
+            <li>Every dispatch from every desk</li>
+            <li>Full access to the morgue (1,184 editions)</li>
+            <li>Footnoted tape, web reader</li>
+            <li>Reply to any byline directly</li>
+          </ul>
+          <a href="#" class="btn btn-ghost price-cta">Take home delivery <i class="ph-bold ph-arrow-right"></i></a>
+        </div>
+        <div class="price-card featured">
+          <span class="badge">FOR DESKS</span>
+          <div class="tier-kicker">TIER II &nbsp;·&nbsp; WIRE SERVICE</div>
+          <h3>Wire</h3>
+          <p class="tier-deck">Everything in Daily, plus a footnoted JSON wire your model can subscribe to. Built for desks that price the open.</p>
+          <div class="price">$220<span class="per">/ month</span></div>
+          <div class="billed">PER SEAT · ANNUAL · TEN-SEAT MIN</div>
+          <ul>
+            <li>Everything in Daily, for every seat</li>
+            <li>JSON wire with stable schema</li>
+            <li>Webhooks the moment a column is filed</li>
+            <li>Morgue API with full-text search</li>
+            <li>Direct line to the macro and rates desks</li>
+            <li>White-glove onboarding in person</li>
+          </ul>
+          <a href="#" class="btn price-cta">Open a wire account <i class="ph-bold ph-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FINAL CTA ── -->
+  <section class="lp-cta-block">
+    <div class="container">
+      <div class="cta-rule-top"></div>
+      <div class="cta-kicker kicker"><span class="dot"></span>STOP PRESSES</div>
+      <h2>Subscribe to the ledger.</h2>
+      <div class="cta-actions">
+        <a href="#" class="btn">Read today's edition <i class="ph-bold ph-arrow-right"></i></a>
+        <a href="#" class="ghost-link">See a sample issue →</a>
+      </div>
+      <p class="legal">First edition free. Cancel any Monday. Filed in New York since 2026.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="lp-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-mark">
+        <div class="wordmark">ledger</div>
+        <p class="tag">A working broadsheet for people who price the open. Filed in New York. Read in forty-seven cities.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Sections</h4>
+        <ul>
+          <li><a href="#">Markets</a></li>
+          <li><a href="#">Rates &amp; Macro</a></li>
+          <li><a href="#">Credit Desk</a></li>
+          <li><a href="#">Energy &amp; Commodities</a></li>
+          <li><a href="#">The Morgue</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>The Paper</h4>
+        <ul>
+          <li><a href="#">About the desk</a></li>
+          <li><a href="#">Columnists</a></li>
+          <li><a href="#">Style guide</a></li>
+          <li><a href="#">Press the editor</a></li>
+          <li><a href="#">Careers, six open</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Terms of subscription</a></li>
+          <li><a href="#">Privacy notice</a></li>
+          <li><a href="#">Wire data license</a></li>
+          <li><a href="#">Accessibility</a></li>
+          <li><a href="#">Corrections &amp; clarifications</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>EST. MMXXVI &nbsp;·&nbsp; VOL. III, NO. 107 &nbsp;·&nbsp; NEW YORK</span>
+      <span class="legal-byline">Ledger is published every trading day before the bell. Nothing herein is investment advice; everything herein is footnoted.</span>
+      <span>&copy; MMXXVI ledger</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── THEME TOGGLE ── -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="light">Light</button>
+  <button data-theme-btn="dark">Dark</button>
+</div>
+
+<script>
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  document.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+</script>
+</body>
+</html>

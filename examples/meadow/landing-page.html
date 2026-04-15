@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meadow — A place for what you can't afford to forget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css">
+<style>
+  /* mockup polish — dead links don't fake broken flows */
+  /* in-page anchors (#features, #quote, #pricing) stay functional */
+  .lp-nav a[href="#"],
+  .lp-footer a[href="#"],
+  a.btn[href="#"],
+  .btn.primary,
+  .btn.ghost {
+    pointer-events: none;
+    cursor: default;
+  }
+  .mode-btn {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ── Primitives (observed from mymind.com) ── */
+  :root {
+    --n-0:   #FFFFFF;  --n-50:  #F5F7F9;  --n-100: #F0F2F5;  --n-200: #E5EAF2;
+    --n-300: #D4DCE5;  --n-400: #BCC3CC;  --n-500: #8892A1;  --n-600: #748297;
+    --n-700: #4A5465;  --n-800: #343552;  --n-900: #1A1C2E;  --n-950: #000000;
+
+    --b-50:  #FFF1F1;  --b-100: #FFDDD4;  --b-200: #FFC2A8;  --b-300: #FFA47C;
+    --b-400: #FF8550;  --b-500: #FF5924;  --b-600: #E04414;  --b-700: #B83408;
+    --b-800: #8F2A06;  --b-900: #6B1F04;  --b-950: #451302;
+
+    --red-500: #E5484D;  --grn-500: #5CB13E;  --amb-500: #E5A73B;
+    --yellow: #FFE926;  --pink: #FF7DD3;  --green: #5CB13E;
+
+    --r-element: 6px;  --r-control: 30px;  --r-component: 16px;
+    --r-container: 30px;  --r-pill: 100px;
+  }
+
+  [data-theme="light"] {
+    --bg:             var(--n-0);
+    --surface1:       var(--n-50);
+    --surface2:       var(--n-100);
+    --surface3:       var(--n-200);
+    --border:         var(--n-200);
+    --text1:          var(--n-950);
+    --text2:          var(--n-600);
+    --text3:          var(--n-500);
+    --text4:          var(--n-400);
+    --accent:         var(--b-500);
+    --accent-subtle:  var(--b-50);
+    --shadow-l1: 0px 4px 22px rgba(116, 130, 151, 0.14);
+    --shadow-l2: 0px 8px 32px rgba(116, 130, 151, 0.18);
+    --shadow-l3: 0px 16px 48px rgba(116, 130, 151, 0.22);
+    --shadow-accent: 0px 8px 16px rgba(255, 89, 36, 0.2);
+    --shadow-hero: 0px 40px 80px rgba(116, 130, 151, 0.2);
+  }
+
+  [data-theme="dark"] {
+    --bg:             var(--n-950);
+    --surface1:       var(--n-900);
+    --surface2:       var(--n-800);
+    --surface3:       var(--n-700);
+    --border:         var(--n-800);
+    --text1:          var(--n-0);
+    --text2:          var(--n-400);
+    --text3:          var(--n-500);
+    --text4:          var(--n-600);
+    --accent:         var(--b-400);
+    --accent-subtle:  var(--b-950);
+    --shadow-l1: 0px 4px 22px rgba(0, 0, 0, 0.4);
+    --shadow-l2: 0px 8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-l3: 0px 16px 48px rgba(0, 0, 0, 0.6);
+    --shadow-accent: 0px 8px 16px rgba(255, 133, 80, 0.3);
+    --shadow-hero: 0px 40px 80px rgba(0, 0, 0, 0.5);
+  }
+
+  html, body {
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+    background: var(--bg);
+    color: var(--text1);
+    -webkit-font-smoothing: antialiased;
+    transition: background 400ms ease-in-out, color 400ms ease-in-out;
+  }
+
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+  .container--narrow { max-width: 720px; }
+
+  /* ── Buttons (shared) ── */
+  .btn {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.005em;
+    padding: 12px 24px;
+    border-radius: var(--r-control);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 250ms ease-in-out;
+  }
+  .btn.primary { background: var(--accent); color: #FFFFFF; }
+  .btn.primary:hover { box-shadow: var(--shadow-accent); }
+  .btn.primary:active { transform: scale(0.97); }
+  .btn.ghost { background: transparent; color: var(--text2); }
+  .btn.ghost:hover { color: var(--text1); }
+  .btn.large { padding: 16px 32px; font-size: 18px; }
+
+  /* ── Header ── */
+  .lp-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: background 400ms ease-in-out, border-color 400ms ease-in-out;
+  }
+  [data-theme="dark"] .lp-header { background: rgba(0, 0, 0, 0.8); }
+
+  .lp-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+  .lp-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--text1);
+    text-decoration: none;
+  }
+  .lp-brand .dots {
+    display: inline-flex;
+    gap: 3px;
+  }
+  .lp-brand .dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .lp-brand .dots span:nth-child(1) { background: var(--accent); }
+  .lp-brand .dots span:nth-child(2) { background: var(--yellow); }
+  .lp-brand .dots span:nth-child(3) { background: var(--pink); }
+  .lp-brand .dots span:nth-child(4) { background: var(--green); }
+
+  .lp-nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .lp-nav a {
+    font-size: 14px;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 250ms ease-in-out;
+  }
+  .lp-nav a:hover { color: var(--text1); }
+
+  /* ── Hero ── */
+  .lp-hero {
+    position: relative;
+    padding: 128px 0 120px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .lp-hero .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── Painterly background (hero_stage.background, see hero-stage.md) ── */
+  .bg-painterly {
+    position: absolute;
+    inset: -80px;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 55% 45% at 18% 28%, rgba(255, 164, 124, 0.32), transparent 60%),
+      radial-gradient(ellipse 45% 40% at 82% 18%, rgba(255, 233, 38, 0.22), transparent 65%),
+      radial-gradient(ellipse 60% 55% at 72% 72%, rgba(255, 125, 211, 0.22), transparent 60%),
+      radial-gradient(ellipse 50% 45% at 28% 85%, rgba(92, 177, 62, 0.18), transparent 60%),
+      radial-gradient(ellipse 40% 40% at 55% 50%, rgba(255, 194, 168, 0.25), transparent 55%);
+    filter: url(#bg-painterly);
+    opacity: 0.85;
+  }
+  [data-theme="dark"] .bg-painterly {
+    opacity: 0.5;
+    background:
+      radial-gradient(ellipse 55% 45% at 18% 28%, rgba(255, 133, 80, 0.4), transparent 60%),
+      radial-gradient(ellipse 45% 40% at 82% 18%, rgba(255, 233, 38, 0.18), transparent 65%),
+      radial-gradient(ellipse 60% 55% at 72% 72%, rgba(255, 125, 211, 0.2), transparent 60%),
+      radial-gradient(ellipse 50% 45% at 28% 85%, rgba(92, 177, 62, 0.22), transparent 60%),
+      radial-gradient(ellipse 40% 40% at 55% 50%, rgba(255, 164, 124, 0.25), transparent 55%);
+  }
+  .lp-hero .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: var(--r-pill);
+    background: var(--accent-subtle);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    margin-bottom: 32px;
+  }
+  .lp-hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .lp-hero h1 {
+    font-family: 'Lora', Georgia, serif;
+    font-size: clamp(44px, 7.5vw, 84px);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    max-width: 900px;
+    margin: 0 auto 28px;
+    color: var(--text1);
+  }
+  .lp-hero h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .lp-hero .subhead {
+    font-size: 20px;
+    line-height: 1.55;
+    color: var(--text2);
+    max-width: 560px;
+    margin: 0 auto 44px;
+  }
+  .lp-hero-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 72px;
+  }
+  .lp-hero-note {
+    display: block;
+    margin-top: -56px;
+    margin-bottom: 72px;
+    font-size: 12px;
+    color: var(--text3);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Hero visual: floating card stack ── */
+  .lp-hero-visual {
+    position: relative;
+    max-width: 640px;
+    margin: 0 auto;
+    height: 360px;
+  }
+  .hero-card {
+    position: absolute;
+    background: var(--bg);
+    border-radius: var(--r-component);
+    padding: 24px;
+    box-shadow: var(--shadow-hero);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 400ms ease-in-out;
+  }
+  .hero-card .eyebrow-small {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .hero-card .title {
+    font-family: 'Lora', serif;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--text1);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .hero-card .body {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text2);
+  }
+  .hero-card.one {
+    top: 0;
+    left: 0;
+    width: 280px;
+    transform: rotate(-2.5deg);
+  }
+  .hero-card.two {
+    top: 48px;
+    left: 50%;
+    width: 320px;
+    margin-left: -160px;
+    transform: rotate(0.5deg);
+    z-index: 2;
+  }
+  .hero-card.three {
+    top: 24px;
+    right: 0;
+    width: 260px;
+    transform: rotate(2deg);
+  }
+  .hero-card.quote {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--text1);
+    line-height: 1.45;
+  }
+  .hero-card .meta-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 4px;
+  }
+  .hero-card .mini-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: var(--r-pill);
+    background: var(--accent-subtle);
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 500;
+  }
+  .hero-card .mini-tag .mini-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+  /* ── Features ── */
+  .lp-features {
+    padding: 96px 0 40px;
+  }
+  .lp-feature {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+    align-items: center;
+    padding: 64px 0;
+  }
+  .lp-feature.reverse .lp-feature-text { order: 2; }
+  .lp-feature-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+  .lp-feature-heading {
+    font-family: 'Lora', Georgia, serif;
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text1);
+    margin-bottom: 24px;
+  }
+  .lp-feature-body {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text2);
+    margin-bottom: 28px;
+  }
+  .lp-feature-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .lp-feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.55;
+  }
+  .lp-feature-list li i {
+    color: var(--accent);
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .lp-feature-list li strong {
+    color: var(--text1);
+    font-weight: 500;
+  }
+
+  /* ── Feature visuals ── */
+  .feature-visual {
+    position: relative;
+    min-height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* F1: card stack */
+  .f1-stack {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    height: 360px;
+  }
+  .f1-card {
+    position: absolute;
+    background: var(--bg);
+    border-radius: var(--r-component);
+    padding: 20px;
+    box-shadow: var(--shadow-l2);
+    transition: all 400ms ease-in-out;
+  }
+  .f1-card.a { top: 0; left: 16px; width: 80%; transform: rotate(-3deg); }
+  .f1-card.b { top: 56px; left: 32px; width: 82%; transform: rotate(0deg); z-index: 2; }
+  .f1-card.c { top: 112px; left: 48px; width: 80%; transform: rotate(2deg); z-index: 3; }
+  .f1-card.d { top: 180px; left: 24px; width: 78%; transform: rotate(-1.5deg); z-index: 4; }
+  .f1-card .card-type {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+  .f1-card .card-content {
+    font-family: 'Lora', serif;
+    font-size: 16px;
+    line-height: 1.3;
+    color: var(--text1);
+    font-weight: 500;
+  }
+  .f1-card.d .card-content {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  /* F2: search */
+  .f2-search {
+    width: 100%;
+    max-width: 420px;
+    background: var(--bg);
+    border-radius: var(--r-container);
+    box-shadow: var(--shadow-l2);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .f2-search-input {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: var(--surface2);
+    border: 1.5px solid var(--accent);
+    border-radius: var(--r-pill);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+  }
+  .f2-search-input i { color: var(--text3); font-size: 18px; }
+  .f2-search-input span {
+    flex: 1;
+    font-size: 14px;
+    color: var(--text1);
+  }
+  .f2-search-input .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 16px;
+    background: var(--accent);
+    vertical-align: middle;
+    margin-left: 2px;
+    animation: blink 1s infinite;
+  }
+  @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+  .f2-result {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    border-radius: var(--r-element);
+    align-items: flex-start;
+    transition: background 200ms ease;
+  }
+  .f2-result.active { background: var(--surface1); }
+  .f2-result .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0; margin-top: 6px;
+  }
+  .f2-result .r-title {
+    font-size: 13px; color: var(--text1);
+    line-height: 1.4;
+    font-family: 'Lora', serif;
+    font-weight: 500;
+  }
+  .f2-result .r-meta {
+    display: block;
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 2px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  /* F3: timeline stack */
+  .f3-timeline {
+    width: 100%;
+    max-width: 380px;
+    background: var(--bg);
+    border-radius: var(--r-container);
+    box-shadow: var(--shadow-l2);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .f3-header {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 16px;
+  }
+  .f3-item {
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .f3-item:last-child { border-bottom: none; }
+  .f3-date {
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    min-width: 52px;
+    padding-top: 3px;
+    font-family: 'Inter', sans-serif;
+  }
+  .f3-text {
+    flex: 1;
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    line-height: 1.35;
+    color: var(--text1);
+    font-weight: 500;
+  }
+  .f3-item .tag-inline {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 2px 8px;
+    border-radius: var(--r-pill);
+    background: var(--accent-subtle);
+    color: var(--accent);
+    font-family: 'Inter', sans-serif;
+    margin-top: 6px;
+    text-transform: uppercase;
+  }
+
+  /* ── Pull quote ── */
+  .lp-quote {
+    padding: 120px 0;
+    background: var(--surface1);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .lp-quote blockquote {
+    font-family: 'Lora', Georgia, serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--text1);
+    max-width: 820px;
+    margin: 0 auto;
+  }
+  .lp-quote blockquote::before,
+  .lp-quote blockquote::after {
+    color: var(--accent);
+    font-style: normal;
+  }
+  .lp-quote blockquote::before { content: "\201C"; }
+  .lp-quote blockquote::after  { content: "\201D"; }
+  .lp-quote cite {
+    display: block;
+    margin-top: 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  /* ── Pricing ── */
+  .lp-pricing {
+    padding: 128px 0;
+    text-align: center;
+  }
+  .lp-pricing-header {
+    margin-bottom: 64px;
+  }
+  .lp-pricing-header .eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .lp-pricing-header h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(32px, 4.5vw, 48px);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .price-card {
+    background: var(--bg);
+    border-radius: var(--r-container);
+    box-shadow: var(--shadow-l2);
+    padding: 48px 40px;
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .price-card .price-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+  .price-card .price-amount {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .price-card .price-amount .num {
+    font-family: 'Lora', serif;
+    font-size: 64px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--text1);
+    letter-spacing: -0.02em;
+  }
+  .price-card .price-amount .unit {
+    font-size: 14px;
+    color: var(--text2);
+  }
+  .price-card .price-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .price-card .price-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text2);
+  }
+  .price-card .price-list li i { color: var(--accent); font-size: 16px; }
+  .price-card .btn { justify-content: center; }
+  .price-card .fine {
+    font-size: 11px;
+    color: var(--text3);
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Final CTA ── */
+  .lp-cta {
+    padding: 0 0 160px;
+    text-align: center;
+  }
+  .lp-cta-block {
+    padding: 96px 48px;
+    background: var(--surface1);
+    border-radius: var(--r-container);
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .lp-cta-block h2 {
+    font-family: 'Lora', serif;
+    font-size: clamp(40px, 5vw, 56px);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    max-width: 640px;
+    margin: 0 auto 24px;
+  }
+  .lp-cta-block p {
+    font-size: 18px;
+    color: var(--text2);
+    line-height: 1.55;
+    max-width: 480px;
+    margin: 0 auto 40px;
+  }
+  .lp-cta-actions {
+    display: inline-flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .lp-cta-fine {
+    display: block;
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--text3);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Footer ── */
+  .lp-footer {
+    border-top: 1px solid var(--border);
+    padding: 80px 0 48px;
+  }
+  .lp-footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 72px;
+  }
+  .lp-footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 300px;
+  }
+  .lp-footer-brand p {
+    font-size: 13px;
+    color: var(--text3);
+    line-height: 1.55;
+  }
+  .lp-footer-col h4 {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 20px;
+  }
+  .lp-footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .lp-footer-col a {
+    font-size: 14px;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 250ms ease-in-out;
+  }
+  .lp-footer-col a:hover { color: var(--text1); }
+  .lp-footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text3);
+  }
+  .lp-footer-bottom .legal {
+    display: flex;
+    gap: 24px;
+  }
+  .lp-footer-bottom .legal a {
+    color: var(--text3);
+    text-decoration: none;
+    transition: color 250ms ease-in-out;
+  }
+  .lp-footer-bottom .legal a:hover { color: var(--text1); }
+
+  /* ── Floating bar ── */
+  .floating-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    background: var(--bg);
+    border-radius: var(--r-pill);
+    box-shadow: var(--shadow-l2);
+    padding: 6px;
+    gap: 4px;
+  }
+  .mode-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    padding: 8px 16px;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 250ms ease-in-out;
+  }
+  .mode-btn:hover { color: var(--text1); }
+  .mode-btn.active { background: var(--accent); color: #FFFFFF; }
+</style>
+</head>
+<body>
+
+<!-- ═══ SVG FILTERS (painterly background) ═══ -->
+<svg width="0" height="0" style="position:absolute;" aria-hidden="true">
+  <defs>
+    <filter id="bg-painterly" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="5" />
+      <feDisplacementMap in="SourceGraphic" scale="60" />
+      <feGaussianBlur stdDeviation="8" />
+    </filter>
+  </defs>
+</svg>
+
+<!-- ═══ HEADER ═══ -->
+<header class="lp-header">
+  <div class="container lp-header-row">
+    <a href="#" class="lp-brand">
+      <span class="dots"><span></span><span></span><span></span><span></span></span>
+      Meadow
+    </a>
+    <nav class="lp-nav">
+      <a href="#features">Features</a>
+      <a href="#quote">Philosophy</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#">Sign in</a>
+      <a href="#" class="btn primary" style="padding: 10px 20px; font-size: 14px;">Start free</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="lp-hero">
+    <div class="bg-painterly"></div>
+    <div class="container">
+      <span class="eyebrow"><span class="dot"></span>New · First month free</span>
+      <h1>A place for what you <em>can't afford</em> to forget.</h1>
+      <p class="subhead">Save notes, images, highlights, and quotes — then find them again by remembering just one thing about them.</p>
+      <div class="lp-hero-actions">
+        <a href="#" class="btn primary large"><i class="ph ph-sparkle"></i>Start saving — free</a>
+        <a href="#" class="btn ghost large">Watch the film ›</a>
+      </div>
+      <span class="lp-hero-note">Free for 30 days · no credit card · no folders to set up</span>
+
+      <div class="lp-hero-visual">
+        <div class="hero-card one">
+          <span class="eyebrow-small">Note</span>
+          <span class="title">The garden remembers what you pin.</span>
+          <div class="meta-row">
+            <span class="mini-tag"><span class="mini-dot"></span>Ideas</span>
+            <span>2 min ago</span>
+          </div>
+        </div>
+        <div class="hero-card two">
+          <span class="eyebrow-small">Quote</span>
+          <div class="title quote">"Ideas are easier to find when they don't have to be organized."</div>
+          <span class="body">— mymind manifesto</span>
+        </div>
+        <div class="hero-card three">
+          <span class="eyebrow-small">Highlight</span>
+          <span class="title">Books are souls. They outlast their readers.</span>
+          <div class="meta-row">
+            <span>From Calvino · Yesterday</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FEATURES ═══ -->
+  <section id="features" class="lp-features">
+    <div class="container">
+
+      <!-- F1: SAVE -->
+      <div class="lp-feature">
+        <div class="lp-feature-text">
+          <span class="lp-feature-eyebrow">Save</span>
+          <h2 class="lp-feature-heading">Capture without deciding where it goes.</h2>
+          <p class="lp-feature-body">No folders. No tags. No structure to maintain. Press <strong>⌘S</strong> anywhere and Meadow quietly keeps it for you — text, image, link, quote, or a whole page.</p>
+          <ul class="lp-feature-list">
+            <li><i class="ph ph-check-circle"></i><span><strong>Browser extension</strong> that saves anything with a single keystroke</span></li>
+            <li><i class="ph ph-check-circle"></i><span><strong>iOS and Android apps</strong> for photos, screenshots, and voice notes</span></li>
+            <li><i class="ph ph-check-circle"></i><span><strong>Email-to-save</strong> — forward a newsletter and it's in your mind</span></li>
+          </ul>
+        </div>
+        <div class="lp-feature-visual">
+          <div class="f1-stack">
+            <div class="f1-card a">
+              <div class="card-type">Quote</div>
+              <div class="card-content">"Writing is thinking on paper."</div>
+            </div>
+            <div class="f1-card b">
+              <div class="card-type">Image</div>
+              <div class="card-content">A photo from Tuesday's walk</div>
+            </div>
+            <div class="f1-card c">
+              <div class="card-type">Article</div>
+              <div class="card-content">How to read a book · The Paris Review</div>
+            </div>
+            <div class="f1-card d">
+              <div class="card-type">Note</div>
+              <div class="card-content">Remember to look up bell hooks' essay on radical openness before the weekend.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- F2: FIND -->
+      <div class="lp-feature reverse">
+        <div class="lp-feature-text">
+          <span class="lp-feature-eyebrow">Find</span>
+          <h2 class="lp-feature-heading">Remember one word. Find everything.</h2>
+          <p class="lp-feature-body">Search works the way your memory does — fuzzy, partial, associative. Type <em>"the blue one from winter"</em> and it surfaces. Search by color, by object, by feeling, by fragment.</p>
+          <ul class="lp-feature-list">
+            <li><i class="ph ph-check-circle"></i><span><strong>Visual search</strong> — describe a color, a shape, a subject</span></li>
+            <li><i class="ph ph-check-circle"></i><span><strong>Associative search</strong> — "that thing about maps" works</span></li>
+            <li><i class="ph ph-check-circle"></i><span><strong>No query language</strong> — write the way you think</span></li>
+          </ul>
+        </div>
+        <div class="lp-feature-visual">
+          <div class="f2-search">
+            <div class="f2-search-input">
+              <i class="ph ph-magnifying-glass"></i>
+              <span>the blue one from winter<span class="cursor"></span></span>
+            </div>
+            <div class="f2-result active">
+              <span class="dot" style="background: var(--accent);"></span>
+              <div>
+                <div class="r-title">Winter morning in Brooklyn — the light on the water tower</div>
+                <span class="r-meta">Image · Feb 14</span>
+              </div>
+            </div>
+            <div class="f2-result">
+              <span class="dot" style="background: var(--yellow);"></span>
+              <div>
+                <div class="r-title">A blue note from January — "cold clarity"</div>
+                <span class="r-meta">Note · Jan 03</span>
+              </div>
+            </div>
+            <div class="f2-result">
+              <span class="dot" style="background: var(--pink);"></span>
+              <div>
+                <div class="r-title">Mary Oliver on attention as devotion</div>
+                <span class="r-meta">Quote · Dec 28</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- F3: RETURN -->
+      <div class="lp-feature">
+        <div class="lp-feature-text">
+          <span class="lp-feature-eyebrow">Return</span>
+          <h2 class="lp-feature-heading">A mind that gets more valuable with time.</h2>
+          <p class="lp-feature-body">Old notes surface themselves when they're relevant again. Your mind grows instead of getting buried — the stack gently rearranges itself around what you're thinking now.</p>
+          <ul class="lp-feature-list">
+            <li><i class="ph ph-check-circle"></i><span><strong>Resurfaces ideas</strong> you saved months or years ago</span></li>
+            <li><i class="ph ph-check-circle"></i><span><strong>Related-notes</strong> appear beside what you're reading</span></li>
+            <li><i class="ph ph-check-circle"></i><span><strong>No "archive"</strong> — nothing you save ever becomes invisible</span></li>
+          </ul>
+        </div>
+        <div class="lp-feature-visual">
+          <div class="f3-timeline">
+            <div class="f3-header">Rediscovered this week</div>
+            <div class="f3-item">
+              <span class="f3-date">Mar 12</span>
+              <div>
+                <div class="f3-text">On slow attention as a form of prayer</div>
+                <span class="tag-inline">Quote</span>
+              </div>
+            </div>
+            <div class="f3-item">
+              <span class="f3-date">Oct 04</span>
+              <div>
+                <div class="f3-text">The second-brain article you forgot about</div>
+                <span class="tag-inline">Article</span>
+              </div>
+            </div>
+            <div class="f3-item">
+              <span class="f3-date">Jun 19</span>
+              <div>
+                <div class="f3-text">That sketch of a garden that looked like a library</div>
+                <span class="tag-inline">Image</span>
+              </div>
+            </div>
+            <div class="f3-item">
+              <span class="f3-date">Feb 27</span>
+              <div>
+                <div class="f3-text">Your own note: "Come back when you're stuck."</div>
+                <span class="tag-inline">Note</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ QUOTE ═══ -->
+  <section id="quote" class="lp-quote">
+    <div class="container container--narrow">
+      <blockquote>Ideas are easier to find when they don't have to be organized.</blockquote>
+      <cite>— The Meadow manifesto</cite>
+    </div>
+  </section>
+
+  <!-- ═══ PRICING ═══ -->
+  <section id="pricing" class="lp-pricing">
+    <div class="container">
+      <div class="lp-pricing-header">
+        <div class="eyebrow">Pricing</div>
+        <h2>One price, no tiers, no decisions.</h2>
+      </div>
+      <div class="price-card">
+        <span class="price-label">Meadow membership</span>
+        <div class="price-amount">
+          <span class="num">$12</span>
+          <span class="unit">/ month · billed monthly</span>
+        </div>
+        <ul class="price-list">
+          <li><i class="ph ph-check-circle"></i>Unlimited notes, images, and highlights</li>
+          <li><i class="ph ph-check-circle"></i>All apps — web, iOS, Android, browser extension</li>
+          <li><i class="ph ph-check-circle"></i>Visual + associative search</li>
+          <li><i class="ph ph-check-circle"></i>End-to-end encryption</li>
+          <li><i class="ph ph-check-circle"></i>Export everything, anytime</li>
+        </ul>
+        <a href="#" class="btn primary large">Start your 30-day trial</a>
+        <span class="fine">No credit card · Cancel with one click</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FINAL CTA ═══ -->
+  <section class="lp-cta">
+    <div class="container">
+      <div class="lp-cta-block">
+        <h2>Start remembering what matters.</h2>
+        <p>Thirty days free. No folders to set up. No second brain to learn. Just a quiet place for the ideas you can't afford to lose.</p>
+        <div class="lp-cta-actions">
+          <a href="#" class="btn primary large"><i class="ph ph-sparkle"></i>Create your mind</a>
+          <a href="#" class="btn ghost large">Read the manifesto ›</a>
+        </div>
+        <span class="lp-cta-fine">Free for 30 days · no credit card required</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="lp-footer">
+  <div class="container">
+    <div class="lp-footer-grid">
+      <div class="lp-footer-brand">
+        <a href="#" class="lp-brand">
+          <span class="dots"><span></span><span></span><span></span><span></span></span>
+          Meadow
+        </a>
+        <p>A private place for your most precious notes, images, quotes, and highlights. Built by a small team in Berlin.</p>
+      </div>
+      <div class="lp-footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Changelog</a></li>
+          <li><a href="#">Roadmap</a></li>
+        </ul>
+      </div>
+      <div class="lp-footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">Manifesto</a></li>
+          <li><a href="#">Team</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press kit</a></li>
+        </ul>
+      </div>
+      <div class="lp-footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Guide</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Help center</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="lp-footer-col">
+        <h4>Apps</h4>
+        <ul>
+          <li><a href="#">Mac</a></li>
+          <li><a href="#">iOS</a></li>
+          <li><a href="#">Android</a></li>
+          <li><a href="#">Browser</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="lp-footer-bottom">
+      <span>© 2026 Meadow Inc. Made with care.</span>
+      <div class="legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="floating-bar">
+  <button class="mode-btn active" data-mode="light"><i class="ph ph-sun"></i> Light</button>
+  <button class="mode-btn" data-mode="dark"><i class="ph ph-moon"></i> Dark</button>
+</div>
+
+<script>
+  // Mode toggle
+  const buttons = document.querySelectorAll('.mode-btn');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.documentElement.dataset.theme = btn.dataset.mode;
+      buttons.forEach(b => b.classList.toggle('active', b === btn));
+    });
+  });
+
+  // Disable all anchor clicks — this is a design mockup, not a real page.
+  // Hover states remain intact so the design is fully visible.
+  document.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+</script>
+</body>
+</html>

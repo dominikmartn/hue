@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>prism — Shaders at the speed of thought.</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.2/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.2/src/duotone/style.css">
+
+<style>
+  /* mockup polish — dead links don't fake broken flows */
+  .lp-nav a,
+  .lp-header .btn,
+  .lp-footer a,
+  .btn-primary,
+  .btn-ghost,
+  .btn-secondary,
+  .btn-hero,
+  .btn-cta,
+  .price-btn,
+  .gallery-card,
+  .feature-card {
+    pointer-events: none;
+    cursor: default;
+  }
+  [data-theme-btn] {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+
+  :root {
+    /* prism palette — cyberpunk iridescent */
+    --bg:               #0B0014;
+    --surface:          #120022;
+    --surface-elevated: #1B0033;
+    --text-1:           #F3E9FF;
+    --text-2:           #9B8BB8;
+    --text-3:           #5E4F80;
+
+    --cyan:    #00F0FF;
+    --magenta: #FF00D4;
+    --violet:  #9B3BFF;
+    --chrome:  #E8E5F0;
+
+    --border: rgba(155, 59, 255, 0.25);
+    --border-strong: rgba(155, 59, 255, 0.45);
+
+    --iridescent: conic-gradient(from 180deg, #00F0FF, #9B3BFF, #FF00D4, #9B3BFF, #00F0FF);
+
+    --r-sm: 8px;
+    --r-md: 14px;
+    --r-lg: 24px;
+    --r-pill: 999px;
+
+    --sp-xs:  4px;
+    --sp-sm:  8px;
+    --sp-md:  16px;
+    --sp-lg:  24px;
+    --sp-xl:  32px;
+    --sp-2xl: 48px;
+    --sp-3xl: 64px;
+    --sp-4xl: 96px;
+    --sp-5xl: 128px;
+
+    --font-display: 'Space Grotesk', -apple-system, system-ui, sans-serif;
+    --font-sans:    'Inter', -apple-system, system-ui, sans-serif;
+    --font-mono:    'Space Mono', 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); }
+  body {
+    color: var(--text-1);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  p { margin: 0; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--sp-2xl);
+  }
+  .mono { font-family: var(--font-mono); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes spin-slower {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(-360deg); }
+  }
+  @keyframes drift {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50%      { transform: translate(-50%, -52%) scale(1.04); }
+  }
+  @keyframes shimmer-bg {
+    0%, 100% { filter: hue-rotate(0deg) blur(60px); }
+    50%      { filter: hue-rotate(40deg) blur(70px); }
+  }
+
+  /* ── HEADER ── */
+  .lp-header {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+  }
+  .lp-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+  }
+  .lp-brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.03em;
+    background: var(--iridescent);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: spin-slower 30s linear infinite;
+    animation-name: shimmer-text;
+  }
+  @keyframes shimmer-text {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+  }
+  .lp-nav { display: flex; gap: var(--sp-2xl); }
+  .lp-nav a {
+    color: var(--text-2);
+    font-size: 13px;
+    font-weight: 500;
+    transition: color 200ms ease;
+  }
+  .lp-nav a:hover { color: var(--text-1); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    padding: 11px 22px;
+    border-radius: var(--r-pill);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 220ms ease;
+  }
+  .btn-primary {
+    position: relative;
+    color: var(--bg);
+    background: var(--chrome);
+    box-shadow:
+      0 0 30px rgba(0, 240, 255, 0.35),
+      0 0 60px rgba(255, 0, 212, 0.25);
+  }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-ghost {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-1);
+    border-color: var(--border);
+    backdrop-filter: blur(10px);
+  }
+  .btn-ghost:hover { border-color: var(--border-strong); }
+
+  /* ── HERO ── */
+  .lp-hero {
+    position: relative;
+    min-height: 100vh;
+    padding: var(--sp-5xl) 0 var(--sp-4xl);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  /* Holographic orb behind hero */
+  .hero-orb {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 900px; height: 900px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: var(--iridescent);
+    filter: blur(120px);
+    opacity: 0.55;
+    z-index: 1;
+    animation: drift 14s ease-in-out infinite, shimmer-bg 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .hero-orb-2 {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 520px; height: 520px;
+    margin: -260px 0 0 -260px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.55) 0%, rgba(0, 240, 255, 0.4) 18%, rgba(155, 59, 255, 0.5) 50%, rgba(255, 0, 212, 0.35) 78%, rgba(11, 0, 20, 0) 100%);
+    filter: blur(28px);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .hero-orb-rim {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 460px; height: 460px;
+    margin: -230px 0 0 -230px;
+    border-radius: 50%;
+    background: var(--iridescent);
+    z-index: 3;
+    opacity: 0.6;
+    mix-blend-mode: screen;
+    animation: spin-slow 60s linear infinite;
+    pointer-events: none;
+    -webkit-mask: radial-gradient(circle, transparent 56%, #000 58%, #000 60%, transparent 62%);
+            mask: radial-gradient(circle, transparent 56%, #000 58%, #000 60%, transparent 62%);
+  }
+
+  /* Vignette over orb */
+  .hero-vignette {
+    position: absolute; inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    background: radial-gradient(ellipse 90% 70% at 50% 50%, transparent 30%, rgba(11, 0, 20, 0.55) 75%, rgba(11, 0, 20, 0.85) 100%);
+  }
+  /* Grain */
+  .hero-grain {
+    position: absolute; inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
+  }
+
+  .hero-content-wrap {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 14px;
+    border-radius: var(--r-pill);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text-1);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(14px);
+    margin-bottom: var(--sp-2xl);
+  }
+  .hero-eyebrow .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 12px var(--cyan);
+  }
+
+  /* Chromatic aberration title */
+  .hero-title-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .hero-title,
+  .hero-title-aberration {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(72px, 11vw, 144px);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    margin: 0;
+  }
+  .hero-title { color: var(--text-1); position: relative; z-index: 3; }
+  .hero-title-aberration {
+    position: absolute;
+    top: 0; left: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+  .hero-title-aberration.cyan {
+    color: var(--cyan);
+    transform: translate(-2px, 0);
+    z-index: 1;
+    opacity: 0.9;
+  }
+  .hero-title-aberration.magenta {
+    color: var(--magenta);
+    transform: translate(2px, 0);
+    z-index: 2;
+    opacity: 0.9;
+  }
+
+  .hero-sub {
+    max-width: 580px;
+    margin: var(--sp-xl) auto 0;
+    color: var(--text-2);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  .hero-cta {
+    display: flex;
+    justify-content: center;
+    gap: var(--sp-md);
+    margin-top: var(--sp-2xl);
+  }
+  .hero-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: var(--sp-2xl);
+    padding: 6px 14px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.02);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-2);
+    letter-spacing: 0.04em;
+  }
+  .hero-chip span + span::before {
+    content: "·";
+    color: var(--text-3);
+    margin: 0 8px;
+  }
+
+  /* ── SECTION SHELL ── */
+  .lp-section {
+    position: relative;
+    padding: var(--sp-5xl) 0;
+  }
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text-3);
+    text-transform: uppercase;
+    margin-bottom: var(--sp-md);
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    color: var(--text-1);
+    margin: 0 0 var(--sp-md);
+    max-width: 720px;
+  }
+  .section-sub {
+    color: var(--text-2);
+    font-size: 16px;
+    max-width: 560px;
+  }
+
+  /* ── PREVIEW MOCKUP ── */
+  .lp-preview { padding-top: var(--sp-3xl); }
+  .preview-window {
+    position: relative;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow:
+      0 50px 120px rgba(0, 0, 0, 0.5),
+      0 0 80px rgba(155, 59, 255, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    margin-top: var(--sp-2xl);
+  }
+  .preview-chrome {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 42px;
+    padding: 0 18px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(11, 0, 20, 0.6);
+    backdrop-filter: blur(20px);
+  }
+  .preview-chrome .dots { display: flex; gap: 7px; }
+  .preview-chrome .dots span {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: rgba(155, 59, 255, 0.25);
+    border: 1px solid var(--border);
+  }
+  .preview-chrome .url {
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-3);
+  }
+  .preview-chrome .url::before {
+    content: "▲ ";
+    color: var(--cyan);
+  }
+
+  .preview-body {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    min-height: 460px;
+  }
+
+  .editor {
+    background: #08000F;
+    padding: var(--sp-xl) var(--sp-lg);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+  .editor-tabs {
+    display: flex;
+    gap: var(--sp-md);
+    margin-bottom: var(--sp-md);
+    padding-bottom: var(--sp-sm);
+    border-bottom: 1px solid var(--border);
+  }
+  .editor-tab {
+    font-size: 11px;
+    color: var(--text-3);
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+  }
+  .editor-tab.active {
+    color: var(--text-1);
+    position: relative;
+  }
+  .editor-tab.active::after {
+    content: "";
+    position: absolute;
+    left: -4px; right: -4px; bottom: -9px;
+    height: 1px;
+    background: var(--iridescent);
+  }
+  .editor pre {
+    margin: 0;
+    color: var(--text-2);
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    white-space: pre;
+  }
+  .editor .ln {
+    display: inline-block;
+    width: 26px;
+    color: var(--text-3);
+    user-select: none;
+  }
+  .tk-key { color: var(--magenta); }
+  .tk-fn  { color: var(--cyan); }
+  .tk-typ { color: #C8A6FF; }
+  .tk-num { color: #FFB86B; }
+  .tk-str { color: #B6FF9E; }
+  .tk-com { color: var(--text-3); font-style: italic; }
+  .tk-var { color: var(--text-1); }
+
+  .canvas {
+    position: relative;
+    overflow: hidden;
+    background: #000;
+  }
+  .canvas-shader {
+    position: absolute;
+    inset: -20%;
+    background: var(--iridescent);
+    filter: blur(40px) saturate(140%);
+    animation: spin-slow 45s linear infinite, shimmer-bg 12s ease-in-out infinite;
+  }
+  .canvas-noise {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 30% 40%, rgba(0, 240, 255, 0.6) 0%, transparent 35%),
+      radial-gradient(circle at 70% 60%, rgba(255, 0, 212, 0.55) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(155, 59, 255, 0.35) 0%, transparent 60%);
+    mix-blend-mode: screen;
+    filter: blur(20px);
+  }
+  .canvas-overlay {
+    position: absolute;
+    inset: var(--sp-md);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .canvas-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    border-radius: var(--r-sm);
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-1);
+    letter-spacing: 0.06em;
+    width: max-content;
+  }
+  .canvas-stat .pulse {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+  }
+  .canvas-stats-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  }
+
+  /* ── FEATURES ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-lg);
+    margin-top: var(--sp-3xl);
+  }
+  .feature-card {
+    position: relative;
+    padding: var(--sp-xl);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .feature-card::before {
+    /* iridescent rim */
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--r-md);
+    padding: 1px;
+    background: var(--iridescent);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .feature-card::after {
+    content: "";
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 80%; height: 80%;
+    background: radial-gradient(circle, rgba(155, 59, 255, 0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px; height: 44px;
+    border-radius: var(--r-sm);
+    background: rgba(155, 59, 255, 0.12);
+    border: 1px solid var(--border);
+    color: var(--cyan);
+    font-size: 22px;
+    margin-bottom: var(--sp-lg);
+  }
+  .feature-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 19px;
+    letter-spacing: -0.02em;
+    color: var(--text-1);
+    margin: 0 0 var(--sp-sm);
+  }
+  .feature-body {
+    color: var(--text-2);
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+
+  /* ── GALLERY ── */
+  .gallery {
+    margin-top: var(--sp-3xl);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--sp-md);
+  }
+  .gallery-card {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    border-radius: var(--r-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .gallery-thumb {
+    position: absolute;
+    inset: 0;
+    filter: blur(0) saturate(140%);
+  }
+  .gc-1 .gallery-thumb {
+    background:
+      radial-gradient(circle at 30% 30%, #00F0FF 0%, transparent 40%),
+      radial-gradient(circle at 70% 70%, #FF00D4 0%, transparent 50%),
+      linear-gradient(135deg, #1B0033, #0B0014);
+  }
+  .gc-2 .gallery-thumb {
+    background:
+      conic-gradient(from 90deg, #9B3BFF, #00F0FF, #9B3BFF, #FF00D4, #9B3BFF);
+    filter: blur(18px);
+  }
+  .gc-3 .gallery-thumb {
+    background:
+      repeating-linear-gradient(45deg, #00F0FF 0 6px, transparent 6px 16px),
+      linear-gradient(180deg, #1B0033, #FF00D4);
+    mix-blend-mode: screen;
+  }
+  .gc-4 .gallery-thumb {
+    background:
+      radial-gradient(ellipse at 50% 100%, #FF00D4 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 0%, #00F0FF 0%, transparent 60%),
+      #0B0014;
+  }
+  .gc-5 .gallery-thumb {
+    background:
+      radial-gradient(circle at 50% 50%, #E8E5F0 0%, #9B3BFF 12%, #FF00D4 35%, #0B0014 80%);
+    filter: blur(2px);
+  }
+  .gallery-card::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(11, 0, 20, 0.85) 100%);
+    pointer-events: none;
+  }
+  .gallery-meta {
+    position: absolute;
+    left: 14px; right: 14px; bottom: 12px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+  }
+  .gallery-meta .handle { color: var(--text-1); }
+  .gallery-meta .likes  { color: var(--text-2); }
+
+  /* ── PRICING ── */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-lg);
+    margin-top: var(--sp-3xl);
+  }
+  .price-card {
+    position: relative;
+    padding: var(--sp-2xl) var(--sp-xl);
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .price-card.featured {
+    background: var(--surface-elevated);
+  }
+  .price-card.featured::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--r-lg);
+    padding: 1px;
+    background: var(--iridescent);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity: 0.85;
+    pointer-events: none;
+  }
+  .price-tier {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--text-3);
+    text-transform: uppercase;
+    margin-bottom: var(--sp-md);
+  }
+  .price-amount {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 48px;
+    letter-spacing: -0.035em;
+    color: var(--text-1);
+    line-height: 1;
+  }
+  .price-amount span {
+    font-size: 14px;
+    color: var(--text-2);
+    margin-left: 4px;
+  }
+  .price-desc {
+    color: var(--text-2);
+    font-size: 13.5px;
+    margin: var(--sp-md) 0 var(--sp-xl);
+    line-height: 1.55;
+  }
+  .price-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--sp-xl);
+  }
+  .price-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-2);
+    padding: 6px 0;
+  }
+  .price-list li i {
+    color: var(--cyan);
+    font-size: 14px;
+  }
+  .price-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ── FOOTER ── */
+  .lp-footer {
+    padding: var(--sp-3xl) 0 var(--sp-2xl);
+    border-top: 1px solid var(--border);
+    margin-top: var(--sp-4xl);
+    position: relative;
+  }
+  .lp-footer .container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sp-2xl);
+  }
+  .footer-brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    background: var(--iridescent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: var(--sp-sm);
+  }
+  .footer-tag {
+    color: var(--text-2);
+    font-size: 13px;
+    max-width: 320px;
+  }
+  .footer-nav {
+    display: flex;
+    gap: var(--sp-2xl);
+  }
+  .footer-nav a {
+    color: var(--text-2);
+    font-size: 13px;
+  }
+  .footer-bottom {
+    margin-top: var(--sp-2xl);
+    padding-top: var(--sp-md);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-3);
+    letter-spacing: 0.08em;
+  }
+  .footer-bottom .container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  /* ── THEME PILL ── */
+  .theme-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 1000;
+  }
+  .theme-pill {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: rgba(18, 0, 34, 0.85);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.55), 0 0 30px rgba(155, 59, 255, 0.15);
+  }
+  .theme-pill button {
+    padding: 8px 18px;
+    border: none;
+    background: transparent;
+    color: var(--text-3);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    transition: all 200ms ease;
+  }
+  .theme-pill button.active {
+    background: rgba(155, 59, 255, 0.18);
+    color: var(--text-1);
+    box-shadow: inset 0 0 0 1px var(--border-strong);
+  }
+  .theme-pill button.disabled {
+    color: var(--text-3);
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .theme-hint {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--text-3);
+    text-transform: uppercase;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .container { padding: 0 var(--sp-lg); }
+    .lp-nav { display: none; }
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .gallery { grid-template-columns: repeat(2, 1fr); }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .preview-body { grid-template-columns: 1fr; }
+    .editor { border-right: none; border-bottom: 1px solid var(--border); }
+    .canvas { min-height: 280px; }
+    .lp-footer .container { flex-direction: column; }
+    .footer-nav { flex-wrap: wrap; gap: var(--sp-md); }
+    .hero-orb { width: 600px; height: 600px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="lp-header">
+  <div class="container">
+    <a href="#" class="lp-brand">prism</a>
+    <nav class="lp-nav">
+      <a href="#">Playground</a>
+      <a href="#">Gallery</a>
+      <a href="#">Docs</a>
+      <a href="#">Pricing</a>
+    </nav>
+    <button class="btn btn-primary">Try it</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── HERO ── -->
+  <section class="lp-hero">
+    <div class="hero-orb"></div>
+    <div class="hero-orb-2"></div>
+    <div class="hero-orb-rim"></div>
+    <div class="hero-vignette"></div>
+    <div class="hero-grain"></div>
+
+    <div class="container hero-content-wrap">
+      <div class="hero-eyebrow">
+        <span class="dot"></span>
+        REAL-TIME · BETA 0.4
+      </div>
+
+      <div class="hero-title-wrap">
+        <h1 class="hero-title-aberration cyan">Shaders at the<br>speed of thought.</h1>
+        <h1 class="hero-title-aberration magenta">Shaders at the<br>speed of thought.</h1>
+        <h1 class="hero-title">Shaders at the<br>speed of thought.</h1>
+      </div>
+
+      <p class="hero-sub">
+        A browser-native playground for GPU artists. Write GLSL or let the AI compose. 60fps preview, versioned iterations, one-click export to video, print, or interactive web embed.
+      </p>
+
+      <div class="hero-cta">
+        <button class="btn btn-primary">Open the playground</button>
+        <button class="btn btn-ghost"><i class="ph ph-play-circle"></i> Watch a 90 second tour</button>
+      </div>
+
+      <div class="hero-chip">
+        <span>60fps</span>
+        <span>webgpu</span>
+        <span>open source</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LIVE PREVIEW ── -->
+  <section class="lp-section lp-preview">
+    <div class="container">
+      <div class="section-eyebrow">01 · LIVE PREVIEW</div>
+      <h2 class="section-title">Write a line, see a frame.</h2>
+      <p class="section-sub">Every keystroke recompiles in under 12ms. The compositor never blinks, the canvas never stalls.</p>
+
+      <div class="preview-window">
+        <div class="preview-chrome">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="url">prism.app / sketches / nebula_v04.frag</div>
+          <div style="width: 60px"></div>
+        </div>
+        <div class="preview-body">
+          <div class="editor">
+            <div class="editor-tabs">
+              <span class="editor-tab active">nebula_v04.frag</span>
+              <span class="editor-tab">uniforms.json</span>
+              <span class="editor-tab">+ new</span>
+            </div>
+<pre><span class="ln">01</span><span class="tk-com">// nebula · iteration 04</span>
+<span class="ln">02</span><span class="tk-key">precision</span> <span class="tk-typ">highp</span> <span class="tk-typ">float</span>;
+<span class="ln">03</span>
+<span class="ln">04</span><span class="tk-key">uniform</span> <span class="tk-typ">vec2</span>  <span class="tk-var">uResolution</span>;
+<span class="ln">05</span><span class="tk-key">uniform</span> <span class="tk-typ">float</span> <span class="tk-var">uTime</span>;
+<span class="ln">06</span><span class="tk-key">uniform</span> <span class="tk-typ">vec3</span>  <span class="tk-var">uPalette</span>[<span class="tk-num">3</span>];
+<span class="ln">07</span>
+<span class="ln">08</span><span class="tk-typ">vec3</span> <span class="tk-fn">iridescent</span>(<span class="tk-typ">float</span> t) {
+<span class="ln">09</span>  <span class="tk-key">return</span> <span class="tk-num">0.5</span> + <span class="tk-num">0.5</span> * <span class="tk-fn">cos</span>(
+<span class="ln">10</span>    <span class="tk-num">6.2831</span> * (t + <span class="tk-typ">vec3</span>(<span class="tk-num">0.0</span>, <span class="tk-num">0.33</span>, <span class="tk-num">0.66</span>))
+<span class="ln">11</span>  );
+<span class="ln">12</span>}
+<span class="ln">13</span>
+<span class="ln">14</span><span class="tk-typ">void</span> <span class="tk-fn">main</span>() {
+<span class="ln">15</span>  <span class="tk-typ">vec2</span> uv = <span class="tk-fn">gl_FragCoord</span>.xy / <span class="tk-var">uResolution</span>;
+<span class="ln">16</span>  <span class="tk-typ">float</span> d = <span class="tk-fn">length</span>(uv - <span class="tk-num">0.5</span>);
+<span class="ln">17</span>  <span class="tk-typ">vec3</span> col = <span class="tk-fn">iridescent</span>(d * <span class="tk-num">2.4</span> + <span class="tk-var">uTime</span> * <span class="tk-num">0.1</span>);
+<span class="ln">18</span>  <span class="tk-fn">gl_FragColor</span> = <span class="tk-typ">vec4</span>(col, <span class="tk-num">1.0</span>);
+<span class="ln">19</span>}</pre>
+          </div>
+
+          <div class="canvas">
+            <div class="canvas-shader"></div>
+            <div class="canvas-noise"></div>
+            <div class="canvas-overlay">
+              <div class="canvas-stat"><span class="pulse"></span>RUNNING · 60.0 FPS</div>
+              <div class="canvas-stats-row">
+                <div class="canvas-stat">1920 × 1080</div>
+                <div class="canvas-stat">GPU 11ms</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURES ── -->
+  <section class="lp-section">
+    <div class="container">
+      <div class="section-eyebrow">02 · THE COMPOSITOR</div>
+      <h2 class="section-title">Built for tight feedback loops.</h2>
+      <p class="section-sub">Four primitives, infinite combinations. The whole stack is yours, none of it is hidden.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="ph ph-lightning"></i></div>
+          <h3 class="feature-title">12ms recompile</h3>
+          <p class="feature-body">Incremental shader compilation through a custom WGSL bridge. No spinner, no flash.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="ph ph-code"></i></div>
+          <h3 class="feature-title">GLSL or AI</h3>
+          <p class="feature-body">Hand-write fragment shaders or let the assistant draft a starting point from a one line prompt.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="ph ph-cube"></i></div>
+          <h3 class="feature-title">Versioned timelines</h3>
+          <p class="feature-body">Every save is a node in a tree. Branch a happy accident, merge it back when it earns its place.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="ph ph-export"></i></div>
+          <h3 class="feature-title">Export anywhere</h3>
+          <p class="feature-body">Render a 4K mp4, a tile-ready png, or a self-contained web embed. One click, no pipeline.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GALLERY ── -->
+  <section class="lp-section">
+    <div class="container">
+      <div class="section-eyebrow">03 · THE COMMUNITY</div>
+      <h2 class="section-title">2,400 shaders, last week alone.</h2>
+      <p class="section-sub">Fork anything in the gallery, watch how it was built, ship your remix back.</p>
+
+      <div class="gallery">
+        <div class="gallery-card gc-1">
+          <div class="gallery-thumb"></div>
+          <div class="gallery-meta"><span class="handle">@voidsurfer</span><span class="likes">1.2k</span></div>
+        </div>
+        <div class="gallery-card gc-2">
+          <div class="gallery-thumb"></div>
+          <div class="gallery-meta"><span class="handle">@ampersand</span><span class="likes">894</span></div>
+        </div>
+        <div class="gallery-card gc-3">
+          <div class="gallery-thumb"></div>
+          <div class="gallery-meta"><span class="handle">@silicon_dream</span><span class="likes">2.1k</span></div>
+        </div>
+        <div class="gallery-card gc-4">
+          <div class="gallery-thumb"></div>
+          <div class="gallery-meta"><span class="handle">@noisefield</span><span class="likes">612</span></div>
+        </div>
+        <div class="gallery-card gc-5">
+          <div class="gallery-thumb"></div>
+          <div class="gallery-meta"><span class="handle">@chrome.exe</span><span class="likes">3.4k</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRICING ── -->
+  <section class="lp-section">
+    <div class="container">
+      <div class="section-eyebrow">04 · EXPORT ANYWHERE</div>
+      <h2 class="section-title">Three tiers. No surprises.</h2>
+      <p class="section-sub">Free for solo experiments. Pay when you start shipping.</p>
+
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-tier">FREE</div>
+          <div class="price-amount">$0<span>forever</span></div>
+          <p class="price-desc">For learning, sketching, and Sunday afternoons in the playground.</p>
+          <ul class="price-list">
+            <li><i class="ph ph-check"></i> Unlimited public sketches</li>
+            <li><i class="ph ph-check"></i> 1080p video export</li>
+            <li><i class="ph ph-check"></i> Community gallery</li>
+          </ul>
+          <button class="btn btn-ghost price-btn">Start free</button>
+        </div>
+
+        <div class="price-card featured">
+          <div class="price-tier">STUDIO</div>
+          <div class="price-amount">$18<span>/ month</span></div>
+          <p class="price-desc">For working artists shipping client work, prints, and live visuals.</p>
+          <ul class="price-list">
+            <li><i class="ph ph-check"></i> Private sketches and drafts</li>
+            <li><i class="ph ph-check"></i> 4K and ProRes export</li>
+            <li><i class="ph ph-check"></i> Versioned timelines</li>
+            <li><i class="ph ph-check"></i> Priority compile queue</li>
+          </ul>
+          <button class="btn btn-primary price-btn">Open the playground</button>
+        </div>
+
+        <div class="price-card">
+          <div class="price-tier">COLLECTIVE</div>
+          <div class="price-amount">$64<span>/ month</span></div>
+          <p class="price-desc">For studios, classrooms, and small teams that share a render budget.</p>
+          <ul class="price-list">
+            <li><i class="ph ph-check"></i> Up to 8 seats</li>
+            <li><i class="ph ph-check"></i> Shared asset library</li>
+            <li><i class="ph ph-check"></i> Team gallery</li>
+            <li><i class="ph ph-check"></i> SSO and audit log</li>
+          </ul>
+          <button class="btn btn-ghost price-btn">Talk to us</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="lp-footer">
+  <div class="container">
+    <div>
+      <div class="footer-brand">prism</div>
+      <p class="footer-tag">Made by eight people in a basement in Berlin.</p>
+    </div>
+    <nav class="footer-nav">
+      <a href="#">Playground</a>
+      <a href="#">Gallery</a>
+      <a href="#">Docs</a>
+      <a href="#">Pricing</a>
+      <a href="#">Discord</a>
+      <a href="#">GitHub</a>
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <span>PRISM · FICTIONAL</span>
+      <span>SHADERTOY × VISION PRO · v0.4 BETA</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Theme toggle (dark only, light is intentionally disabled) -->
+<div class="theme-bar">
+  <div class="theme-pill">
+    <button class="active" data-theme-btn="dark">Dark</button>
+    <button class="disabled" data-theme-disabled="true">Light</button>
+  </div>
+  <div class="theme-hint">LIGHT MODE COMING SOON</div>
+</div>
+
+<script>
+  // Dark only. Light is intentionally disabled.
+  document.querySelectorAll('.theme-pill button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.themeDisabled) return;
+      const theme = btn.dataset.themeBtn;
+      if (!theme) return;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-pill button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  document.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+</script>
+</body>
+</html>

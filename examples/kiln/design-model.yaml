@@ -1,0 +1,164 @@
+name: "kiln"
+description: "Fictional studio journal for ceramicists, glassblowers, and makers who work at temperature. Dark fired-earth identity built on iron #1C1410 with a molten terracotta accent and a warm clay light mode. The hero is the firing log itself — a mono-coded studio record under a molten glow that pours in from the bottom-right corner like a kiln door cracked open."
+philosophy: "For the fired, not the fragile. kiln treats a studio practice as a long memory of heat — climb rates, reduction windows, peak holds, the slow descent. The identity is materials-honest: warm iron darks, terracotta light, a serif that has been opsz-tuned to feel cast rather than typeset, and grit overlays that read as ash rather than chrome."
+primary_mode: "dark"
+brand_source: "INVENTED — fictional brand for hue carousel"
+brand_domain: "ceramic studio / fired earth (fictional)"
+brand_type: "content-rich"
+mono_for_data: true
+
+# ── PRIMITIVES ──────────────────────────────────────────
+primitives:
+  colors:
+    dark:                # warm iron — fired earth, never cool gray
+      bg:        "#1C1410"   # canvas
+      surface1:  "#251B15"
+      surface2:  "#2F241C"
+      text1:     "#F0E4D1"   # bone slip
+      text2:     "#A89582"   # weathered clay
+      border:    "#3B2D22"
+    light:               # warm clay, not white
+      bg:        "#E8D8C0"   # raw clay
+      surface1:  "#DDCAAE"
+      surface2:  "#D0BB9B"
+      text1:     "#1C1410"
+      text2:     "#5A4638"
+      border:    "#B8A082"
+    accent:              # molten terracotta + ochre highlight
+      molten:    "#E0572A"   # dark-mode primary — the kiln glow
+      molten_l:  "#C9431A"   # light-mode primary — deeper, more saturated
+      ochre:     "#C9A36D"   # dark-mode secondary — fire-ash gold
+      ochre_l:   "#8A6A3B"   # light-mode secondary — burnt umber
+  spacing: [8, 16, 24, 32, 48, 64, 96, 128]
+  radii:   [2, 4]               # --r-sm 2px, --r-md 4px — almost none, hard-edged like a kiln brick
+  hairline: 1                   # --hair 1px
+
+# ── SEMANTIC TOKENS ─────────────────────────────────────
+tokens:
+  colors:
+    dark:
+      background:     "{dark.bg}"
+      surface1:       "{dark.surface1}"
+      surface2:       "{dark.surface2}"
+      border:         "{dark.border}"
+      text1:          "{dark.text1}"
+      text2:          "{dark.text2}"
+      accent:         "{accent.molten}"
+      accent_secondary: "{accent.ochre}"
+    light:
+      background:     "{light.bg}"
+      surface1:       "{light.surface1}"
+      surface2:       "{light.surface2}"
+      border:         "{light.border}"
+      text1:          "{light.text1}"
+      text2:          "{light.text2}"
+      accent:         "{accent.molten_l}"
+      accent_secondary: "{accent.ochre_l}"
+
+  radii:
+    element:   2     # --r-sm — pricing badge, swatches
+    control:   4     # --r-md — buttons, cards, log strips
+    pill:      999   # implicit for the eyebrow dot
+
+  typography:
+    display:
+      family: "Fraunces"
+      size:   "clamp(64px, 8vw, 132px)"   # hero h1
+      weight: 600
+      style:  "normal"                     # upright — never italic display
+      line_height: 0.94
+      letter_spacing: "-0.015em"
+      font_variation_settings: '"opsz" 144, "SOFT" 50'   # cast feel, not typeset
+      google_fonts: "Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700"
+    body:
+      family: "Inter"
+      size:   "16px"
+      weight: 400
+      line_height: 1.55
+      letter_spacing: "0em"
+      google_fonts: "Inter:wght@400;500"
+    mono:
+      family: "JetBrains Mono"
+      size:   "13px"               # firing log rows
+      eyebrow_size: "11px"          # eyebrows + meta
+      weight: 500
+      letter_spacing: "0.12em"      # eyebrows are wide-tracked uppercase
+      google_fonts: "JetBrains+Mono:wght@500"
+
+# ── HERO STAGE ─── molten-glow preset
+# Demonstrates:
+#   background.medium: gradient (radial molten pours from bottom-right)
+#   hero.subject: ui-card — the firing log strip IS the centerpiece
+#   relation.type: layered — log sits on the canvas, glow behind, grit above
+hero_stage:
+  preset: "molten-glow"
+  observed_style:
+    description: "A radial molten-terracotta glow pours diagonally from the bottom-right corner of the dark iron canvas (80vw × 70vh radial centered at 88% 100%, plus a tighter 50vw × 40vh radial at 95% 90% for the hot core). A fractal-noise SVG grit overlay sits above the glow at opacity 0.08 with mix-blend-mode soft-light, reading as ash and clay dust rather than digital noise. The hero subject is a mono-typeset firing log strip — a studio record in JetBrains Mono with cone, body, and live timestamp — pinned to the canvas with a heavy 0 40px 80px -20px rgba(0,0,0,0.5) shadow, so the strip feels physical against the glow."
+    where_used: ["hero", "could echo on final cta with reduced intensity"]
+    notes: "Glow uses literal --d-accent (#E0572A) at 22% / 10% alpha and --l-accent (#C9431A) at 28% for the hot core. Light mode swaps to 16% / 6% / 14% alpha so the clay canvas does not get overcooked. The grit overlay is identical in both modes."
+  background:
+    medium: "gradient"
+    color_mode: "palette"
+    saturation: "warm"
+    light_source: "bottom-right"
+    falloff: "radial"
+    vignette: "none"             # the glow itself does the framing
+    texture: "grit"              # SVG fractalNoise, soft-light blend, opacity 0.08
+    motion: "static"
+    intensity: "medium"          # the glow reads as molten, not blown-out
+    safe_zone: "top-left-clear"  # h1 and sub sit in the cool quadrant
+    color_palette:
+      - "#1C1410"   # iron canvas
+      - "#251B15"   # surface1
+      - "#2F241C"   # surface2
+      - "#E0572A"   # molten accent
+      - "#C9A36D"   # ochre highlight
+      - "#F0E4D1"   # bone slip text
+    recipe: "molten-glow"
+    recipe_params:
+      glow_origin: "88% 100%"
+      glow_size: "80vw 70vh"
+      glow_alpha_outer: 0.10
+      glow_alpha_inner: 0.22
+      hot_core_origin: "95% 90%"
+      hot_core_size: "50vw 40vh"
+      hot_core_alpha: 0.28
+      grit_opacity: 0.08
+      grit_blend: "soft-light"
+  hero:
+    subject: "ui-card"             # the firing log strip
+    form: "mono-log-strip"
+    placement: "below-headline"
+    scale: "wide"                  # max-width 820px
+    tint: "surface1-on-iron"
+    shadow: "0 40px 80px -20px rgba(0,0,0,0.5)"
+  relation:
+    type: "layered"
+    bleed: 0                       # the log strip is contained, the glow bleeds full-width behind it
+  disclaimer: "Fictional brand created for the hue example carousel. Not affiliated with any real ceramic studio or software. All copy, names (Aiko Tamura, Bizen Body), and pricing are invented."
+
+# ── ICONOGRAPHY ─────────────────────────────────────────
+iconography:
+  observed_style:
+    description: "Phosphor fill + bold are linked in the head, used sparingly. The identity leans on monospace eyebrow ticks, single-pixel hairlines, and small accent dots (8px, glowing) more than glyphs. When icons appear, they should feel forged rather than drawn."
+    stroke_weight: "bold"
+    corner_treatment: "sharp"
+    fill_style: "fill"             # Phosphor fill is loaded first
+    form_language: "geometric"
+    visual_density: "minimal"
+  fallback_kit:
+    name: "Phosphor"
+    weight: "fill"
+    cdn: "https://unpkg.com/@phosphor-icons/web@2.1.2/src/fill/style.css"
+    icon_class_prefix: "ph-fill ph-"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  tone: "artisanal, fired, materials-honest"
+  samples:
+    - "A journal for the fired, not the fragile."
+    - "A studio log for ceramicists, glassblowers, and anyone whose practice moves through heat. Record firings, track atmospheres, return to a body. Built for the makers who work at temperature."
+    - "Every curve, every hold, every cone. Record the full shape of a firing the way it actually moved. Climb rates, reduction windows, peak holds, the slow descent."
+    - "The record is in the marks. A glaze log that remembers what actually happened — not the recipe card, the outcome. Ash drifts, crawls, flashes, reduction blushes."
+    - "Fire does not forgive, but it does remember."
+    - "Priced like a good tool, not a streaming service. Own it. Use it for decades."
