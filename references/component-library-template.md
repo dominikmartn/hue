@@ -135,7 +135,7 @@ The component library is organized into 7 category tabs. Each category is a tab-
 
 - **Two or four columns max.** Keep them scannable.
 - **Consistent column names:** `Property | Value` for component specs, `Token | Primitive | Hex | Role` for foundation tables.
-- **Font:** monospace for the Value column if the brand's `mono_for_data` is `true` OR when showing technical values (hex codes, CSS values). If the brand has no mono, use the body font but slightly smaller.
+- **Font:** monospace for the Value column when the brand's `mono_for_metrics` is `true` (hex codes, CSS values, and other technical identifiers are metrics-adjacent). When `mono_for_metrics` is `false`, use the body font but slightly smaller. Code snippets in spec tables always use mono when `mono_for_code` is `true`.
 - **Border/background:** tables sit outside canvases, directly on the page background. No borders except a thin `--border` between rows.
 - **Reference tokens by name, not just hex:** "`var(--accent)` `#FF5924`" is better than just `#FF5924` — shows the token path.
 

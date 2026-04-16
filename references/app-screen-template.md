@@ -1,4 +1,4 @@
-# App Screen Template (Phase 4)
+# App Screen Template
 
 The third and final view the skill generates. Landing page shows *what the brand sells*. Component library shows *what the pieces look like*. App screen shows *what the product actually feels like in use* — the tokens applied to a representative screen inside the brand's product, rendered inside a device frame.
 
@@ -89,7 +89,7 @@ For infinite canvases, mood boards, knowledge gardens, design tools. A large vie
 ## The rendering pipeline
 
 ```
- z: 0  page background (var(--bg))
+ z: 0  page background (var(--background))
  z: 1  device frame chrome (browser window / phone shell / desktop bars)
  z: 2  archetype layout (sidebar, topbar, main, etc.)
  z: 3  content inside the archetype (cards, rows, metrics, messages, etc.)
@@ -137,13 +137,12 @@ app_screen:
   frame_params:
     url: "app.ridge.dev/checkout-api"   # browser only
     title: "Ridge — checkout-api"
-  screen_name: "Service overview"
-  content_description: |
+  content_seed: |
     The SLO overview for checkout-api. Left sidebar lists services with 99.xx
     success rates. Main canvas shows three KPI tiles (p99 latency, error rate,
     budget left) above a 30-day error-budget chart approaching but not crossing
     the SLO line. A log stream below shows recent deploys and alerts.
-  required_tokens:              # sanity check — list the tokens the screen uses
+  required_tokens_checklist:     # sanity check — list the tokens the screen uses
     - "text1, text2, text3, text4"
     - "surface1, surface2, surface3, border, border_visible"
     - "accent, accent_subtle"
@@ -153,9 +152,9 @@ app_screen:
 
 ## Integration with SKILL.md
 
-A new step sits after `Step 7.6: Generate Landing Page`:
+A new phase sits after `Phase 12: Generate Landing Page`:
 
-**Step 7.7: Generate App Screen.**
+**Phase 13: Generate App Screen.**
 
 1. Read `app_screen` block from `design-model.yaml`.
 2. Pick the archetype template from this file.
@@ -163,7 +162,7 @@ A new step sits after `Step 7.6: Generate Landing Page`:
 4. Fill the archetype with brand-voice content at the required density.
 5. Apply all tokens from the design model.
 6. Write `app-screen.html` in the skill folder alongside `landing-page.html` and `component-library.html`.
-7. Add the file to Step 7.5's sticky TOC navigation so all three views are reachable from each other.
+7. Add the file to Phase 11's sticky TOC navigation so all three views are reachable from each other.
 
 Generated `app-screen.html` follows the same conventions as the other views:
 - Floating bottom Light/Dark toggle bar
@@ -189,12 +188,3 @@ Before shipping a generated `app-screen.html`:
 - [ ] At least one "mid-use" touch (cursor, hover state, selected item)
 - [ ] Screen reads as "a real product, caught mid-use" not "a component library in disguise"
 - [ ] File is click-disabled and has the standard theme toggle
-
-## Status
-
-**This is a scaffold.** Phase 4 as a workflow step in SKILL.md is not yet wired up. Before building the first `app-screen.html`, a session should:
-
-1. Implement Step 7.7 in SKILL.md referencing this template
-2. Pick one existing brand (Ridge is the best fit — `dashboard` + `browser`) and generate its app screen as the first proof
-3. Add an app-screen tab / card to `examples/index.html` so the proof library shows all three views per brand
-4. Iterate on this template based on what breaks during the first generation

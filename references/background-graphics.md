@@ -340,13 +340,13 @@ Motion is an orthogonal flag, not a new type. Any Tier 1 type can have any motio
 
 **Examples.** Nothing, Braun, Linear (light mode marketing), brutalist designs, Stripe (some pages), Apple product pages (the product is the image, the background is intentionally nothing).
 
-**Technical method.** Just `background: var(--bg);`. No filter, no gradient, no pattern. The absence IS the design.
+**Technical method.** Just `background: var(--background);`. No filter, no gradient, no pattern. The absence IS the design.
 
 **Recipe:**
 
 ```css
 .bg-absent {
-  background: var(--bg);
+  background: var(--background);
 }
 ```
 
@@ -444,7 +444,7 @@ Not every view uses backgrounds the same way:
 
 | View | Where to apply |
 |------|---------------|
-| **Landing Page** | Hero section (primary), optionally final CTA block. Body stays on `var(--bg)`. |
+| **Landing Page** | Hero section (primary), optionally final CTA block. Body stays on `var(--background)`. |
 | **Component Library** | Nowhere. The library is documentation — backgrounds would distract from the components. |
 | **Bento Grid preview** | Optionally behind the grid if the brand is strongly background-driven (e.g. mymind) — but use a subdued variant so widgets stay legible. Never on the widgets themselves. |
 | **App Screen** | Depends on the specific screen being rendered. Match the brand's real product treatment. |

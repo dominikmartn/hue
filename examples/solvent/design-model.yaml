@@ -5,7 +5,8 @@ primary_mode: "dark"
 brand_source: "INVENTED — fictional brand for the shader-ambient proof library, liquid-flow preset with warm amber palette"
 brand_domain: "creative tools / generative video / AI art (fictional)"
 brand_type: "ui-rich"
-mono_for_data: true
+mono_for_code: true
+mono_for_metrics: true
 
 # ── PRIMITIVES ──────────────────────────────────────────
 primitives:

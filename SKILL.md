@@ -28,9 +28,11 @@ The user will give you one of these input types. Handle each differently.
 
 ### URL
 
-**MANDATORY: Use Chrome DevTools MCP, not WebFetch.** WebFetch returns a paraphrased summary from a secondary model — it hallucinates `border-radius: 0` when the site actually uses pill buttons, calls a distinctive orange accent "none", reduces painterly oil-background heroes to "subtle wallpapers". Every failure mode of the hue skill we have seen so far traces back to shallow Step 1 analysis via WebFetch. Do not repeat that mistake.
+**Preferred: Use Chrome DevTools MCP when available.** WebFetch returns paraphrased summaries that hallucinate values (border-radius, accent colors, background treatments). If Chrome DevTools MCP tools (`mcp__chrome-devtools__*`) are available in this session, always use them for URL analysis. If they are NOT available, fall back to WebFetch but explicitly flag reduced confidence in the output:
 
-**Required flow for URL inputs:**
+> "Warning: Analysis done via WebFetch — border-radius, accent detection, and hero background classification may be inaccurate. Consider providing screenshots for higher fidelity."
+
+**When Chrome DevTools MCP is available:**
 
 1. **Open the URL via `mcp__chrome-devtools__new_page`** and wait for load.
 2. **Extract real computed styles via `mcp__chrome-devtools__evaluate_script`.** Return actual values, not descriptions. Minimum targets:
@@ -42,12 +44,18 @@ The user will give you one of these input types. Handle each differently.
    - `:root` CSS custom properties via `getComputedStyle(document.documentElement)`
 3. **Take a hero screenshot via `mcp__chrome-devtools__take_screenshot`** at desktop width. Look at it yourself. Your own vision is more reliable than a text description. Note background treatment (flat / gradient / painterly / mesh / shader / photo), subject presence, colors.
 4. **Navigate to 2–3 subpages** (`/features`, `/pricing`, `/blog` or equivalent) via `mcp__chrome-devtools__navigate_page` and repeat steps 2–3. Different surfaces often reveal accent colors absent from the homepage.
-5. **Only use WebFetch as a fallback** if Chrome DevTools MCP is unavailable or the site blocks headless browsing. Explicitly flag the fallback: "Analysis done via WebFetch only — margin of error is higher on border-radius and accent detection."
 
-**What to extract from the computed styles:**
+**When only WebFetch is available:**
+
+1. **`WebFetch` the main page + 2–3 subpages** (features, product, about). WebFetch returns text summaries, not computed styles — treat all extracted values as approximate.
+2. **Cross-reference with `WebSearch`** for additional brand screenshots, design case studies, or press kits to compensate for WebFetch's shallow extraction.
+3. **Flag reduced confidence** in the output. Prefix your analysis summary with the warning above. Border-radius, accent detection, and hero background classification are the most likely to be wrong.
+4. **Recommend screenshots** if the brand's visual identity relies on subtle details (specific corner radii, gradient treatments, hero compositions) that WebFetch cannot reliably capture.
+
+**What to extract (from either path):**
 - Exact border-radius values for buttons, cards, inputs, tags. If the biggest value is 999px or equals height/2, the brand is pill-based.
 - **Every** accent color, not just the primary. Some brands (Cursor, for example) use a dim monochrome primary but keep a vivid secondary accent for "learn more" links.
-- Hero background treatment by visual inspection of the screenshot, not by paraphrased description.
+- Hero background treatment by visual inspection of the screenshot (Chrome DevTools) or best-effort classification (WebFetch — flag uncertainty).
 - Font families exactly as declared. If proprietary (CursorGothic, BerkeleyMono), document them in `observed_style` and pick free fallbacks for `fallback_kit`.
 
 **If the URL is behind a login/paywall** (Chrome DevTools hits a login page, CAPTCHA, or bot detection), follow this fallback chain — do NOT immediately ask for screenshots:
@@ -104,7 +112,7 @@ Read the existing skill with `Read`. Understand its current personality. Apply t
 
 Follow this sequence. No shortcuts.
 
-### Step 1: Deep Analysis
+### Phase 1: Deep Analysis
 Gather information from the input. Don't just extract tokens — understand the *system*:
 - Colors (background, surface, text, accent, semantic)
 - Fonts (display, body, mono) + why they fit
@@ -133,9 +141,9 @@ For **content-rich brands**: the UI is intentionally invisible — the different
 
 Tell the user which type you identified: "This is a content-rich brand — the design language is more about typography and restraint than about distinctive UI components. The preview will be subtler."
 
-Document your findings. These will feed into the Design Model in Step 4.
+Document your findings. These will feed into the Design Model in Phase 7.
 
-### Step 2: Component Inventory
+### Phase 2: Component Inventory
 
 **This is the critical step.** Before generating anything, inventory which UI components the brand actually has on their site/product:
 
@@ -172,7 +180,7 @@ For components the brand DOESN'T have, create a **Derived Design** with explicit
 
 Name the specific principles from the analysis that justify the derivation. No guessing — reason from the system.
 
-### Step 2.5: Icon Kit Selection
+### Phase 3: Icon Kit Selection
 
 **We cannot copy a brand's proprietary icons into generated skills.** Instead, we maintain a pool of freely-licensed icon kits in `references/icon-kits.md` and pick the closest fit as a best-match fallback.
 
@@ -195,9 +203,9 @@ Follow this sequence exactly — no shortcuts, no defaulting to Phosphor because
 
 6. **Never claim the brand uses the kit.** The YAML fields are `observed_style` (what the brand actually does, as prose) and `fallback_kit` (what we rendered with). The `disclaimer` field makes this explicit for anyone reading the skill later.
 
-This step gets its own YAML block — see Step 4 for the schema.
+This step gets its own YAML block — see Phase 7 for the schema.
 
-### Step 2.75: Hero Stage Analysis (MANDATORY)
+### Phase 4: Hero Stage Analysis (MANDATORY)
 
 **This step is mandatory.** Every brand gets a `hero_stage` block, even if it collapses to `subject: none` + `medium: absent`. The slot is never skipped — it is a major identity signal.
 
@@ -234,13 +242,13 @@ Read `references/hero-stage.md` for the full dial reference and preset library. 
 
 6. **Opt into `medium: shader`** only if the brand clearly uses animated WebGL as primary identity and one of the shader presets fits. See `background-shaders.md`. Default to CSS/SVG mediums. Shader defaults must also be `subtle`.
 
-7. **Write the `hero_stage` YAML block** — see Step 4 schema. Include `observed_style` (prose), the three dial groups, and a `disclaimer` when real-brand assets are proprietary.
+7. **Write the `hero_stage` YAML block** — see Phase 7 schema. Include `observed_style` (prose), the three dial groups, and a `disclaimer` when real-brand assets are proprietary.
 
 **Photo-hero rule.** `medium: photo` or `subject: photo-cutout` renders a labeled prose placeholder, never fake stock imagery. Honest is better than fake.
 
 **Subtle-by-default rule.** Every dial defaults to its calmest value. `intensity: subtle`, `vignette: off`, `bleed: ≤ 30`. Brands that look maximalist on their own site still read as `subtle` in our fallback, because hero copy sits on top and legibility is non-negotiable.
 
-### Step 3: Confirm Direction
+### Phase 5: Confirm Direction
 Summarize the aesthetic direction in 2-3 sentences. Include the primary tension or trade-off that defines this language (e.g., "Industrial precision softened by warm grays" or "Playful shapes with serious typography"). Present this to the user and wait for confirmation before generating files.
 
 Example:
@@ -248,7 +256,7 @@ Example:
 >
 > Proceed?
 
-### Step 3.5: Token Preview
+### Phase 6: Token Preview
 After the user approves the direction, present the core foundational tokens for a final check before full generation:
 
 > **Proposed Core Tokens:**
@@ -264,7 +272,7 @@ After the user approves the direction, present the core foundational tokens for 
 
 This gives the user a low-cost opportunity to correct a foundational value that would otherwise cascade incorrectly through all generated files.
 
-### Step 4: Build Design Model
+### Phase 7: Build Design Model
 Create a `design-model.yaml` in the skill folder as the **Single Source of Truth**. This file captures every design decision in a structured, machine-readable format. All subsequent files (tokens.md, components.md, platform-mapping.md, previews) are generated FROM this model.
 
 The YAML has two token layers: **Primitives** (raw ramps) and **Semantic** (role-based tokens referencing primitives).
@@ -451,6 +459,22 @@ components:
     font_weight: 500
     hover: { background: "{brand.600}" }
   # ...
+
+# App screen — product UI rendered inside a device frame.
+# Required for Phase 13 generation.
+app_screen:
+  archetype: "dashboard"    # dashboard / editor / list-detail / feed / conversational / canvas
+  frame: "browser"          # browser / phone / desktop / tablet
+  frame_params:
+    url: "app.vector.dev/projects"   # browser only — fictional domain
+    title: "Vector — Projects"
+  content_seed: "SLO dashboard for checkout-api"   # one-line description of what the screen shows
+  required_tokens_checklist:
+    - "background, surface1, surface2, surface3, border, border_visible"
+    - "text1, text2, text3, text4"
+    - "accent, accent_subtle, success, warning, error"
+    - "all typography scale tokens"
+    - "all spacing tokens used in components"
 ```
 
 **How to generate the primitives:**
@@ -461,7 +485,7 @@ components:
 
 Write the YAML first. Then generate all other files by reading from it. This ensures tokens.md, components.md, platform-mapping.md, and preview.html all use the exact same values.
 
-### Step 5: Generate Skill Files from Design Model
+### Phase 8: Generate Skill Files from Design Model
 Read the `design-model.yaml` and generate all 4 files. Fill every placeholder. No empty sections, no TODOs. Use the templates from `references/` as the exact structure:
 
 | File | Template | Purpose |
@@ -473,9 +497,9 @@ Read the `design-model.yaml` and generate all 4 files. Fill every placeholder. N
 
 **Every value in these files must come from the Design Model.** If a value isn't in the YAML, add it to the YAML first, then reference it. No hardcoding values that aren't in the model.
 
-**Components must be based on the inventory from Step 2.** Each component in the YAML has `source: observed` or `source: derived` — this traces back to the Tear-Down Sheets.
+**Components must be based on the inventory from Phase 2.** Each component in the YAML has `source: observed` or `source: derived` — this traces back to the Tear-Down Sheets.
 
-### Step 6: Write Files
+### Phase 9: Write Files
 Default location: `~/.claude/skills/{skill-name}-design/`
 If the user specifies a different path, use that. Create the directory structure:
 
@@ -489,19 +513,19 @@ If the user specifies a different path, use that. Create the directory structure
     platform-mapping.md
 ```
 
-### Step 7: Generate Visual Preview
+### Phase 10: Generate Visual Preview
 **Generate visual preview.** Create a `preview.html` in the skill folder — a standalone Bento Grid dashboard rendered in the generated design language. Read `references/preview-template.md` for the specification. **All CSS values in the preview must come from `design-model.yaml`** — re-read the YAML before writing CSS to ensure no drift.
 
 Open it in the browser with `open preview.html`. This is the magic moment — the user sees their design language come alive.
 
-### Step 7.5: Generate Component Library
+### Phase 11: Generate Component Library
 
 After the Bento Grid preview, generate a second visual output: `component-library.html`. Where the Bento Grid shows the language *in use*, the Component Library shows it *dismantled* — every component on its own canvas with its exact token values spelled out in a spec table beside it.
 
 Read `references/component-library-template.md` for the full specification. Key rules:
 
 1. **Two-column layout.** Sticky TOC on the left (~240px), scrollable main area on the right (max-width ~960px). TOC active-state via IntersectionObserver.
-2. **Required sections (in this order):** Colors, Typography, Radii, Elevation, Spacing, Buttons, Inputs, Cards, Tags, Toggle, Progress, List rows, Navigation, Modal, Icons. Skip a section only if the brand genuinely has no concept of it.
+2. **Required sections:** Defined in `references/component-library-template.md` — follow the category tabs and section list there. Skip a section only if the brand genuinely has no concept of it.
 3. **Each section has:** heading + one-line description, a Canvas showing live components (variants + states side-by-side, not requiring hover), a Spec table listing the exact token values.
 4. **State rendering.** When a component has multiple interactive states (default/hover/active/focus/disabled), render them **all at once** using static `.is-hover`, `.is-focused` etc. classes that reproduce the state's visual. Never rely on actual hover — the user needs to see all states simultaneously.
 5. **Round stroke caps everywhere.** Progress rings, bars, dashed elements — `stroke-linecap: round` unless the brand explicitly mandates flat caps (rare).
@@ -510,7 +534,7 @@ Read `references/component-library-template.md` for the full specification. Key 
 
 Open it in the browser after generating. The Bento Grid answers "what does this language feel like?"; the Component Library answers "what are the exact values?".
 
-### Step 7.6: Generate Landing Page
+### Phase 12: Generate Landing Page
 
 Generate a third visual output: `landing-page.html`. Where the Bento Grid shows density and the Component Library shows specs, the Landing Page shows the brand *telling a story* — editorial typography, narrative rhythm, alternating feature sections.
 
@@ -533,7 +557,7 @@ Read `references/landing-page-template.md` for the full specification. Key rules
 
 Editorial brands often look dramatically different in dark mode — always test both.
 
-### Step 7.7: Generate App Screen (Phase 4)
+### Phase 13: Generate App Screen
 
 Generate the fourth and final visual: `app-screen.html`. Where the landing page shows *what the brand sells* and the component library shows *what the pieces look like*, the app screen shows *what the product actually feels like in use* — tokens applied to a representative screen inside the brand's product, rendered inside a device frame.
 
@@ -550,29 +574,39 @@ Read `references/app-screen-template.md` for the full specification. Key rules:
 7. **Same floating Light/Dark bar** and click-disabled anchors as the other three views.
 8. **Add the new view to the sticky TOC** in the component library so all four views are reachable from each other.
 
-**Current status:** Phase 4 is live with two canonical proofs, both using the `dashboard` archetype inside a `browser` frame.
+**Current status:** Phase 13 is live with two canonical proofs, both using the `dashboard` archetype inside a `browser` frame.
 
 - `examples/ridge/app-screen.html` — SLO overview for `checkout-api`. 8-service sidebar, 3 KPI tiles with sparklines, a 30-day error-budget burn-down chart, 8 log events, and a fake cursor hovering on the selected service. Dev-platform vocabulary (services, alerts, SLO, incidents).
 - `examples/stint/app-screen.html` — stint 07 detail view for the `paper` workspace. Sidebar of 7 recent stints with status dots, 3 KPI tiles (completion / days left / at risk), a 14-day burn-down chart with actual vs dashed ideal line, 8-row activity feed, and a fake cursor hovering on the selected stint. Project-tracker vocabulary (stints, tasks, cycles, carryover).
 
-Both render in light + dark mode, use every required token from the checklist, and serve as patterns to copy for the next brand that adopts Phase 4. A third proof should exercise a *different* archetype (not `dashboard`) to keep the template honest — Halcyon with a `conversational` (reasoning-graph chat) archetype is the best next target because it tests both a new archetype and the `sculptural-field` backdrop in a product context.
+Both render in light + dark mode, use every required token from the checklist, and serve as patterns to copy for the next brand that adopts Phase 13. A third proof should exercise a *different* archetype (not `dashboard`) to keep the template honest — Halcyon with a `conversational` (reasoning-graph chat) archetype is the best next target because it tests both a new archetype and the `sculptural-field` backdrop in a product context.
 
-### Step 8: Self-Validation
-After generating the preview, validate it against the Design Model:
-1. **Re-read `design-model.yaml`** and the CSS in `preview.html`
-2. **Verify accent color** in YAML matches the hex used for interactive elements in preview CSS
-3. **Verify font families** in YAML match what's loaded and used in preview
-4. **Verify spacing values** are consistent between model and preview
-5. **Compare each component** in the preview against its Tear-Down Sheet or Derived Design from Step 2
+### Phase 14: Self-Validation
+After generating all outputs, validate every HTML file against the Design Model. This covers `preview.html`, `component-library.html`, `landing-page.html`, and `app-screen.html`.
+
+**Automated checks (run all before declaring done):**
+
+1. **Parse `design-model.yaml`** — verify no YAML syntax errors. If the YAML is malformed, nothing downstream can be trusted.
+2. **Grep for unresolved `{{...}}` placeholders** in all generated files. Any remaining `{{placeholder}}` is a generation bug — fill it or remove it.
+3. **CSS selector coverage.** For each HTML output: grep every CSS class-selector and verify it matches at least one element in the HTML. Orphan selectors mean styles are silently not applying.
+4. **Token coverage.** Check that every `var(--token)` used in the HTML/CSS is actually defined in the `:root` block of that file. A missing definition means the value falls through to `initial` — invisible breakage.
+5. **Open each HTML in the browser** and verify visually. Check both light and dark mode. Look for: correct font-family on headings, correct accent color on interactive elements, no unstyled fallback text, no broken layouts.
+
+**Manual cross-checks per file:**
+
+6. **Verify accent color** in YAML matches the hex used for interactive elements across all previews.
+7. **Verify font families** in YAML match what's loaded and used in all outputs.
+8. **Verify spacing values** are consistent between model and all outputs.
+9. **Compare each component** in the preview against its Tear-Down Sheet or Derived Design from Phase 2.
 
 If anything doesn't match — fix it before showing to the user.
 
-### Step 9: Offer Iteration
+### Phase 15: Offer Iteration
 After writing, tell the user what was created and ask if they want adjustments. Common requests: "more contrast", "warmer tones", "different font", "more playful motion", "add a glow effect", "less padding."
 
 **For iterations:** update `design-model.yaml` first, then regenerate only the affected files from the model. This keeps everything in sync.
 
-### Step 10: Installation Reminder
+### Phase 16: Installation Reminder
 After generating, tell the user:
 > Restart Claude Code or start a new conversation for the skill to be detected. Activate it by saying "{skill-name} design" or "/{skill-name}-design".
 
@@ -617,20 +651,23 @@ These are non-negotiable. Every generated skill must meet all of them.
 | Token | Role |
 |-------|------|
 | `--background` | Page/canvas background |
-| `--surface-1` | Primary elevated surface (cards) |
-| `--surface-2` | Secondary surface (nested, grouped) |
-| `--surface-3` | Tertiary surface (inputs, wells) |
+| `--bg` | Alias for `--background` (short form used in hero/landing templates) |
+| `--surface1` | Primary elevated surface (cards) |
+| `--surface2` | Secondary surface (nested, grouped) |
+| `--surface3` | Tertiary surface (inputs, wells) |
 | `--border` | Subtle/decorative borders |
 | `--border-visible` | Intentional borders |
-| `--text-1` | Primary text (headings, body) |
-| `--text-2` | Secondary text (descriptions, labels) |
-| `--text-3` | Tertiary text (placeholders, timestamps) |
-| `--text-4` | Disabled text |
+| `--text1` | Primary text (headings, body) |
+| `--text2` | Secondary text (descriptions, labels) |
+| `--text3` | Tertiary text (placeholders, timestamps) |
+| `--text4` | Disabled text |
 | `--accent` | Primary interactive color |
 | `--accent-subtle` | Tinted backgrounds for accent |
 | `--success` | Positive states |
 | `--warning` | Caution states |
 | `--error` | Destructive/error states |
+
+**Platform mapping must emit all tokens above.** `--bg` is an alias for `--background` — emit both in the `:root` block. `--border-visible` must be emitted alongside `--border`. `--accent-subtle` must be emitted (not `--accent-bg` — that's a deprecated name). See `references/platform-mapping-template.md`.
 
 ### Fonts
 - Display, body, and mono roles. Always three.

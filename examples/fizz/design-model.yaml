@@ -5,7 +5,8 @@ primary_mode: "light"
 brand_source: "INVENTED — fictional brand for hue carousel"
 brand_domain: "y2k photo-sharing app (fictional)"
 brand_type: "expressive"
-mono_for_data: false
+mono_for_code: false
+mono_for_metrics: false
 
 # ── PRIMITIVES ──────────────────────────────────────────
 primitives:
@@ -17,7 +18,7 @@ primitives:
       surface_dark: "#27182F"   # surface1 dark
       surface2_dk:  "#321F3D"   # surface2 dark
       text_muted:   "#7B6A85"   # light text2
-      text_muted_dk:"#B4A3BE"   # dark text2
+      text_muted_dk: "#B4A3BE"   # dark text2
       plum_ink:     "#1A1120"   # primary text + border, near-black with violet bias
     candy:                # the y2k pop palette, all four sit on the cream canvas
       pink:         "#FF5EB8"   # candy-pink, primary accent

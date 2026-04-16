@@ -5,7 +5,8 @@ primary_mode: "light"
 brand_source: "INVENTED — fictional brand for hero_stage v2 proof library, painterly-no-hero preset (light-first variant)"
 brand_domain: "health & wellness / habits / mood tracking (fictional)"
 brand_type: "content-rich"
-mono_for_data: false
+mono_for_code: false
+mono_for_metrics: false
 
 # ── PRIMITIVES ──────────────────────────────────────────
 primitives:

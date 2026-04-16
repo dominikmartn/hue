@@ -2,12 +2,7 @@
 name: {{skill-name}}
 description: Design language skill — apply the {{skill-name}} design system to all UI work in this project
 version: 1.0.0
-tools:
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
+allowed-tools: [Read, Write, Edit, Glob, Grep]
 ---
 
 # {{skill-name}}

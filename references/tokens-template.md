@@ -66,14 +66,16 @@ Raw scales derived from the brand. These are the building blocks — semantic to
 | **Body / UI** | `"{{font-body-name}}"` | `{{font-body-fallback}}` | {{font-body-weight}} | Body text, descriptions, UI labels |
 | **Mono / Code** | `"{{font-mono-name}}"` | `{{font-mono-fallback}}` | {{font-mono-weight}} | Code snippets, technical identifiers |
 
-### Data Font Rule
+### Mono Font Rules
 
-**`mono_for_data`: {{mono-for-data}}**
+**`mono_for_code`: {{mono-for-code}}** · **`mono_for_metrics`: {{mono-for-metrics}}**
 
-{{mono-for-data-rationale}}
+{{mono-for-code-rationale}}
 
-- **When `true`:** Use the mono font for all numeric/data values: timestamps, prices, counts, metrics, IP addresses, speeds, file sizes. Common for dev-tool and terminal-aesthetic brands (Linear, Nothing).
-- **When `false`:** Use the body font for data values. Mono is reserved strictly for code. Common for consumer and editorial brands (Apple, mymind, Notion).
+- **`mono_for_code: true`:** Use the mono font for code blocks, file paths, shell commands, and inline technical tokens (variable names, CSS properties, API endpoints). Almost every brand with a mono font sets this to `true`.
+- **`mono_for_code: false`:** Even code snippets use the body font. Rare — only the most editorial/typographic brands.
+- **`mono_for_metrics: true`:** Use the mono font for pricing, counts, timestamps, percentages, ID strings, IP addresses, speeds, file sizes. Common for dev-tool and terminal-aesthetic brands (Linear, Nothing) where data is part of the visual identity.
+- **`mono_for_metrics: false`:** Use the body font for all numeric/data values. Mono is reserved for code only. Common for consumer and editorial brands (Apple, mymind, Notion). Many brands use mono for code but NOT for metrics — e.g. Cursor uses mono inside IDE screenshots, but `$20` pricing stays in the sans.
 
 {{font-rationale}}
 
@@ -104,10 +106,12 @@ Semantic tokens reference the primitives above. Components use semantic tokens, 
 | Token | Primitive | Hex | Role |
 |-------|-----------|-----|------|
 | `--background` | `{neutral.{{bg-light-step}}}` | `{{color-background}}` | Page background |
+| `--bg` | — | `var(--background)` | Shorthand alias for `--background` |
 | `--surface1` | `{neutral.{{s1-light-step}}}` | `{{color-surface1}}` | Cards, elevated containers |
 | `--surface2` | `{neutral.{{s2-light-step}}}` | `{{color-surface2}}` | Secondary cards, grouped backgrounds |
 | `--surface3` | `{neutral.{{s3-light-step}}}` | `{{color-surface3}}` | Tertiary surfaces, inset areas |
 | `--border` | `{neutral.{{border-light-step}}}` | `{{color-border}}` | Subtle dividers, card edges |
+| `--border-visible` | `{neutral.{{border-visible-light-step}}}` | `{{color-border-visible}}` | Stronger borders — inputs, active controls |
 | `--text1` | `{neutral.{{t1-light-step}}}` | `{{color-text1}}` | Primary text — headings, body |
 | `--text2` | `{neutral.{{t2-light-step}}}` | `{{color-text2}}` | Secondary text — descriptions, labels |
 | `--text3` | `{neutral.{{t3-light-step}}}` | `{{color-text3}}` | Tertiary text — placeholders, timestamps |
@@ -127,6 +131,7 @@ Semantic tokens reference the primitives above. Components use semantic tokens, 
 | `--surface2` | `{neutral.{{s2-dark-step}}}` | `{{color-surface2-alt}}` | Secondary cards, grouped backgrounds |
 | `--surface3` | `{neutral.{{s3-dark-step}}}` | `{{color-surface3-alt}}` | Tertiary surfaces, inset areas |
 | `--border` | `{neutral.{{border-dark-step}}}` | `{{color-border-alt}}` | Subtle dividers, card edges |
+| `--border-visible` | `{neutral.{{border-visible-dark-step}}}` | `{{color-border-visible-alt}}` | Stronger borders — inputs, active controls |
 | `--text1` | `{neutral.{{t1-dark-step}}}` | `{{color-text1-alt}}` | Primary text |
 | `--text2` | `{neutral.{{t2-dark-step}}}` | `{{color-text2-alt}}` | Secondary text |
 | `--text3` | `{neutral.{{t3-dark-step}}}` | `{{color-text3-alt}}` | Tertiary text |
@@ -141,7 +146,7 @@ Semantic tokens reference the primitives above. Components use semantic tokens, 
 
 | Token | Primary | Secondary | Usage |
 |-------|---------|-----------|-------|
-| `--accent-bg` | `{{color-accent-bg}}` | `{{color-accent-bg-alt}}` | Tinted backgrounds for accent elements |
+| `--accent-subtle` | `{{color-accent-subtle}}` | `{{color-accent-subtle-alt}}` | Tinted backgrounds for accent elements |
 | `--success-bg` | `{{color-success-bg}}` | `{{color-success-bg-alt}}` | Success tinted backgrounds |
 | `--warning-bg` | `{{color-warning-bg}}` | `{{color-warning-bg-alt}}` | Warning tinted backgrounds |
 | `--error-bg` | `{{color-error-bg}}` | `{{color-error-bg-alt}}` | Error tinted backgrounds |

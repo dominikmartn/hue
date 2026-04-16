@@ -5,7 +5,8 @@ primary_mode: "dark"
 brand_source: "INVENTED — fictional brand for hero_stage v2 proof library, sculptural-field preset"
 brand_domain: "developer reasoning / decision tracing (fictional)"
 brand_type: "content-rich"
-mono_for_data: true
+mono_for_code: true
+mono_for_metrics: true
 
 # ── PRIMITIVES ──────────────────────────────────────────
 primitives:

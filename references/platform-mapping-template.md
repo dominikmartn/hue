@@ -16,16 +16,18 @@
 :root {
   /* Colors */
   --background: {{color-background}};
+  --bg: var(--background);
   --surface1: {{color-surface1}};
   --surface2: {{color-surface2}};
   --surface3: {{color-surface3}};
   --border: {{color-border}};
+  --border-visible: {{color-border-visible}};
   --text1: {{color-text1}};
   --text2: {{color-text2}};
   --text3: {{color-text3}};
   --text4: {{color-text4}};
   --accent: {{color-accent}};
-  --accent-bg: {{color-accent-bg}};
+  --accent-subtle: {{color-accent-subtle}};
   --success: {{color-success}};
   --success-bg: {{color-success-bg}};
   --warning: {{color-warning}};
@@ -87,16 +89,18 @@
 @media (prefers-color-scheme: {{secondary-mode-media-query}}) {
   :root {
     --background: {{color-background-alt}};
+    --bg: var(--background);
     --surface1: {{color-surface1-alt}};
     --surface2: {{color-surface2-alt}};
     --surface3: {{color-surface3-alt}};
     --border: {{color-border-alt}};
+    --border-visible: {{color-border-visible-alt}};
     --text1: {{color-text1-alt}};
     --text2: {{color-text2-alt}};
     --text3: {{color-text3-alt}};
     --text4: {{color-text4-alt}};
     --accent: {{color-accent-alt}};
-    --accent-bg: {{color-accent-bg-alt}};
+    --accent-subtle: {{color-accent-subtle-alt}};
     --success: {{color-success-alt}};
     --success-bg: {{color-success-bg-alt}};
     --warning: {{color-warning-alt}};
@@ -112,16 +116,18 @@
 /* Class-based toggle alternative */
 .{{secondary-mode-class}} {
   --background: {{color-background-alt}};
+  --bg: var(--background);
   --surface1: {{color-surface1-alt}};
   --surface2: {{color-surface2-alt}};
   --surface3: {{color-surface3-alt}};
   --border: {{color-border-alt}};
+  --border-visible: {{color-border-visible-alt}};
   --text1: {{color-text1-alt}};
   --text2: {{color-text2-alt}};
   --text3: {{color-text3-alt}};
   --text4: {{color-text4-alt}};
   --accent: {{color-accent-alt}};
-  --accent-bg: {{color-accent-bg-alt}};
+  --accent-subtle: {{color-accent-subtle-alt}};
   --success: {{color-success-alt}};
   --success-bg: {{color-success-bg-alt}};
   --warning: {{color-warning-alt}};
@@ -173,12 +179,13 @@ extension Color {
     static let {{prefix}}Surface2 = Color(hex: "{{color-surface2-hex}}")
     static let {{prefix}}Surface3 = Color(hex: "{{color-surface3-hex}}")
     static let {{prefix}}Border = Color(hex: "{{color-border-hex}}")
+    static let {{prefix}}BorderVisible = Color(hex: "{{color-border-visible-hex}}")
     static let {{prefix}}Text1 = Color(hex: "{{color-text1-hex}}")
     static let {{prefix}}Text2 = Color(hex: "{{color-text2-hex}}")
     static let {{prefix}}Text3 = Color(hex: "{{color-text3-hex}}")
     static let {{prefix}}Text4 = Color(hex: "{{color-text4-hex}}")
     static let {{prefix}}Accent = Color(hex: "{{color-accent-hex}}")
-    static let {{prefix}}AccentBg = Color(hex: "{{color-accent-bg-hex}}")
+    static let {{prefix}}AccentSubtle = Color(hex: "{{color-accent-subtle-hex}}")
     static let {{prefix}}Success = Color(hex: "{{color-success-hex}}")
     static let {{prefix}}Warning = Color(hex: "{{color-warning-hex}}")
     static let {{prefix}}Error = Color(hex: "{{color-error-hex}}")
@@ -261,7 +268,10 @@ module.exports = {
           2: "var(--surface2)",
           3: "var(--surface3)",
         },
-        border: "var(--border)",
+        border: {
+          DEFAULT: "var(--border)",
+          visible: "var(--border-visible)",
+        },
         text: {
           1: "var(--text1)",
           2: "var(--text2)",
@@ -270,7 +280,7 @@ module.exports = {
         },
         accent: {
           DEFAULT: "var(--accent)",
-          bg: "var(--accent-bg)",
+          subtle: "var(--accent-subtle)",
         },
         success: {
           DEFAULT: "var(--success)",

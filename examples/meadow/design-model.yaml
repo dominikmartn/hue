@@ -5,7 +5,8 @@ primary_mode: "light"
 brand_source: "mymind.com"
 brand_domain: "personal knowledge / visual bookmarking"
 brand_type: "ui-rich"
-mono_for_data: false
+mono_for_code: false
+mono_for_metrics: false
 
 # ── PRIMITIVES ──────────────────────────────────────────
 # Derived by inspecting mymind.com's inline CSS + typekit

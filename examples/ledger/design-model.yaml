@@ -5,7 +5,8 @@ primary_mode: "light"
 brand_source: "INVENTED — fictional brand for hue carousel"
 brand_domain: "financial broadsheet / editorial (fictional)"
 brand_type: "content-rich"
-mono_for_data: false
+mono_for_code: false
+mono_for_metrics: false
 
 # ── PRIMITIVES ──────────────────────────────────────────
 primitives:

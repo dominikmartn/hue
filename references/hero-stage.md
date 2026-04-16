@@ -280,7 +280,7 @@ Honest placeholder, not a fake stock photo. The placeholder describes in prose w
 
 #### `absent` — no background field at all
 
-`background: var(--bg);`. The absence is load-bearing identity. Do NOT decorate "because it feels empty". Nothing, Braun, brutalist.
+`background: var(--background);`. The absence is load-bearing identity. Do NOT decorate "because it feels empty". Nothing, Braun, brutalist.
 
 ### Light source, vignette, intensity — cross-cutting
 
@@ -612,7 +612,7 @@ Dev-tool-ish. Subject is grounded, background does not react. Vercel, GitHub, do
 The hero stage is a stack of layers, bottom to top:
 
 ```
- z: 0  body background (var(--bg))
+ z: 0  body background (var(--background))
  z: 1  background medium           ← .bg-{medium}
  z: 2  vignette overlay (if on)    ← .hero-vignette
  z: 3  noise overlay (if on)       ← .bg-grain-overlay
@@ -761,7 +761,7 @@ The generated landing page `[data-theme="dark"]` overrides should explicitly re-
 
 | View | Applies hero stage? |
 |---|---|
-| **Landing page** | **Always**, in the hero section. Optionally echoed behind the final CTA for background-driven brands. Features stay on `var(--bg)`. |
+| **Landing page** | **Always**, in the hero section. Optionally echoed behind the final CTA for background-driven brands. Features stay on `var(--background)`. |
 | **Component library** | Never. Documentation must be legible. |
 | **Bento grid preview** | Only the background layer, at reduced intensity (`intensity: subtle` forced). Never the hero subject. |
 | **App screen** | Depends on the screen being rendered; match the brand's real product treatment. |

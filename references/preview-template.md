@@ -134,7 +134,7 @@ Both modes must use values from the `design-model.yaml` — the light/dark token
 - **Label font:** Use whatever the brand uses. Terminal-brand → mono is fine. Clean-brand → sans is fine. Don't copy patterns between brands.
 - **Text-transform:** Match the brand. Some use uppercase labels, some don't.
 - **Weights:** Match the brand's actual weight distribution.
-- **Data values font:** Check `mono_for_data` in the YAML. If `false`, use the body font for timestamps, speeds, IPs, prices, metrics — NOT mono. If `true`, use mono for all numeric/data values. This is one of the most visible brand-differentiating decisions in the preview.
+- **Data values font:** Check `mono_for_code` and `mono_for_metrics` in the YAML. Use mono font for data values (prices, counts, timestamps, percentages, IDs) only when `mono_for_metrics` is `true`. Code snippets, file paths, and shell commands use mono when `mono_for_code` is `true`. Many brands set `mono_for_code: true` but `mono_for_metrics: false` — their pricing stays in the sans while code blocks use mono. This is one of the most visible brand-differentiating decisions in the preview.
 
 ### Craft & Visual Effects
 The brand's signature craft must be present and PROPORTIONAL:

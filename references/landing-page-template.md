@@ -126,7 +126,7 @@ Never use stock-looking photos, never fabricate logos, never pretend to be someo
 
 ## Canvas rules
 
-- **Body background:** `var(--bg)` — pure page background, NOT a surface tint. Landing pages breathe on the base color.
+- **Body background:** `var(--background)` — pure page background, NOT a surface tint. Landing pages breathe on the base color.
 - **Section backgrounds:** mostly transparent (inherit body). Use `var(--surface1)` or `var(--surface2)` for *one* or *two* sections max to create rhythm — never more.
 - **Container padding:** `48-64px` horizontal on desktop, `96-160px` vertical between sections.
 - **Max content width:** 1120px for wide layouts, 720px for text-centered blocks.
@@ -208,7 +208,7 @@ The hero stage is a **composed stack**: background field + optional hero subject
 **Rendering pipeline** (bottom to top, inside the hero section):
 
 ```
- z: 0  body background (var(--bg))
+ z: 0  body background (var(--background))
  z: 1  background medium          ← .bg-{medium}
  z: 2  vignette overlay           ← if hero_stage.background.vignette != off
  z: 3  noise overlay              ← if hero_stage.background.texture == grain
@@ -222,7 +222,7 @@ The hero stage is a **composed stack**: background field + optional hero subject
 **Where to apply the stack:**
 - **Hero section (always).** Full pipeline: background + relation + hero subject + content.
 - **Final CTA block (optional).** Echo only the *background* layer — never repeat the hero subject. Reduce intensity: if hero uses `intensity: bold`, CTA uses `subtle`.
-- **Feature sections (never).** Features need to be legible — keep them on `var(--bg)`.
+- **Feature sections (never).** Features need to be legible — keep them on `var(--background)`.
 
 **SVG filter injection.** For `painterly`, `noise`, and `pattern` mediums, inject the `<svg>` filter definitions at the top of the `<body>` (right after the opening tag, before the header).
 
@@ -269,7 +269,7 @@ Why not `pointer-events: none`? Because that also kills hover. We want hover to 
 - [ ] Hero headline uses the display font at a size clearly larger than anything else
 - [ ] Primary CTA appears in header + hero + final CTA block (3 coherent placements)
 - [ ] Feature sections alternate left/right
-- [ ] Only 1-2 sections use surface tints; the rest are on `var(--bg)`
+- [ ] Only 1-2 sections use surface tints; the rest are on `var(--background)`
 - [ ] All token values trace to `design-model.yaml` — no hardcoded hex
 - [ ] Icons come from the chosen fallback kit with the disclaimer acknowledged
 - [ ] Round stroke caps on any progress/ring/bar elements
