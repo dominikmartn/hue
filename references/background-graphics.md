@@ -10,7 +10,7 @@ Brands signal identity through background imagery as strongly as through typogra
 
 **Why a catalog exists.** We cannot copy the brand's actual imagery — commissioned illustrations, licensed photography, proprietary SVG systems all belong to the brand. Instead, we classify the brand's background treatment into one of seven categories and generate a code-based approximation that captures the *feel* without reproducing the asset.
 
-**Rule for Claude.** This step is **mandatory** for every design skill. Even brands with no distinctive background treatment get documented as `type: absent` — the slot is never skipped. This prevents the quiet failure of forgetting background imagery entirely.
+**Rule.** This step is **mandatory** for every design skill. Even brands with no distinctive background treatment get documented as `type: absent` — the slot is never skipped. This prevents the quiet failure of forgetting background imagery entirely.
 
 ## Two tiers
 
@@ -352,7 +352,7 @@ Motion is an orthogonal flag, not a new type. Any Tier 1 type can have any motio
 
 **Critical rule:** Do NOT add decoration because the slot feels empty. `type: absent` is a *choice* — the brand explicitly rejects background imagery as a design decision. Adding a subtle gradient "just to fill the space" violates the brand.
 
-**Difference from Flat Color Field (which doesn't exist anymore):** Earlier versions had `flat` as a type that implied "we didn't find anything special, so we put nothing." `absent` is different: it means "the brand actively chose to have nothing, and that choice is load-bearing identity." When Claude picks `absent`, it must be because the brand's own site has no background imagery, and that absence is observable and deliberate.
+**Difference from Flat Color Field (which doesn't exist anymore):** Earlier versions had `flat` as a type that implied "we didn't find anything special, so we put nothing." `absent` is different: it means "the brand actively chose to have nothing, and that choice is load-bearing identity." When you pick `absent`, it must be because the brand's own site has no background imagery, and that absence is observable and deliberate.
 
 **Tuning knobs.** None. If you feel the urge to add something, reconsider whether this is actually an `absent` brand or whether you're forcing it.
 

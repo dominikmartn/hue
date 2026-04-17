@@ -1,8 +1,9 @@
 ---
 name: {{skill-name}}
-description: Design language skill — apply the {{skill-name}} design system to all UI work in this project
+description: "This skill should be used when the user explicitly says '{{Skill Name}} style', '{{Skill Name}} design', '/{{skill-name}}-design', or directly asks to use/apply the {{Skill Name}} design system. NEVER trigger automatically for generic UI or design tasks."
 version: 1.0.0
 allowed-tools: [Read, Write, Edit, Glob, Grep]
+# ^ allowed-tools is Claude Code specific. Codex ignores it but tolerates its presence.
 ---
 
 # {{skill-name}}

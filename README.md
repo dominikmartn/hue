@@ -1,26 +1,39 @@
 # hue
 
-an open-source claude code skill that learns any brand from a url, name, or screenshot and turns it into a complete design system. install it once, and every component claude builds after that matches your brand.
+an open-source skill that learns any brand from a url, name, or screenshot and turns it into a complete design system. works on claude code and codex. install it once, and every component your ai assistant builds after that matches your brand.
 
 see it in action: **[hueapp.io](https://hueapp.io)**
 
 ## what you get
 
-a full design language as a claude code skill — color tokens, typography, spacing, components, light + dark mode, hero stage recipes, icon kit selection. opinionated enough that two different claude sessions using the generated skill produce visually consistent output.
+a full design language as an ai coding skill — color tokens, typography, spacing, components, light + dark mode, hero stage recipes, icon kit selection. opinionated enough that two different sessions using the generated skill produce visually consistent output.
 
 ## install
+
+### claude code
 
 ```
 git clone https://github.com/dominikmartn/hue ~/.claude/skills/hue
 ```
 
-then in any claude code session say something like:
+### codex
+
+```
+git clone https://github.com/dominikmartn/hue ~/.agents/skills/hue
+```
+
+alternative codex path (cli installer compatible):
+```
+git clone https://github.com/dominikmartn/hue "${CODEX_HOME:-$HOME/.codex}/skills/hue"
+```
+
+then in any session say something like:
 
 - "make a design skill from cursor.com"
 - "create a design language inspired by raycast"
 - "generate a hue skill from this screenshot"
 
-claude picks up the trigger and walks through the analysis.
+the assistant picks up the trigger and walks through the analysis.
 
 ## examples
 

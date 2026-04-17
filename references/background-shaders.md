@@ -2,7 +2,7 @@
 
 Five curated WebGL fragment-shader presets for brands where animated imagery is load-bearing identity. Opt-in only — most brands are served by Tier 1 (static CSS+SVG). Pick a Tier 2 shader when the brand's actual site uses animated, fluid, or generative visuals as a primary signal.
 
-**Rule for Claude.** Only reach for Tier 2 when:
+**Rule.** Only reach for Tier 2 when:
 1. The observed brand clearly uses animated/WebGL imagery as a primary identity signal (not decoration)
 2. The brand would look diminished without motion
 3. One of the 5 presets below is a close enough fit — don't custom-build
@@ -440,7 +440,7 @@ function hexToRgb(hex) {
 
 ## YAML schema for Tier 2
 
-When Claude picks a Tier 2 shader, the shader block nests inside `hero_stage.background` (replacing the old `background_graphics` block that `hero-stage.md` superseded):
+When you pick a Tier 2 shader, the shader block nests inside `hero_stage.background` (replacing the old `background_graphics` block that `hero-stage.md` superseded):
 
 ```yaml
 hero_stage:

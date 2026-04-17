@@ -4,7 +4,7 @@ Curated pool of freely-licensed icon kits that can be loaded via CDN. Every gene
 
 **Why a catalog exists.** We cannot copy a brand's proprietary icons into generated skills. Instead, we analyze the brand's visual icon style, then match it to the closest kit in this pool. The generated skill explicitly documents this as a fallback — never as the brand's real icons.
 
-**Rule for Claude.** You must pick exactly ONE kit per skill. Do not mix kits in a single preview. If the brand's style doesn't match any kit perfectly, pick the least-wrong one and document the gap in `match_reasoning`.
+**Rule.** You must pick exactly ONE kit per skill. Do not mix kits in a single preview. If the brand's style doesn't match any kit perfectly, pick the least-wrong one and document the gap in `match_reasoning`.
 
 ---
 
@@ -199,7 +199,7 @@ Quick-pick guide. Use the matching criteria from the brand analysis, then find t
 
 ## What to write in the generated skill
 
-When Claude picks a kit, the skill's `design-model.yaml` gets these fields (not the old flat `library: "..."`):
+When you pick a kit, the skill's `design-model.yaml` gets these fields (not the old flat `library: "..."`):
 
 ```yaml
 iconography:
