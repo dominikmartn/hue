@@ -127,6 +127,7 @@ Semantic tokens reference the primitives above. Components use semantic tokens, 
 | Token | Primitive | Hex | Role |
 |-------|-----------|-----|------|
 | `--background` | `{neutral.{{bg-dark-step}}}` | `{{color-background-alt}}` | Page background |
+| `--bg` | — | `var(--background)` | Shorthand alias for `--background` |
 | `--surface1` | `{neutral.{{s1-dark-step}}}` | `{{color-surface1-alt}}` | Cards, elevated containers |
 | `--surface2` | `{neutral.{{s2-dark-step}}}` | `{{color-surface2-alt}}` | Secondary cards, grouped backgrounds |
 | `--surface3` | `{neutral.{{s3-dark-step}}}` | `{{color-surface3-alt}}` | Tertiary surfaces, inset areas |
@@ -139,8 +140,8 @@ Semantic tokens reference the primitives above. Components use semantic tokens, 
 | `--accent` | `{brand.{{accent-dark-step}}}` | `{{color-accent-alt}}` | Primary accent |
 | `--accent-subtle` | `{brand.{{accent-subtle-dark-step}}}` | `{{color-accent-subtle-alt}}` | Tinted backgrounds for accent |
 | `--success` | `{green.500}` | `{{color-success-alt}}` | Positive states |
-| `--warning` | `{{color-warning-alt}}` | Caution states |
-| `--error` | `{{color-error-alt}}` | Negative states |
+| `--warning` | `{amber.500}` | `{{color-warning-alt}}` | Caution states |
+| `--error` | `{red.500}` | `{{color-error-alt}}` | Negative states |
 
 ### Accent & Status Tints
 

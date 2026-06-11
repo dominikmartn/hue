@@ -1,9 +1,11 @@
 ---
-name: {{skill-name}}
+name: {{skill-name}}-design
 description: "This skill should be used when the user explicitly says '{{Skill Name}} style', '{{Skill Name}} design', '/{{skill-name}}-design', or directly asks to use/apply the {{Skill Name}} design system. NEVER trigger automatically for generic UI or design tasks."
 version: 1.0.0
 allowed-tools: [Read, Write, Edit, Glob, Grep]
 # ^ allowed-tools is Claude Code specific. Codex ignores it but tolerates its presence.
+# ^ name MUST equal the skill's folder name ({{skill-name}}-design); description MUST keep
+#   the literal "NEVER trigger automatically". Both are checked by scripts/validate.mjs.
 ---
 
 # {{skill-name}}

@@ -35,6 +35,16 @@ then in any session say something like:
 
 the assistant picks up the trigger and walks through the analysis.
 
+## validation
+
+every generated skill gets gated through `scripts/validate.mjs` before it ships:
+
+```
+node scripts/validate.mjs <path-to-generated-skill-folder>
+```
+
+it checks yaml syntax, orphan css selectors, undefined `var(--token)` usages, leftover placeholders, em-dashes, the SKILL.md frontmatter contract, wcag contrast on the core text/background pairs, and ai-default display fonts. exit code 1 on any error.
+
 ## examples
 
 seventeen brands live in `examples/` showing the range of output hue produces. sixteen are fictional one-shots, one is real (meadow ↦ the mymind-design skill).

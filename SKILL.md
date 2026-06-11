@@ -2,7 +2,6 @@
 name: hue
 description: "Meta-skill that generates new design language skills. Works on Claude Code and Codex. Use when the user says 'create a design skill', 'generate design language', 'new design system skill', 'design skill inspired by X', 'design skill from this screenshot', '/hue', or 'use hue'. Also triggers for 'remix my design skill' or 'make my skill more X'."
 version: 1.1.0
-allowed-tools: [Read, Write, Edit, Glob, Grep, WebFetch, WebSearch]
 ---
 
 # Design Skill Generator
@@ -123,6 +122,8 @@ The user describes a vibe: "dark minimal with neon accents" or "warm and friendl
 
 ### Remix
 Read the existing skill files. Understand its current personality. Apply the requested modification *surgically* — if the user says "make it warmer," shift the gray palette toward warm tones, not rewrite the philosophy. Preserve everything that isn't explicitly being changed.
+
+A remix skips the analysis phases (1–6): edit `design-model.yaml` first, then regenerate only the affected files. Phase 14 is NOT optional on a remix — run `node scripts/validate.mjs <skill-folder>` and screenshot-review every artifact you changed before declaring done.
 
 ---
 
@@ -248,7 +249,7 @@ Read `references/hero-stage.md` for the full dial reference and preset library. 
 
    **Background dials:** `medium` (`gradient` / `mesh` / `painterly` / `shader` / `pattern` / `bokeh` / `sculptural` / `noise` / `photo` / `absent`), `color_mode`, `saturation`, `light_source`, `falloff`, `vignette`, `texture`, `motion`, `intensity`, `safe_zone`, `color_palette` (3–5 hues).
 
-   **Hero dials:** `subject` chosen **by intent, not form** — `none` / `luminous` (light-emitter, CSS-rendered) / `object` (concrete physical product → generic warm metallic form as a decorative placeholder, user swaps it for their own 3D render before shipping) / `device` (product window, CSS-rendered) / `composition` (arranged elements, CSS-rendered) / `photo-cutout` (prose placeholder). Plus `form` (`sphere` / `disc` / `ring` / `torus` — **only for `luminous`**), `placement`, `scale`, `tint`.
+   **Hero dials:** `subject` chosen **by intent, not form** — `none` / `luminous` (light-emitter, CSS-rendered) / `object` (concrete physical product → generic warm metallic form as a decorative placeholder, user swaps it for their own 3D render before shipping) / `device` (product window, CSS-rendered) / `composition` (arranged elements, CSS-rendered) / `photo-cutout` (prose placeholder). Plus `form` (per-subject: geometry enum for `luminous`, layout label for `composition`, ignored otherwise — canonical definition in `hero-stage.md`), `placement`, `scale`, `tint`.
 
    **Relation dials:** `type` (`flat` / `glow` / `halo` / `reflection` / `emissive` / `shadow-only`), `bleed` (0–100).
 
@@ -278,31 +279,31 @@ Example:
 After the user approves the direction, present the core foundational tokens for a final check before full generation:
 
 > **Proposed Core Tokens:**
-> - **Background:** `#0A0A0B` (near-black neutral)
-> - **Accent:** `#5E6AD2` (violet)
-> - **Body Font:** Inter, 14px, weight 400
-> - **Display Font:** Inter, 36px, weight 500
-> - **Base Radius:** 8px
+> - **Background:** `#FAF8F5` (warm paper)
+> - **Accent:** `#8E3D6E` (deep plum)
+> - **Body Font:** Hanken Grotesk, 15px, weight 400
+> - **Display Font:** Spectral, 34px, weight 500
+> - **Base Radius:** 6px
 > - **Base Spacing:** 8px grid
-> - **Elevation:** Flat (no shadows, glow on hover)
+> - **Elevation:** Subtle (1-2px diffused shadows)
 >
 > Confirm or adjust?
 
 This gives the user a low-cost opportunity to correct a foundational value that would otherwise cascade incorrectly through all generated files.
 
 ### Phase 7: Build Design Model
-Create a `design-model.yaml` in the skill folder as the **Single Source of Truth**. This file captures every design decision in a structured, machine-readable format. All subsequent files (tokens.md, components.md, platform-mapping.md, previews) are generated FROM this model.
+Create a `design-model.yaml` in the skill folder as the **Single Source of Truth**. If the skill folder doesn't exist yet, create it now (default location from Phase 9) — don't wait until Phase 9 to make the directory. This file captures every design decision in a structured, machine-readable format. All subsequent files (tokens.md, components.md, platform-mapping.md, previews) are generated FROM this model.
 
 The YAML has two token layers: **Primitives** (raw ramps) and **Semantic** (role-based tokens referencing primitives).
 
 ```yaml
-name: "Vector"
-philosophy: "Precision tooling. Dense, keyboard-first, violet-accented."
-primary_mode: "dark"
-brand_domain: "project management / issue tracking"
+name: "Aster"
+philosophy: "A quiet reading room for research. Warm paper, ink text, one plum accent."
+primary_mode: "light"
+brand_domain: "research notes / citation management"
 brand_type: "ui-rich"    # or "content-rich"
 mono_for_code: true      # code blocks, file paths, shell commands, inline technical tokens
-mono_for_metrics: true   # pricing, counts, timestamps, percentages, ID strings
+mono_for_metrics: false  # pricing, counts, timestamps, percentages, ID strings
 # locked_weight: 400     # OPTIONAL. Set only when the brand genuinely uses a single font weight across all text. Most brands do not — leave unset. If set, ALL type scale rows use this weight; the `weight` column becomes "—" in the scale table (or a single row at the top of the table).
 # Backwards-compat: older skills may have `mono_for_data: true/false`. Treat `mono_for_data: true` as `mono_for_code: true + mono_for_metrics: true`, and `false` as both false.
 
@@ -310,29 +311,29 @@ mono_for_metrics: true   # pricing, counts, timestamps, percentages, ID strings
 primitives:
   colors:
     neutral:    # Temperature matches the brand (warm/cool/pure)
-      50: "#FAFAFA"
-      100: "#F4F4F5"
-      200: "#E4E4E7"
-      300: "#D4D4D8"
-      400: "#A1A1AA"
-      500: "#71717A"
-      600: "#52525B"
-      700: "#3F3F46"
-      800: "#27272A"
-      900: "#18181B"
-      950: "#09090B"
+      50: "#FAF8F5"
+      100: "#F3F0EA"
+      200: "#E6E1D8"
+      300: "#D4CEC2"
+      400: "#A8A193"
+      500: "#7E776A"
+      600: "#5F594E"
+      700: "#48433A"
+      800: "#322E27"
+      900: "#211E19"
+      950: "#14120E"
     brand:      # Accent hue, 500 = primary
-      50: "#EEF2FF"
-      100: "#E0E7FF"
-      200: "#C7D2FE"
-      300: "#A5B4FC"
-      400: "#818CF8"
-      500: "#5E6AD2"
-      600: "#4F46E5"
-      700: "#4338CA"
-      800: "#3730A3"
-      900: "#312E81"
-      950: "#1E1B4B"
+      50: "#FBF1F7"
+      100: "#F6E0EC"
+      200: "#ECC2DA"
+      300: "#DA97BE"
+      400: "#BC6597"
+      500: "#8E3D6E"
+      600: "#76305B"
+      700: "#5E2649"
+      800: "#471C37"
+      900: "#321326"
+      950: "#1F0A17"
     red:   { 50: "#FEF2F2", 500: "#E5484D", 900: "#7F1D1D" }
     green: { 50: "#F0FDF4", 500: "#4AB66A", 900: "#14532D" }
     amber: { 50: "#FFFBEB", 500: "#E5A73B", 900: "#78350F" }
@@ -379,6 +380,11 @@ tokens:
     success: "{green.500}"
     warning: "{amber.500}"
     error: "{red.500}"
+    # Status tints — backgrounds behind status text/badges (foreground stays the 500 step).
+    # Derivation rule: light mode = lightest ramp step (50), dark mode = darkest (900).
+    success_bg: { light: "{green.50}", dark: "{green.900}" }
+    warning_bg: { light: "{amber.50}", dark: "{amber.900}" }
+    error_bg:   { light: "{red.50}",   dark: "{red.900}" }
 
   spacing:
     2xs: 2
@@ -399,19 +405,22 @@ tokens:
     pill: 999       # pills, tags (if brand uses them)
 
   typography:
-    display: { family: "Inter", size: "36px", weight: 500, line_height: 1.1 }
-    body: { family: "Inter", size: "14px", weight: 400, line_height: 1.5 }
-    mono: { family: "JetBrains Mono", size: "12px", weight: 400 }
+    # Families + base sizes. tokens.md derives the full 7-token type scale from these:
+    # --display, --heading, --subheading, --body, --body-sm, --caption, --label (canonical names,
+    # identical in tokens-template.md and platform-mapping-template.md).
+    display: { family: "Spectral", size: "34px", weight: 500, line_height: 1.15 }
+    body: { family: "Hanken Grotesk", size: "15px", weight: 400, line_height: 1.5 }
+    mono: { family: "IBM Plex Mono", size: "12px", weight: 400 }
 
   elevation:
-    strategy: "flat"
+    strategy: "subtle"
     # ...
 
   motion:
-    personality: "mechanical"
-    easing: "ease-out"
-    duration_fast: "100ms"
-    duration_normal: "150ms"
+    personality: "smooth"
+    easing: "ease-in-out"
+    duration_fast: "120ms"
+    duration_normal: "220ms"
 
   # Hero stage — composed background + optional hero subject + relation.
   # Mandatory. Replaces the older `background_graphics` block.
@@ -419,7 +428,7 @@ tokens:
   hero_stage:
     preset: "painterly-no-hero"   # or null for fully manual
     observed_style:
-      description: "Hand-painted warm landscape scenes; no foreground subject — the background IS the hero."
+      description: "Soft ink-wash fields in plum and paper tones; no foreground subject — the wash IS the hero."
       where_used: ["hero", "feature sections"]
     background:
       medium: "painterly"         # gradient / mesh / painterly / shader / pattern / bokeh / sculptural / noise / photo / absent
@@ -428,11 +437,11 @@ tokens:
       light_source: "ambient"     # top / bottom / top-l..br / center / ambient / none
       falloff: "soft"             # hard / soft / radial / linear
       vignette: "off"             # off / subtle / strong
-      texture: "paint"            # clean / grain / paper / paint / pixel
+      texture: "paper"            # clean / grain / paper / paint / pixel
       motion: "static"            # static / drift / pulse / reactive
       intensity: "subtle"         # subtle / bold / blown-out  ← default subtle
       safe_zone: "full-bleed"     # full-bleed / masked-for-text / edge-only
-      color_palette: ["#FFA47C", "#FFE926", "#FF7DD3", "#FFC2A8", "#5CB13E"]
+      color_palette: ["#DA97BE", "#8E3D6E", "#E6E1D8", "#A8A193", "#FAF8F5"]
     hero:
       subject: "none"             # none / luminous / object / device / composition / photo-cutout  ← intent, not form
       # form: "sphere"            # sphere / disc / ring / torus — ONLY for luminous. Ignored for everything else.
@@ -481,12 +490,12 @@ components:
 # App screen — product UI rendered inside a device frame.
 # Required for Phase 13 generation.
 app_screen:
-  archetype: "dashboard"    # dashboard / editor / list-detail / feed / conversational / canvas
+  archetype: "list-detail"  # dashboard / editor / list-detail / feed / conversational / canvas
   frame: "browser"          # browser / phone / desktop / tablet
   frame_params:
-    url: "app.vector.dev/projects"   # browser only — fictional domain
-    title: "Vector — Projects"
-  content_seed: "SLO dashboard for checkout-api"   # one-line description of what the screen shows
+    url: "app.aster.ink/library"     # browser only — fictional domain
+    title: "Aster — Library"
+  content_seed: "citation library for a climate-paper draft"   # one-line description of what the screen shows
   required_tokens_checklist:
     - "background, surface1, surface2, surface3, border, border_visible"
     - "text1, text2, text3, text4"
@@ -500,6 +509,15 @@ app_screen:
 - **Brand ramp:** The accent color becomes 500. Generate lighter (50-400) and darker (600-950) variants around it.
 - **Status colors:** Minimal ramps (50, 500, 900) for red/green/amber. Enough for bg-tint + foreground + dark-mode.
 - **Spacing/radii primitives:** A superset scale. Semantic tokens pick from this scale.
+
+**Avoid the AI default look.** Left unconstrained, language models converge on the same handful of "tasteful" choices — which is exactly what makes generated design systems look generated. Two ban lists apply whenever YOU are inventing or deriving a choice:
+
+- **Banned as invented display/heading faces:** Space Grotesk, Playfair Display, Fraunces, Instrument Serif, DM Serif Display, DM Serif Text — and Inter used as a display/heading face. These are the statistical defaults, not decisions. Pick from a wider pool instead: Geist, Satoshi, Cabinet Grotesk, General Sans, Hanken Grotesk, Manrope, Bricolage Grotesque, Newsreader, Spectral, IBM Plex Serif, Source Serif 4, Libre Caslon Text, Zodiak — or anything else that's genuinely motivated by the brand. (Satoshi, Cabinet Grotesk, General Sans and Zodiak load from Fontshare; the rest are on Google Fonts.)
+- **Banned as invented genre palettes:** premium → beige + brass + oxblood; tech/SaaS → violet glow on near-black (the `#5E6AD2` family); fintech → navy + teal; wellness → sage + cream. If your palette for a fictional brand lands on one of these, you didn't derive it — you defaulted to it. Go back to the brief and find what's specific.
+
+**The nuance that matters:** these bans apply ONLY to invented or derived decisions — fallback kits, fictional brands, description-only briefs. If the real analyzed brand demonstrably uses Inter as its headline face or ships a sage-and-cream palette, the skill documents reality. `observed_style` always wins over the ban list. The bans exist to stop YOU from defaulting, not to overrule a brand.
+
+`scripts/validate.mjs` cross-checks this: it emits a WARN when a banned font heads the display stack of a generated skill. The WARN is a prompt to justify, not an automatic failure.
 
 Write the YAML first. Then generate all other files by reading from it. This ensures tokens.md, components.md, platform-mapping.md, and preview.html all use the exact same values.
 
@@ -546,7 +564,7 @@ After the Bento Grid preview, generate a second visual output: `component-librar
 
 Read `references/component-library-template.md` for the full specification. Key rules:
 
-1. **Two-column layout.** Sticky TOC on the left (~240px), scrollable main area on the right (max-width ~960px). TOC active-state via IntersectionObserver.
+1. **Two-column layout.** Sticky TOC on the left (~240px), scrollable main area on the right (max-width ~960px). TOC active-state via a passive `scroll` listener on the main area that compares each component group's `offsetTop` against the scroll position (see the scroll-tracking script in the template).
 2. **Required sections:** Defined in `references/component-library-template.md` — follow the category tabs and section list there. Skip a section only if the brand genuinely has no concept of it.
 3. **Each section has:** heading + one-line description, a Canvas showing live components (variants + states side-by-side, not requiring hover), a Spec table listing the exact token values.
 4. **State rendering.** When a component has multiple interactive states (default/hover/active/focus/disabled), render them **all at once** using static `.is-hover`, `.is-focused` etc. classes that reproduce the state's visual. Never rely on actual hover — the user needs to see all states simultaneously.
@@ -606,20 +624,33 @@ Both render in light + dark mode, use every required token from the checklist, a
 ### Phase 14: Self-Validation
 After generating all outputs, validate every HTML file against the Design Model. This covers `preview.html`, `component-library.html`, `landing-page.html`, and `app-screen.html`.
 
-**Automated checks (run all before declaring done):**
+**Step 1 — run the validation script. This is mandatory, not a suggestion:**
 
-1. **Parse `design-model.yaml`** — verify no YAML syntax errors. If the YAML is malformed, nothing downstream can be trusted.
-2. **Grep for unresolved `{{...}}` placeholders** in all generated files. Any remaining `{{placeholder}}` is a generation bug — fill it or remove it.
-3. **CSS selector coverage.** For each HTML output: grep every CSS class-selector and verify it matches at least one element in the HTML. Orphan selectors mean styles are silently not applying.
-4. **Token coverage.** Check that every `var(--token)` used in the HTML/CSS is actually defined in the `:root` block of that file. A missing definition means the value falls through to `initial` — invisible breakage.
-5. **Open each HTML in the browser** and verify visually. Check both light and dark mode. Look for: correct font-family on headings, correct accent color on interactive elements, no unstyled fallback text, no broken layouts.
+```
+node scripts/validate.mjs <path-to-generated-skill-folder>
+```
 
-**Manual cross-checks per file:**
+(`scripts/validate.mjs` lives in THIS skill's folder, not in the generated one.) The script checks: YAML syntax, orphan CSS class-selectors, undefined `var(--token)` usages, leftover `{{placeholder}}` / TODO / FIXME / lorem ipsum, em-dashes in visible text, the generated SKILL.md frontmatter contract, WCAG contrast on the core text/background pairs, and AI-default display fonts. Fix every ERROR it reports, re-run, and repeat until the exit code is 0. Do not skip the script. Prose checklists don't hold; the gate does.
 
-6. **Verify accent color** in YAML matches the hex used for interactive elements across all previews.
-7. **Verify font families** in YAML match what's loaded and used in all outputs.
-8. **Verify spacing values** are consistent between model and all outputs.
-9. **Compare each component** in the preview against its Tear-Down Sheet or Derived Design from Phase 2.
+**Step 2 — screenshot self-review loop (after EVERY HTML artifact, not just at the end):**
+
+On Claude Code, do this right after generating each HTML file in Phases 10–13:
+
+1. Open the file via Chrome DevTools MCP — `mcp__chrome-devtools__navigate_page` (or `new_page`) with the `file://` URL, then `mcp__chrome-devtools__take_screenshot`.
+2. Look at the screenshot yourself and answer four questions:
+   - (a) Is the display font actually rendering, or did it fall back to a default?
+   - (b) Does any area read as default-LLM aesthetics — violet-glow-on-dark, an Inter headline, empty card grids?
+   - (c) Is content stuck at the top with dead whitespace below it?
+   - (d) Do the rendered token colors match `design-model.yaml`?
+3. Any finding → fix it, re-screenshot, re-answer. Repeat until all four pass. Check both light and dark mode.
+
+On Codex (no browser tools): declare the visual check as an explicit user step — "open `landing-page.html` in a browser and confirm the display font renders and the accent matches the model" — and rely on `validate.mjs` all the more. It is the only automated gate you have there; never skip it.
+
+**Step 3 — manual cross-checks the script cannot cover:**
+
+1. **Accent fidelity** — the accent hex in the YAML matches the interactive elements across all previews.
+2. **Spacing rhythm** — spacing values in the outputs trace back to the YAML scale, no invented one-off paddings.
+3. **Component completeness** — compare each component in the preview against its Tear-Down Sheet or Derived Design from Phase 2.
 
 If anything doesn't match — fix it before showing to the user.
 
@@ -688,8 +719,13 @@ These are non-negotiable. Every generated skill must meet all of them.
 | `--success` | Positive states |
 | `--warning` | Caution states |
 | `--error` | Destructive/error states |
+| `--success-bg` | Tinted background behind success text/badges |
+| `--warning-bg` | Tinted background behind warning text/badges |
+| `--error-bg` | Tinted background behind error text/badges |
 
-**Platform mapping must emit all tokens above.** `--bg` is an alias for `--background` — emit both in the `:root` block. `--border-visible` must be emitted alongside `--border`. `--accent-subtle` must be emitted (not `--accent-bg` — that's a deprecated name). See `references/platform-mapping-template.md`.
+**Status tint derivation rule:** each `--*-bg` comes from the same status ramp as its foreground — light mode uses the lightest ramp step (`{hue.50}`), dark mode the darkest (`{hue.900}`); the foreground stays `{hue.500}` in both. This matches how `tokens-template.md` (status ramp table) and `components-template.md` (tags, alerts) consume them.
+
+**Platform mapping must emit all tokens above.** `--bg` is an alias for `--background` — emit both in the `:root` block. `--border-visible` must be emitted alongside `--border`. `--accent-subtle` must be emitted (not `--accent-bg` — that's a deprecated name). `--success-bg` / `--warning-bg` / `--error-bg` must be emitted in both modes. See `references/platform-mapping-template.md`.
 
 ### Fonts
 - Display, body, and mono roles. Always three.
@@ -709,16 +745,15 @@ These are non-negotiable. Every generated skill must meet all of them.
 - **`locked_weight`** (optional, top-level): Set only when the brand genuinely uses a single font weight across all text (h1 through body all at the same weight). Most brands do not — leave unset. If set, ALL type scale rows use this weight; see Type Scale section below for the table treatment.
 
 ### Type Scale
-- 8 sizes minimum: display, h1, h2, h3, body, body-sm, caption, label.
+- 7 sizes minimum: display, heading, subheading, body, body-sm, caption, label. These names are canonical — identical in `references/tokens-template.md` and `references/platform-mapping-template.md`. Never invent alternates like `--h1`/`--h2`.
 - Every size gets: px value, line-height ratio, letter-spacing, weight, and use case.
 - Follow this structure:
 
 | Token | Size | Line Height | Letter Spacing | Weight | Use |
 |-------|------|-------------|----------------|--------|-----|
 | `--display` | Npx | ratio | em | weight | use case |
-| `--h1` | Npx | ratio | em | weight | use case |
-| `--h2` | Npx | ratio | em | weight | use case |
-| `--h3` | Npx | ratio | em | weight | use case |
+| `--heading` | Npx | ratio | em | weight | use case |
+| `--subheading` | Npx | ratio | em | weight | use case |
 | `--body` | Npx | ratio | em | weight | use case |
 | `--body-sm` | Npx | ratio | em | weight | use case |
 | `--caption` | Npx | ratio | em | weight | use case |
@@ -782,7 +817,10 @@ allowed-tools: [Read, Write, Edit, Glob, Grep]
 ---
 ```
 
-The description must include the explicit trigger phrases. Never allow automatic triggering for generic design tasks.
+Two hard rules, identical in `references/skill-template.md` and enforced by `scripts/validate.mjs`:
+
+1. **`name` must equal the skill's folder name**, format `{brand}-design` (e.g. folder `meadow-design/` → `name: meadow-design`). A mismatch breaks skill discovery.
+2. **`description` must contain the explicit trigger phrases AND the literal string "NEVER trigger automatically".** Never allow automatic triggering for generic design tasks.
 
 **Cross-platform note:** `allowed-tools` is a Claude Code field. Codex ignores it but tolerates its presence. Both platforms use `name` and `description` for skill discovery. Keep all fields for maximum compatibility.
 

@@ -241,13 +241,13 @@ The hero stage is a **composed stack**: background field + optional hero subject
 
 **`luminous` vs `object` — different rendering rules.** These two subjects are categorically different, not just stylistically. `luminous` floats and emits light; its box-shadow is a hot outer glow and it never has a ground-contact shadow. `object` sits on an implied surface and receives light from above; it always has either a contact shadow or a vertical reflection, and its box-shadow is a dark drop below. See the *Rendering philosophies* table in `references/hero-stage.md` before rendering either one.
 
-**Reading the YAML.** Pull all values from `design_model.yaml > hero_stage`:
+**Reading the YAML.** Pull all values from `design-model.yaml > hero_stage`:
 - `background.medium` → which recipe from `hero-stage.md` to use (includes `sculptural` for field-is-the-hero brands)
 - `background.color_palette` → hues feeding the field
 - `background.light_source` → where to center radial gradients / shader `u_light_pos`
 - `background.vignette`, `background.intensity`, `background.motion` → overlay knobs
 - `hero.subject` → which hero recipe to render (`none` → skip layers 4+5; `luminous`/`object` → different physics rules)
-- `hero.form` → geometry for `luminous` and `object` (sphere / cube / cylinder / torus / disc / ring / freeform). Ignored for `device`, `composition`, `photo-cutout`, `none`.
+- `hero.form` → geometry for `luminous` (sphere / disc / ring / torus), free-text layout label for `composition`. Ignored for `object`, `device`, `photo-cutout`, `none` (canonical definition in `hero-stage.md`).
 - `hero.placement`, `hero.scale`, `hero.tint` → positioning and color treatment
 - `relation.type` + `relation.bleed` → which relation layer (if any) to render. Must respect the subject × relation compat matrix.
 

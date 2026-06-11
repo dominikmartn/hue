@@ -1,6 +1,6 @@
 # App Screen Template
 
-The third and final view the skill generates. Landing page shows *what the brand sells*. Component library shows *what the pieces look like*. App screen shows *what the product actually feels like in use* — the tokens applied to a representative screen inside the brand's product, rendered inside a device frame.
+The fourth and final view the skill generates. The Bento Grid preview shows *what the language feels like*. Landing page shows *what the brand sells*. Component library shows *what the pieces look like*. App screen shows *what the product actually feels like in use* — the tokens applied to a representative screen inside the brand's product, rendered inside a device frame.
 
 This is the view that validates "does the design system survive contact with real product UI?" A design language that looks great on a marketing hero but falls apart inside a dense dashboard is a failed language. The app screen is the proof.
 
@@ -162,7 +162,7 @@ A new phase sits after `Phase 12: Generate Landing Page`:
 4. Fill the archetype with brand-voice content at the required density.
 5. Apply all tokens from the design model.
 6. Write `app-screen.html` in the skill folder alongside `landing-page.html` and `component-library.html`.
-7. Add the file to Phase 11's sticky TOC navigation so all three views are reachable from each other.
+7. Add the file to Phase 11's sticky TOC navigation so all four views are reachable from each other.
 
 Generated `app-screen.html` follows the same conventions as the other views:
 - Floating bottom Light/Dark toggle bar

@@ -129,7 +129,7 @@ The component library is organized into 7 category tabs. Each category is a tab-
 - **Canvas border-radius:** match the brand's component radius (`--radius-component`).
 - **Canvas border:** `1px solid var(--border)` — subtle, just enough to delimit the work area.
 - **Component spacing inside canvas:** use flex with generous gap — align variants in a row, states in a sub-row below, consistent across sections.
-- **Labels:** tiny label text above each variant (e.g. "Default", "Hover", "Focused") in `var(--text3)` at label-size, uppercase, letter-spaced. Do not confuse this with Meadow's own `--label` token — this is meta-labeling for the spec itself.
+- **Labels:** tiny label text above each variant (e.g. "Default", "Hover", "Focused") in `var(--text3)` at label-size, uppercase, letter-spaced. Do not confuse this with the brand's own `--label` type-scale token — this is meta-labeling for the spec itself.
 
 ### Spec table rules
 

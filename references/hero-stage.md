@@ -30,7 +30,7 @@ Presets are named combinations of dials. A brand picks a preset as the starting 
 | `device-on-mesh` | mesh, off-center light, muted, intensity subtle | device, off-center-right, balanced | flat | SaaS, issue trackers, product tours |
 | `painterly-no-hero` | painterly, ambient light, muted, intensity subtle | none | — | Editorial, knowledge, collecting, wellness |
 | `grid-on-dark` | pattern (dot or line grid), corner light, flat sat | device or composition, center, balanced | shadow-only | Developer platforms, infra, docs |
-| `object-on-spotlight` | gradient, top-light, muted, intensity bold | object, center, dominant, metallic (default form: `cylinder` / `cube` / `freeform` — **not** sphere) | shadow-only + optional reflection | Premium physical hardware, audio, industrial |
+| `object-on-spotlight` | gradient, top-light, muted, intensity bold | object, center, dominant, metallic (`form` ignored — renders as the generic placeholder form) | shadow-only + optional reflection | Premium physical hardware, audio, industrial |
 | `editorial-photo` | photo (placeholder), full-bleed | none or photo-cutout | flat | Lifestyle, hardware, fashion |
 | `shader-ambient` | shader, drift, subtle defaults | none or luminous, center, accent | glow, bleed 30 | Generative, audio, AI, creative tools |
 | `flat-blank` | absent or brand-tinted-neutral, ambient | composition, center, accent | flat | Writing tools, docs, minimal SaaS |
@@ -305,7 +305,7 @@ When a brand has a hero subject (a light-ball, a product window, a physical obje
 | Dial | Values | Effect |
 |---|---|---|
 | `subject` | `none` / `luminous` / `object` / `device` / `composition` / `photo-cutout` | **What the subject IS, by intent.** Light-emitting abstract (`luminous`, CSS-renderable), physical matter (`object`, renders as a generic warm metallic form as a decorative placeholder — the user swaps it for their own 3D render or product shot before shipping), a product window (`device`, CSS-renderable), an arrangement of icons/illustrations (`composition`, CSS-renderable), a placeholder for a real photo (`photo-cutout`). |
-| `form` | `sphere` / `disc` / `ring` / `torus` | **Geometry for `luminous` only.** Light has no natural shape; pick the silhouette that fits the brand. Ignored for every other subject — including `object`, because we never CSS-render concrete products. |
+| `form` | per-subject, see below | **This is the single canonical definition of `form`.** For `luminous`: a geometry enum — `sphere` / `disc` / `ring` / `torus`. Light has no natural shape; pick the silhouette that fits the brand. For `composition`: a free-text layout label naming the arrangement — `icon-stack` / `scene` / `bundle`, or a descriptive label like `headline` or `three-line-stack` (defaults to `icon-stack` when omitted). Ignored for `object` (we never CSS-render concrete products — the placeholder is always the generic form), `device`, `photo-cutout`, and `none`. |
 | `placement` | `center` / `off-center-left` / `off-center-right` / `bottom` / `top-corner-l` / `top-corner-r` | Where it sits in the hero box |
 | `scale` | `dominant` / `balanced` / `accent` | How big relative to the hero text |
 | `tint` | `brand` / `neutral` / `gradient-from-palette` / `metallic` | Color treatment |
@@ -527,7 +527,7 @@ Merges the old `illustration` and `icon-stack`. Three forms:
 
 **`bundle` composition** — a cluster of smaller feature-cards floating behind one dominant element. Good for "one product with many capabilities".
 
-Pick the layout in YAML with `hero.form` (reused as a sub-type selector for `composition`). If omitted, defaults to `icon-stack`.
+Pick the layout in YAML with `hero.form` — for `composition` subjects, `form` is a free-text layout label, not a geometry (see the canonical `form` definition in *Hero layer — dials*). If omitted, defaults to `icon-stack`.
 
 #### `photo-cutout` — placeholder
 
@@ -650,7 +650,7 @@ hero_stage:
     color_palette: ["#FF5E3A", "#FF2D55", "#5E2BFF", "#0A0A0F"]
   hero:
     subject: "luminous"           # intent: light-emitting abstract body
-    form: "sphere"                # sphere/cube/cylinder/torus/disc/ring/freeform — luminous defaults to sphere
+    form: "sphere"                # sphere / disc / ring / torus — luminous only, defaults to sphere
     placement: "center"
     scale: "balanced"
     tint: "gradient-from-palette"
@@ -776,7 +776,7 @@ When filling `hero_stage` in a new brand's `design-model.yaml`:
 - [ ] `background.color_palette` has 3–5 hues from the brand palette
 - [ ] `background.intensity` starts at `subtle` unless there's a real reason
 - [ ] `hero.subject` picked **by intent, not by form**. `luminous` = light-emitter (CSS-rendered), `object` = physical matter (generic warm metallic form, decorative placeholder), `device` = product window, `composition` = arranged elements, `photo-cutout` = prose placeholder.
-- [ ] `hero.form` set only when `subject: luminous`. Choose `sphere` / `disc` / `ring` / `torus`. Ignored for every other subject.
+- [ ] `hero.form` follows the canonical per-subject definition in *Hero layer — dials*: geometry enum (`sphere` / `disc` / `ring` / `torus`) for `luminous`, free-text layout label for `composition`, ignored for everything else.
 - [ ] For `subject: object`, `observed_style.description` documents the intended product asset. It is NOT rendered on the page — it's context for whoever later swaps in the real asset.
 - [ ] `relation.type` sits in a ✅ or `ok` cell of the subject × relation compat matrix. No `emissive` on an `object`, no `shadow-only` on a `luminous`.
 - [ ] Sculptural-medium brands use `subject: none` + `relation.type: flat`.

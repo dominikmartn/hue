@@ -160,18 +160,9 @@ Match the EXACT temperature:
 
 ## Icons
 
-Use a real icon library that matches the brand's aesthetic. Include via CDN `<link>` tag. Choose from:
+Render icons with the kit pinned in `iconography.fallback_kit` from `design-model.yaml` — do not re-choose. The kit was selected once in Phase 3; the preview consumes its `cdn` and `icon_class_prefix` fields verbatim. If a brand uses emoji as icons (like Notion), the model documents that and the preview uses emoji instead.
 
-| Library | CDN | Best for |
-|---------|-----|----------|
-| Lucide | `https://unpkg.com/lucide-static/font/lucide.css` | Clean, modern brands (Linear, Notion, Perplexity) |
-| Phosphor | `https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css` | Friendly, rounded brands (mymind, Claude) |
-| SF Symbols-style (via Lucide) | Same as Lucide | System/Apple-like brands |
-| Tabler Icons | `https://unpkg.com/@tabler/icons-webfont/dist/tabler-icons.min.css` | Versatile, works everywhere |
-
-Pick the library that fits the brand's icon style. Use `<i class="icon-name"></i>` elements. If a brand uses emoji as icons (like Notion), use emoji instead of an icon library.
-
-Fallback: If icon libraries cause rendering issues, use colored circles with single letters (like iOS Settings icons) or emoji.
+Fallback: If the pinned kit causes rendering issues, use colored circles with single letters (like iOS Settings icons) or emoji.
 
 ## Technical Gotchas (CSS Bugs to Avoid)
 
