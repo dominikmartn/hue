@@ -1,6 +1,6 @@
 name: "kiln"
-description: "Fictional studio journal for ceramicists, glassblowers, and makers who work at temperature. Dark fired-earth identity built on iron #1C1410 with a molten terracotta accent and a warm clay light mode. The hero is the firing log itself — a mono-coded studio record under a molten glow that pours in from the bottom-right corner like a kiln door cracked open."
-philosophy: "For the fired, not the fragile. kiln treats a studio practice as a long memory of heat — climb rates, reduction windows, peak holds, the slow descent. The identity is materials-honest: warm iron darks, terracotta light, a serif that has been opsz-tuned to feel cast rather than typeset, and grit overlays that read as ash rather than chrome."
+description: "Fictional studio journal for ceramicists, glassblowers, and makers who work at temperature. Dark fired-earth identity built on iron #1C1410 with a molten terracotta accent and a warm clay light mode. The hero is the firing log itself: a mono-coded studio record under a molten glow that pours in from the bottom-right corner like a kiln door cracked open."
+philosophy: "For the fired, not the fragile. kiln treats a studio practice as a long memory of heat: climb rates, reduction windows, peak holds, the slow descent. The identity is materials-honest: warm iron darks, terracotta light, a serif that has been opsz-tuned to feel cast rather than typeset, and grit overlays that read as ash rather than chrome."
 primary_mode: "dark"
 brand_source: "INVENTED — fictional brand for hue carousel"
 brand_domain: "ceramic studio / fired earth (fictional)"
@@ -94,7 +94,7 @@ tokens:
 hero_stage:
   preset: "molten-glow"
   observed_style:
-    description: "A radial molten-terracotta glow pours diagonally from the bottom-right corner of the dark iron canvas (80vw × 70vh radial centered at 88% 100%, plus a tighter 50vw × 40vh radial at 95% 90% for the hot core). A fractal-noise SVG grit overlay sits above the glow at opacity 0.08 with mix-blend-mode soft-light, reading as ash and clay dust rather than digital noise. The hero subject is a mono-typeset firing log strip — a studio record in JetBrains Mono with cone, body, and live timestamp — pinned to the canvas with a heavy 0 40px 80px -20px rgba(0,0,0,0.5) shadow, so the strip feels physical against the glow."
+    description: "A radial molten-terracotta glow pours diagonally from the bottom-right corner of the dark iron canvas (80vw × 70vh radial centered at 88% 100%, plus a tighter 50vw × 40vh radial at 95% 90% for the hot core). A fractal-noise SVG grit overlay sits above the glow at opacity 0.08 with mix-blend-mode soft-light, reading as ash and clay dust rather than digital noise. The hero subject is a mono-typeset firing log strip, a studio record in JetBrains Mono with cone, body, and live timestamp, pinned to the canvas with a heavy 0 40px 80px -20px rgba(0,0,0,0.5) shadow, so the strip feels physical against the glow."
     where_used: ["hero", "could echo on final cta with reduced intensity"]
     notes: "Glow uses literal --d-accent (#E0572A) at 22% / 10% alpha and --l-accent (#C9431A) at 28% for the hot core. Light mode swaps to 16% / 6% / 14% alpha so the clay canvas does not get overcooked. The grit overlay is identical in both modes."
   background:
@@ -160,6 +160,6 @@ voice:
     - "A journal for the fired, not the fragile."
     - "A studio log for ceramicists, glassblowers, and anyone whose practice moves through heat. Record firings, track atmospheres, return to a body. Built for the makers who work at temperature."
     - "Every curve, every hold, every cone. Record the full shape of a firing the way it actually moved. Climb rates, reduction windows, peak holds, the slow descent."
-    - "The record is in the marks. A glaze log that remembers what actually happened — not the recipe card, the outcome. Ash drifts, crawls, flashes, reduction blushes."
+    - "The record is in the marks. A glaze log that remembers what actually happened. Not the recipe card, the outcome. Ash drifts, crawls, flashes, reduction blushes."
     - "Fire does not forgive, but it does remember."
     - "Priced like a good tool, not a streaming service. Own it. Use it for decades."

@@ -1,6 +1,6 @@
 name: "Thrive"
-description: "Fictional health & wellness brand for adults who want a tool, not a cheerleader. The hero has no centered subject — a soft painterly field of sage and rose washes carries the identity on a warm off-white canvas. Proves the painterly-no-hero preset: medium: painterly + subject: none + relation: flat, in a LIGHT-FIRST typographic brand where restraint and Fraunces italic do all the work."
-philosophy: "Small steps, tracked honestly. Thrive is a habit and mood tracker for people who don't want to be cheered on. No streaks, no guilt, no confetti. A daylight brand that treats wellness like keeping a journal, not finishing a game. The identity lives in typography and air — Fraunces for warmth, Inter for calm, plenty of white space, and a hand-painted field that never pushes."
+description: "Fictional health & wellness brand for adults who want a tool, not a cheerleader. The hero has no centered subject; a soft painterly field of sage and rose washes carries the identity on a warm off-white canvas. Proves the painterly-no-hero preset: medium: painterly + subject: none + relation: flat, in a LIGHT-FIRST typographic brand where restraint and Fraunces italic do all the work."
+philosophy: "Small steps, tracked honestly. Thrive is a habit and mood tracker for people who don't want to be cheered on. No streaks, no guilt, no confetti. A daylight brand that treats wellness like keeping a journal, not finishing a game. The identity lives in typography and air: Fraunces for warmth, Inter for calm, plenty of white space, and a hand-painted field that never pushes."
 primary_mode: "light"
 brand_source: "INVENTED — fictional brand for hero_stage v2 proof library, painterly-no-hero preset (light-first variant)"
 brand_domain: "health & wellness / habits / mood tracking (fictional)"
@@ -127,7 +127,7 @@ tokens:
 hero_stage:
   preset: "painterly-no-hero"
   observed_style:
-    description: "INVENTED for testing: a soft watercolor field of muted sage and warm rose washes layered with multiply blend modes over a warm off-white canvas. No hard edges anywhere. The brightest bloom sits slightly above center, the field falls off gently toward the edges. No subject sits in front — the field is the whole thing. Typography (Fraunces italic wordmark, Fraunces roman headline) sits directly on the wash with no scrim, because the field is calm enough to carry text at 1280×800."
+    description: "INVENTED for testing: a soft watercolor field of muted sage and warm rose washes layered with multiply blend modes over a warm off-white canvas. No hard edges anywhere. The brightest bloom sits slightly above center, the field falls off gently toward the edges. No subject sits in front; the field is the whole thing. Typography (Fraunces italic wordmark, Fraunces roman headline) sits directly on the wash with no scrim, because the field is calm enough to carry text at 1280×800."
     where_used: ["hero", "final cta (background echo, further reduced intensity)"]
     notes: "Fictional composition inspired by the idea of atmospheric light fields as hero identity (not a copy of any specific site). Uses pure CSS radial-gradients with mix-blend-mode: multiply — no SVG, no imported assets, no WebGL. Proves that medium: painterly + subject: none can be hero-worthy in a light-mode typographic brand."
   background:
@@ -176,3 +176,13 @@ iconography:
     weight: "regular"
     cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
     icon_class_prefix: "ph ph-"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  tone: "gentle, adult, anti-gamification; a tool, not a cheerleader, lowercase throughout"
+  cadence: "all lowercase headlines and body. reassurance through absence (no streaks, no guilt, no confetti). plain observations instead of verdicts. quiet paradoxes (nothing to report, which is the report)."
+  samples:
+    - "small steps, tracked honestly."
+    - "a habit and mood tracker for adults who want a tool, not a cheerleader. no streaks, no guilt, no confetti. the gentlest tracker that still counts."
+    - "miss a day and nothing breaks. there is no streak to lose, no character to disappoint. thrive keeps the week whole whether you logged three days or seven."
+    - "one habit is free forever. no account required to try."

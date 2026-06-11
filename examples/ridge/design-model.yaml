@@ -1,5 +1,5 @@
 name: "Ridge"
-description: "Fictional SLO monitoring platform for ops teams. Dark slate canvas with a faint dot-grid background, an abstracted dashboard device centered in the hero. Proves the grid-on-dark preset: pattern medium + device subject + shadow-only relation. Classic developer-platform composition — the calmest end of the 'device on a pattern' spectrum next to Stint's mesh."
+description: "Fictional SLO monitoring platform for ops teams. Dark slate canvas with a faint dot-grid background, an abstracted dashboard device centered in the hero. Proves the grid-on-dark preset: pattern medium + device subject + shadow-only relation. Classic developer-platform composition: the calmest end of the 'device on a pattern' spectrum next to Stint's mesh."
 philosophy: "The line you don't cross. Ridge watches service-level objectives and pages the right person before the customer notices. Engineering voice, monospace-heavy, no marketing fluff. The product is the dashboard; the copy gets out of the way."
 primary_mode: "dark"
 brand_source: "INVENTED — fictional brand for hero_stage v2 proof library, grid-on-dark preset"
@@ -107,7 +107,7 @@ tokens:
 hero_stage:
   preset: "grid-on-dark"
   observed_style:
-    description: "Faint cool slate dot-grid behind a centered dashboard device. A soft top-left corner glow reads as an implied light source; the rest of the field stays calm. The device has a drop shadow but no other interaction with the grid — it sits on top, no emission."
+    description: "Faint cool slate dot-grid behind a centered dashboard device. A soft top-left corner glow reads as an implied light source; the rest of the field stays calm. The device has a drop shadow but no other interaction with the grid; it sits on top, no emission."
     where_used: ["hero", "feature visuals (echoed grid at reduced intensity)"]
     notes: "Canonical Vercel / GitHub / Linear docs-site composition. Validates the grid-on-dark preset for developer platforms where the product IS the dashboard."
   background:
@@ -156,3 +156,13 @@ iconography:
     weight: "regular"
     cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
     icon_class_prefix: "ph ph-"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  tone: "ops-room serious, SRE-literate; the product is an alarm, the copy never panics"
+  cadence: "threat-then-relief constructions. domain vocabulary used straight (burn rate, error budget, p99). clipped sentence endings (Not after.). pricing stated like an SLA."
+  samples:
+    - "The line you don't cross."
+    - "Your SLO is a promise to your customers. Ridge is the alarm that goes off before you break it."
+    - "Define the line. Ridge watches the burn rate across every service and signals the right engineer before you've spent the error budget. Not after."
+    - "Flat per service. No seats. No surprise invoices."

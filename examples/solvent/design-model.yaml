@@ -1,6 +1,6 @@
 name: "Solvent"
-description: "Fictional creative tool for generative video and AI art, maker-focused. The hero is a warm amber liquid-flow shader — the canvas is literally alive, drifting under centered editorial type. Proves the shader-ambient preset: medium: shader (liquid-flow) + subject: none + motion: drift, tuned subtle so hero copy stays dominant. Warm umber neutrals and gold amber instead of the usual cool dev-tool palette — this is the warmth + craft variant."
-philosophy: "Render what you imagined, not what you typed. Solvent is a creative tool for people making moving images with AI — brush-based prompt editing instead of text input, where strokes map to motion vectors and the canvas previews every frame in real time. The identity is warmth and craft, the opposite of sterile SaaS. Playful but disciplined: maker voice, direct copy, tactile chrome. No corporate polish, no hedged claims."
+description: "Fictional creative tool for generative video and AI art, maker-focused. The hero is a warm amber liquid-flow shader; the canvas is literally alive, drifting under centered editorial type. Proves the shader-ambient preset: medium: shader (liquid-flow) + subject: none + motion: drift, tuned subtle so hero copy stays dominant. Warm umber neutrals and gold amber instead of the usual cool dev-tool palette; this is the warmth + craft variant."
+philosophy: "Render what you imagined, not what you typed. Solvent is a creative tool for people making moving images with AI: brush-based prompt editing instead of text input, where strokes map to motion vectors and the canvas previews every frame in real time. The identity is warmth and craft, the opposite of sterile SaaS. Playful but disciplined: maker voice, direct copy, tactile chrome. No corporate polish, no hedged claims."
 primary_mode: "dark"
 brand_source: "INVENTED — fictional brand for the shader-ambient proof library, liquid-flow preset with warm amber palette"
 brand_domain: "creative tools / generative video / AI art (fictional)"
@@ -121,7 +121,7 @@ tokens:
 hero_stage:
   preset: "shader-ambient"
   observed_style:
-    description: "INVENTED for testing: a slow amber liquid-flow mesh drifts under centered editorial serif type. The shader runs at subtle defaults — the field is clearly alive but never louder than the copy. Three warm gold stops (#FFC024, #F5A623, #A8670A) displaced by a two-octave simplex noise field over a warm dark canvas (#0D0905). Vignette subtle, intensity subtle, contrast muted. Reads as liquid brass or candlelight at the edges — warm and tactile, not corporate dark SaaS."
+    description: "INVENTED for testing: a slow amber liquid-flow mesh drifts under centered editorial serif type. The shader runs at subtle defaults: the field is clearly alive but never louder than the copy. Three warm gold stops (#FFC024, #F5A623, #A8670A) displaced by a two-octave simplex noise field over a warm dark canvas (#0D0905). Vignette subtle, intensity subtle, contrast muted. Reads as liquid brass or candlelight at the edges, warm and tactile, not corporate dark SaaS."
     where_used: ["hero", "final cta (reduced-intensity echo)"]
     notes: "Fictional composition for the shader-ambient preset proof. Tests that the liquid-flow preset reads warm + editorial when fed gold over warm dark, and that the shader stays subtle enough for Fraunces display type to dominate the frame."
   background:
@@ -177,3 +177,13 @@ iconography:
     weight: "regular"
     cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
     icon_class_prefix: "ph ph-"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  tone: "painter's manifesto against the prompt box; physical, hands-on, anti-typing"
+  cadence: "tool metaphors over tech specs (chisel, brush, stroke). imperative verbs of the hand (brush, scrub, nudge). hard numbers for speed claims (192 frames in 8 seconds). lowercase hero line."
+  samples:
+    - "render what you imagined, not what you typed."
+    - "Typing a prompt is like describing a sculpture with your eyes closed. Solvent hands you the chisel."
+    - "Brush, don't type."
+    - "I stopped writing paragraphs of adjectives and started painting. My shot count tripled in a week."

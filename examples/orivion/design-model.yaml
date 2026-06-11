@@ -122,7 +122,7 @@ tokens:
 hero_stage:
   preset: "luminous-on-gradient"
   observed_style:
-    description: "INVENTED for testing: a centered glowing light-ball over a soft radial gradient in deep indigo → violet → magenta → coral. The ball has specular highlights on its upper-left and an inner shadow on its lower-right, and bleeds warm magenta light into the field behind it via a screen-blended halo. It floats — no ground contact, no drop shadow."
+    description: "INVENTED for testing: a centered glowing light-ball over a soft radial gradient in deep indigo → violet → magenta → coral. The ball has specular highlights on its upper-left and an inner shadow on its lower-right, and bleeds warm magenta light into the field behind it via a screen-blended halo. It floats: no ground contact, no drop shadow."
     where_used: ["hero"]
     notes: "Fictional composition — proves the layered hero stage (background + luminous subject + glow relation) renders correctly from the hero_stage v2 schema."
   background:
@@ -171,3 +171,13 @@ iconography:
     inline: "16px"
     button: "18px"
     nav: "20px"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  tone: "confident, quietly futurist product minimalism; speaks to the second thought, not the feature list"
+  cadence: "the keyboard shortcut treated as a verb. short claim headlines, then one explanatory paragraph. memory framed in human terms (yesterday's question, last month's debugging trail). closes with a dare."
+  samples:
+    - "The command bar for your second thought."
+    - "It remembers the thread."
+    - "Orivion keeps context across sessions and days. Pick up yesterday's question without re-explaining the last six messages, or last month's debugging trail without hunting for it."
+    - "It's the first tool where I forget it's a tool."

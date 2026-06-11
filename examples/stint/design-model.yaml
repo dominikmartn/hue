@@ -1,6 +1,6 @@
 name: "Stint"
 description: "Fictional project tracker for teams that work in fixed cycles. Dark cool canvas, muted violet mesh background, floating app-window mockup as the hero subject. Proves the device-on-mesh preset: mesh medium + device subject + flat relation."
-philosophy: "A tracker that doesn't pretend. Fixed-cycle work units (two-week stints), clinical voice, deadpan directness. The hero is the product window, not a glowing object — the work is the star."
+philosophy: "A tracker that doesn't pretend. Fixed-cycle work units (two-week stints), clinical voice, deadpan directness. The hero is the product window, not a glowing object; the work is the star."
 primary_mode: "dark"
 brand_source: "INVENTED — fictional brand for hero_stage proof library"
 brand_domain: "project / task management (fictional)"
@@ -110,7 +110,7 @@ tokens:
 hero_stage:
   preset: "device-on-mesh"
   observed_style:
-    description: "INVENTED for testing: an app-window mockup floating off-center to the right over a muted violet mesh. The device has a subtle drop shadow but no glow or halo — it is a physical object sitting on a background, not a source of light."
+    description: "INVENTED for testing: an app-window mockup floating off-center to the right over a muted violet mesh. The device has a subtle drop shadow but no glow or halo; it is a physical object sitting on a background, not a source of light."
     where_used: ["hero"]
     notes: "Fictional composition — proves mesh medium + device subject + flat relation render cleanly from the v2 schema."
   background:
@@ -153,3 +153,13 @@ iconography:
     weight: "regular"
     cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
     icon_class_prefix: "ph ph-"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  tone: "blunt, anti-roadmap-theater; honest math about what actually shipped"
+  cadence: "names the status quo, then states the fixed rule. fourteen days repeated like a drumbeat. flat refusals (You don't add work mid-stint. The window doesn't stretch.). ends on a direct question."
+  samples:
+    - "Ship what you said you'd ship."
+    - "Stint works in fourteen-day units. No infinite backlog. No roadmap fiction. A fixed window, and what actually got done."
+    - "The clock is the plan."
+    - "We stopped lying to ourselves about what we'd get done."

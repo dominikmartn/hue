@@ -1,6 +1,6 @@
 name: "Prism"
-description: "Fictional cyberpunk holographic shader engine. The hero is a centered iridescent orb stack — a blurred conic-gradient field overlaid with a radial bloom and a thin spinning rim — sitting behind a chromatic-aberration title (cyan + magenta offsets over white). Proves the holographic-orb preset: medium: gradient (iridescent-orb) + subject: text + relation: layered. The whole identity is light bleeding through purple."
-philosophy: "Write a line, see a frame. Prism is a browser-native GPU playground for shader artists where every keystroke recompiles in under 12ms. The identity is iridescence under glass — vivid neon trapped in deep violet, shifted just enough by chromatic aberration to feel like a hologram you're looking through, not at."
+description: "Fictional cyberpunk holographic shader engine. The hero is a centered iridescent orb stack, a blurred conic-gradient field overlaid with a radial bloom and a thin spinning rim, sitting behind a chromatic-aberration title (cyan + magenta offsets over white). Proves the holographic-orb preset: medium: gradient (iridescent-orb) + subject: text + relation: layered. The whole identity is light bleeding through purple."
+philosophy: "Write a line, see a frame. Prism is a browser-native GPU playground for shader artists where every keystroke recompiles in under 12ms. The identity is iridescence under glass: vivid neon trapped in deep violet, shifted just enough by chromatic aberration to feel like a hologram you're looking through, not at."
 primary_mode: "dark"
 brand_source: "INVENTED — fictional brand for hue carousel"
 brand_domain: "cyberpunk holographic shader engine (fictional)"
@@ -102,7 +102,7 @@ tokens:
 hero_stage:
   preset: "holographic-orb"
   observed_style:
-    description: "INVENTED for hue carousel: a centered iridescent orb stack fills the viewport behind the hero. A 900px conic-gradient field (cyan → violet → magenta → violet → cyan) is blurred to 120px and drifts on a 14s loop. A 520px radial bloom with a white-cyan core sits on top. A 460px masked rim ring spins on a 60s loop in screen blend. A radial vignette pulls everything back into the violet canvas. The h1 sits above it with two offset aberration copies — cyan translated -2px, magenta translated +2px — blended in screen mode for chromatic shift."
+    description: "INVENTED for hue carousel: a centered iridescent orb stack fills the viewport behind the hero. A 900px conic-gradient field (cyan → violet → magenta → violet → cyan) is blurred to 120px and drifts on a 14s loop. A 520px radial bloom with a white-cyan core sits on top. A 460px masked rim ring spins on a 60s loop in screen blend. A radial vignette pulls everything back into the violet canvas. The h1 sits above it with two offset aberration copies (cyan translated -2px, magenta translated +2px) blended in screen mode for chromatic shift."
     where_used: ["hero", "live-preview canvas (echo)", "final cta (background bloom)"]
     notes: "Pure CSS — conic-gradient + radial-gradient + filter:blur + mix-blend-mode:screen + transform offsets. No WebGL, no imported assets. Proves that a holographic identity can be built entirely from gradient layers and z-stacked text."
   background:
@@ -165,7 +165,7 @@ iconography:
 
 # ── VOICE ───────────────────────────────────────────────
 voice:
-  tone: "futurist, glitchy, holographic — confident but not cold; the prose has the same shimmer as the orb"
+  tone: "futurist, glitchy, holographic, confident but not cold; the prose has the same shimmer as the orb"
   samples:
     - "Shaders at the speed of thought."
     - "Write a line, see a frame."

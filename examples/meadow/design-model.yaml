@@ -199,7 +199,7 @@ tokens:
   hero_stage:
     preset: "painterly-no-hero"
     observed_style:
-      description: "Hand-painted, dreamy landscape scenes with warm earthy tones and botanical motifs. Colors blend softly with painterly irregularities that feel like commissioned artwork. The backgrounds feel like memory itself: warm, slightly out of focus, organic. No foreground hero subject — the painted field IS the hero."
+      description: "Hand-painted, dreamy landscape scenes with warm earthy tones and botanical motifs. Colors blend softly with painterly irregularities that feel like commissioned artwork. The backgrounds feel like memory itself: warm, slightly out of focus, organic. No foreground hero subject; the painted field IS the hero."
       where_used:
         - "hero (full-bleed behind headline)"
         - "feature area backgrounds (subtle)"
@@ -381,3 +381,13 @@ components:
     height:     "60px"
     colored_dots: true
     dot_size:   "6px"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  tone: "calm, private, anti-feed; mymind marketing register, a quiet home for everything that matters, never productivity hustle"
+  cadence: "gentle imperatives (Start saving). promises built on what is absent (No folders. No tags.). speaks to memory and feeling, not feature specs. one soft manifesto line per section."
+  samples:
+    - "A place for what you can't afford to forget."
+    - "Capture without deciding where it goes."
+    - "Remember one word. Find everything."
+    - "Ideas are easier to find when they don't have to be organized."

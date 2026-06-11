@@ -1,6 +1,6 @@
 name: "Oxide"
-description: "Fictional brutalist monospace compute protocol. The whole landing is JetBrains Mono, hairline borders, and a single radioactive green accent on a pure white canvas. No radii, no gradients, no shadows — the typography and the 1px grid ARE the identity. Proves the brutalist-grid preset: medium: typographic + subject: none + relation: flat."
-philosophy: "Read the source. Oxide is an open protocol for verifiable compute — the kind of brand that thinks documentation is design. Everything is monospace, every section is bordered, every number is a stat. The contract is twelve lines. If you can't read it in one sitting, it isn't a protocol, it's a product."
+description: "Fictional brutalist monospace compute protocol. The whole landing is JetBrains Mono, hairline borders, and a single radioactive green accent on a pure white canvas. No radii, no gradients, no shadows; the typography and the 1px grid ARE the identity. Proves the brutalist-grid preset: medium: typographic + subject: none + relation: flat."
+philosophy: "Read the source. Oxide is an open protocol for verifiable compute, the kind of brand that thinks documentation is design. Everything is monospace, every section is bordered, every number is a stat. The contract is twelve lines. If you can't read it in one sitting, it isn't a protocol, it's a product."
 primary_mode: "light"
 brand_source: "INVENTED — fictional brand for hue carousel"
 brand_domain: "compute protocol / brutalist mono (fictional)"
@@ -108,7 +108,7 @@ tokens:
 hero_stage:
   preset: "brutalist-grid"
   observed_style:
-    description: "Pure white canvas, full-bleed. A 12-column hairline grid overlay sits behind the content at 8% opacity (border-left: 1px solid #000, opacity 0.08). The hero headline is JetBrains Mono 700 at clamp(64px, 11vw, 152px), letter-spacing -0.04em, line-height 0.92, max-width 14ch, left-aligned. An eyebrow row above the title shows an 8x8px solid #00FF66 square next to a [v0.8.2 · MAINNET] label. Below the headline sits a bordered cta-shell (height 48px, 1px black border, no radius) split into a $ prompt segment and a black 'copy' button — it reads as a literal terminal command. A 4-column hero-meta row with 1px top border closes the section. Every section across the page repeats this rhythm: 1px black border, sp-7 (96px) vertical padding, label-muted eyebrow in [BRACKETS], left-aligned content. The proof: typography + a 1px grid + one green dot is the entire hero."
+    description: "Pure white canvas, full-bleed. A 12-column hairline grid overlay sits behind the content at 8% opacity (border-left: 1px solid #000, opacity 0.08). The hero headline is JetBrains Mono 700 at clamp(64px, 11vw, 152px), letter-spacing -0.04em, line-height 0.92, max-width 14ch, left-aligned. An eyebrow row above the title shows an 8x8px solid #00FF66 square next to a [v0.8.2 · MAINNET] label. Below the headline sits a bordered cta-shell (height 48px, 1px black border, no radius) split into a $ prompt segment and a black 'copy' button; it reads as a literal terminal command. A 4-column hero-meta row with 1px top border closes the section. Every section across the page repeats this rhythm: 1px black border, sp-7 (96px) vertical padding, label-muted eyebrow in [BRACKETS], left-aligned content. The proof: typography + a 1px grid + one green dot is the entire hero."
     where_used: ["hero", "code blocks", "step grid", "stats row", "footer prompt line"]
     notes: "Fictional. No images, no gradients, no shadows, no radii. The only chromatic notes on the entire page are the green accent dot/$/π and a single red manifesto line. Theme toggle ships light + dark, but light is the default and the brand's natural state."
   background:
@@ -144,7 +144,7 @@ hero_stage:
 
 # ── BRAND VOICE ─────────────────────────────────────────
 voice:
-  tone: "terse, technical, command-line minimalism — reads like a man page with opinions"
+  tone: "terse, technical, command-line minimalism; reads like a man page with opinions"
   samples:
     - "Compute you can verify. Protocol you can read."
     - "oxide is an open protocol for verifiable compute. No servers to trust, no opaque runtimes, no silicon lottery."

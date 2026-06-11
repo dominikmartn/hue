@@ -1,6 +1,6 @@
 name: "Halcyon"
-description: "Fictional reasoning platform for engineering teams. Instead of a centered subject, the hero field is a diagonal stack of 3D glass bars in cool blue-teal — the geometric mass IS the hero. Proves the sculptural-field preset: medium: sculptural (glass-bars) + subject: none + relation: flat. The first example in the proof library where the background alone carries the whole identity."
-philosophy: "Think in quiet motion. Halcyon is a reasoning platform that lets engineering teams trace how decisions propagate across a codebase — where a change started, what it touched, and where it settled. The identity is architectural rather than product-shot: the landing doesn't center a thing, it centers a space."
+description: "Fictional reasoning platform for engineering teams. Instead of a centered subject, the hero field is a diagonal stack of 3D glass bars in cool blue-teal; the geometric mass IS the hero. Proves the sculptural-field preset: medium: sculptural (glass-bars) + subject: none + relation: flat. The first example in the proof library where the background alone carries the whole identity."
+philosophy: "Think in quiet motion. Halcyon is a reasoning platform that lets engineering teams trace how decisions propagate across a codebase: where a change started, what it touched, and where it settled. The identity is architectural rather than product-shot: the landing doesn't center a thing, it centers a space."
 primary_mode: "dark"
 brand_source: "INVENTED — fictional brand for hero_stage v2 proof library, sculptural-field preset"
 brand_domain: "developer reasoning / decision tracing (fictional)"
@@ -125,7 +125,7 @@ tokens:
 hero_stage:
   preset: "sculptural-field"
   observed_style:
-    description: "INVENTED for testing: a diagonal stack of five translucent 3D glass bars fills the viewport, rotated ~22° across the vertical. Each bar has a vertical gradient from cool blue-white at the top to deep blue at the bottom, with a sharp edge-rim and an outer glow. The bars overlap in depth, giving the field sculptural mass. No subject sits in front of it — the mass is the hero."
+    description: "INVENTED for testing: a diagonal stack of five translucent 3D glass bars fills the viewport, rotated ~22° across the vertical. Each bar has a vertical gradient from cool blue-white at the top to deep blue at the bottom, with a sharp edge-rim and an outer glow. The bars overlap in depth, giving the field sculptural mass. No subject sits in front of it; the mass is the hero."
     where_used: ["hero", "final cta (background echo, reduced intensity)"]
     notes: "Fictional composition inspired by the idea of geometric 3D fields as hero identity (not a copy of any specific site). Uses pure CSS transforms and linear-gradients — no WebGL, no imported assets. Proves that medium: sculptural + subject: none can be hero-worthy."
   background:
@@ -174,3 +174,13 @@ iconography:
     weight: "regular"
     cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
     icon_class_prefix: "ph ph-"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  tone: "calm, senior-engineer plainspoken; explains hard systems like a colleague leaving a note"
+  cadence: "one long explanatory sentence followed by two short reassurances (No dashboards. No surprises.). plain-language questions in quotes. counts things concretely (forty others, four steps)."
+  samples:
+    - "Think in quiet motion."
+    - "A decision in one file echoes through forty others. Halcyon shows you where it lands."
+    - "Halcyon watches how decisions propagate through your codebase and tells you, in plain English, what a change is going to touch before you ship it. No dashboards. No surprises."
+    - "One paragraph. One checklist. One rollback plan."

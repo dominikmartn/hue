@@ -1,6 +1,6 @@
 name: "Auris"
-description: "Fictional premium hardware launch brand. Proves the object-on-spotlight preset: dark stage, tight top spotlight, contact shadow, reflection zone — with the hero subject rendered as a LABELED PLACEHOLDER FRAME. Concrete physical products are never CSS-simulated; the user drops in their own 3D render or product photography. The surrounding stage is fully composed so everything snaps together when the real asset arrives."
-philosophy: "A single object on a dark stage. Sparse voice, poetic, confident without noise. The product is the entire landing — one hero shot, everything else arranges itself around it. The skill provides the stage; the brand provides the asset."
+description: "Fictional premium hardware launch brand. Proves the object-on-spotlight preset: dark stage, tight top spotlight, contact shadow, reflection zone, with the hero subject rendered as a LABELED PLACEHOLDER FRAME. Concrete physical products are never CSS-simulated; the user drops in their own 3D render or product photography. The surrounding stage is fully composed so everything snaps together when the real asset arrives."
+philosophy: "A single object on a dark stage. Sparse voice, poetic, confident without noise. The product is the entire landing: one hero shot, everything else arranges itself around it. The skill provides the stage; the brand provides the asset."
 primary_mode: "dark"
 brand_source: "INVENTED — fictional brand for hero_stage proof library"
 brand_domain: "premium hardware launch (fictional)"
@@ -168,3 +168,13 @@ iconography:
     weight: "thin"
     cdn: "https://unpkg.com/@phosphor-icons/web@2/src/thin/style.css"
     icon_class_prefix: "ph-thin ph-"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  tone: "hushed, object-first, monastic confidence; the product speaks by subtraction"
+  cadence: "very short declarative sentences. negation lists (No screen, no notifications, no accounts). numbered section labels (01 · Form). one idea per line, then silence."
+  samples:
+    - "A new way to listen."
+    - "Auris is a single object. Place it anywhere. It does one thing. Press to begin."
+    - "Auris has no seams. No ports you can see. No buttons except one."
+    - "One object. One press."

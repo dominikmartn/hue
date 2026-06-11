@@ -1,6 +1,6 @@
 name: "Drift"
-description: "Fictional fashion marketplace for statement pieces. Instead of a centered product shot, the hero field is a diagonal stack of three huge display words — 'MADE.' / 'FOUND.' / 'SOLD.' — that together form the hero mass. Proves the composition preset: medium: gradient + subject: composition + relation: glow. The first example in the proof library where typography itself is the hero subject."
-philosophy: "Made. Found. Sold. Drift is the marketplace for people who buy clothes the way they buy records — with opinions. Hot-pink energy over near-black, the confidence of a gallery and the chaos of a flea market. Every drop is timestamped, every seller has a ledger, four words are enough."
+description: "Fictional fashion marketplace for statement pieces. Instead of a centered product shot, the hero field is a diagonal stack of three huge display words ('MADE.' / 'FOUND.' / 'SOLD.') that together form the hero mass. Proves the composition preset: medium: gradient + subject: composition + relation: glow. The first example in the proof library where typography itself is the hero subject."
+philosophy: "Made. Found. Sold. Drift is the marketplace for people who buy clothes the way they buy records: with opinions. Hot-pink energy over near-black, the confidence of a gallery and the chaos of a flea market. Every drop is timestamped, every seller has a ledger, four words are enough."
 primary_mode: "dark"
 brand_source: "INVENTED — fictional brand for hero_stage v2 proof library, composition preset"
 brand_domain: "fashion marketplace / streetwear commerce (fictional)"
@@ -123,7 +123,7 @@ tokens:
 hero_stage:
   preset: "manual"
   observed_style:
-    description: "INVENTED for testing: three huge display lines — MADE. / FOUND. / SOLD. — stacked with asymmetric horizontal offsets, each at ~140px Space Grotesk 700. Two lines render in bone-white, the middle line in hot-pink. Each line carries different tracking. The stack is framed by a hard top-left spotlight on dark-pink-tinted black, falling off into pure black at bottom-right. A strong vignette frames the mass. The typography IS the subject."
+    description: "INVENTED for testing: three huge display lines (MADE. / FOUND. / SOLD.) stacked with asymmetric horizontal offsets, each at ~140px Space Grotesk 700. Two lines render in bone-white, the middle line in hot-pink. Each line carries different tracking. The stack is framed by a hard top-left spotlight on dark-pink-tinted black, falling off into pure black at bottom-right. A strong vignette frames the mass. The typography IS the subject."
     where_used: ["hero", "final cta (echo, reduced intensity)"]
     notes: "Fictional composition. Demonstrates subject: composition — the hero mass is a typographic arrangement built in CSS, not a luminous disc (auris) and not a simulated object (orivion). Three stacked lines with asymmetric tracking and a dual-tone palette. Pure HTML/CSS, no imported assets."
   background:
@@ -174,3 +174,13 @@ iconography:
     weight: "regular"
     cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
     icon_class_prefix: "ph ph-"
+
+# ── VOICE ───────────────────────────────────────────────
+voice:
+  tone: "streetwise, lowercase, drop-culture terse; market talk without marketing"
+  cadence: "all lowercase, even the wordmark. clipped fragments chained with periods. concrete numbers over adjectives (6% flat, payouts in 24 hours). conditional couplets (if you see it, it's live)."
+  samples:
+    - "four words are enough. the rest is the item."
+    - "the marketplace for clothes you argue about. sell the one in your closet, buy the one you've been hunting."
+    - "six percent, flat. no hidden fees, no renegotiated rates, no boosted listings. sellers keep what sellers earn. buyers pay what the tag says."
+    - "i sold the jacket in my closet. it paid my rent."

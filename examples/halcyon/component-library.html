@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Halcyon — Component Library</title>
+<title>Halcyon · Component Library</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -290,7 +290,6 @@
     gap: 32px;
     align-items: flex-start;
   }
-  .cl-canvas--grid   { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .cl-canvas--stack  { flex-direction: column; align-items: stretch; gap: 16px; }
   .cl-canvas--center { justify-content: center; align-items: center; }
 
@@ -793,12 +792,6 @@
     width: 100%;
     text-align: left;
   }
-  .cl-dropdown-item .cl-dropdown-shortcut {
-    margin-left: auto;
-    font-size: 11px;
-    color: var(--text3);
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-  }
   .cl-dropdown-item.is-hover { background: var(--surface2); color: var(--text1); }
   .cl-dropdown-item.is-focus { background: var(--surface2); color: var(--text1); outline: none; }
   .cl-dropdown-item.is-disabled { opacity: 0.4; cursor: not-allowed; }
@@ -821,13 +814,6 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-  }
-  .cl-input-label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--text2);
   }
   .cl-input-field {
     position: relative;
@@ -956,12 +942,6 @@
   /* ═══════════════════════════════════════════════
      INPUTS: Checkbox (.cl-checkbox)
      ═══════════════════════════════════════════════ */
-  .cl-checkbox-wrapper {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-  }
   .cl-checkbox {
     width: 18px;
     height: 18px;
@@ -1010,12 +990,6 @@
   /* ═══════════════════════════════════════════════
      INPUTS: Radio (.cl-radio)
      ═══════════════════════════════════════════════ */
-  .cl-radio-wrapper {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-  }
   .cl-radio {
     width: 18px;
     height: 18px;
@@ -1235,7 +1209,6 @@
     padding: 0;
     overflow: hidden;
   }
-  .cl-card--image .cl-card-img,
   .cl-card--image .cl-card-image {
     width: 100%;
     height: 160px;
@@ -1246,15 +1219,7 @@
     color: var(--text3);
     font-size: 13px;
   }
-  .cl-card--image .cl-card-body-area,
   .cl-card--image .cl-card-body { padding: 20px; display: flex; flex-direction: column; gap: 8px; }
-  .cl-card-eyebrow {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
   .cl-card-title {
     font-family: 'Manrope', sans-serif;
     font-size: 20px;
@@ -1290,8 +1255,6 @@
   .cl-avatar--md  { width: 36px; height: 36px; font-size: 13px; }
   .cl-avatar--lg  { width: 48px; height: 48px; font-size: 16px; }
   .cl-avatar:not(.cl-avatar--sm):not(.cl-avatar--lg) { width: 36px; height: 36px; font-size: 13px; }
-  .cl-avatar--initials { background: var(--accent-subtle); color: var(--accent); }
-  .cl-avatar--icon { background: var(--surface2); color: var(--text2); }
   .cl-avatar img { width: 100%; height: 100%; object-fit: cover; }
   .cl-avatar-group {
     display: flex;
@@ -1338,12 +1301,6 @@
   }
   .cl-tag--accent { background: var(--accent-subtle); color: var(--accent); }
   .cl-tag--teal   { background: var(--teal-subtle); color: var(--teal); }
-  .cl-tag .cl-tag-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-  }
   .cl-tag--removable { padding-right: 6px; }
   .cl-tag-x {
     width: 18px;
@@ -1392,10 +1349,6 @@
   }
   .cl-data-table tr.is-hover td { background: var(--surface1); }
   .cl-data-table tr.is-selected td { background: var(--surface1); }
-  .cl-data-table .row-checkbox {
-    width: 16px;
-    height: 16px;
-  }
 
   /* ═══════════════════════════════════════════════
      DATA DISPLAY: Skeleton (.cl-skeleton-*)
@@ -1651,15 +1604,6 @@
   .cl-toast--success::before { background: var(--success); }
   .cl-toast--warning::before { background: var(--warning); }
   .cl-toast--error::before   { background: var(--error); }
-  .cl-toast-icon {
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-  .cl-toast--info .cl-toast-icon    { color: var(--accent); }
-  .cl-toast--success .cl-toast-icon { color: var(--success); }
-  .cl-toast--warning .cl-toast-icon { color: var(--warning); }
-  .cl-toast--error .cl-toast-icon   { color: var(--error); }
-  .cl-toast-content { flex: 1; }
   .cl-toast-action {
     font-size: 13px;
     font-weight: 600;
@@ -1674,7 +1618,6 @@
   /* ═══════════════════════════════════════════════
      FEEDBACK: Progress (.cl-progress)
      ═══════════════════════════════════════════════ */
-  .cl-progress,
   .cl-progress-track {
     width: 240px;
     height: 6px;
@@ -1689,37 +1632,8 @@
     border-radius: var(--r-pill);
     transition: width 700ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .cl-progress.is-indeterminate .cl-progress-fill,
   .cl-progress-fill.is-indeterminate {
     animation: progress-indeterminate 1.5s ease-in-out infinite;
-  }
-  .cl-progress-ring {
-    position: relative;
-  }
-  .cl-progress-ring svg {
-    transform: rotate(-90deg);
-  }
-  .cl-progress-ring .ring-track {
-    fill: none;
-    stroke: var(--surface2);
-    stroke-width: 8;
-  }
-  .cl-progress-ring .ring-fill {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 8;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 700ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .cl-progress-ring-label {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--accent);
   }
 
   /* ═══════════════════════════════════════════════
@@ -1777,11 +1691,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  .cl-modal-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.3);
   }
   .cl-modal-panel {
     position: relative;
@@ -1842,23 +1751,15 @@
     top: -5px;
     left: 24px;
   }
-  .cl-popover-arrow--bottom {
-    top: auto;
-    bottom: -5px;
-    transform: rotate(225deg);
-  }
-
   /* ═══════════════════════════════════════════════
      OVERLAYS: Tooltip (.cl-tooltip-demo)
      ═══════════════════════════════════════════════ */
-  .cl-tooltip-demo,
   .cl-tooltip-anchor {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
   }
-  .cl-tooltip-bubble,
   .cl-tooltip {
     background: var(--n-700);
     color: var(--n-100);
@@ -1870,12 +1771,10 @@
     position: absolute;
     pointer-events: none;
   }
-  [data-theme="light"] .cl-tooltip-bubble,
   [data-theme="light"] .cl-tooltip {
     background: var(--n-800);
     color: var(--n-50);
   }
-  .cl-tooltip-bubble::after,
   .cl-tooltip-arrow {
     content: "";
     position: absolute;
@@ -1885,24 +1784,16 @@
     transform: rotate(45deg);
   }
   /* top */
-  .cl-tooltip-demo--top .cl-tooltip-bubble,
   .cl-tooltip--top { bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
-  .cl-tooltip-demo--top .cl-tooltip-bubble::after,
   .cl-tooltip--top .cl-tooltip-arrow { bottom: -3px; left: 50%; margin-left: -3px; }
   /* right */
-  .cl-tooltip-demo--right .cl-tooltip-bubble,
   .cl-tooltip--right { left: calc(100% + 8px); top: 50%; transform: translateY(-50%); }
-  .cl-tooltip-demo--right .cl-tooltip-bubble::after,
   .cl-tooltip--right .cl-tooltip-arrow { left: -3px; top: 50%; margin-top: -3px; }
   /* bottom */
-  .cl-tooltip-demo--bottom .cl-tooltip-bubble,
   .cl-tooltip--bottom { top: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
-  .cl-tooltip-demo--bottom .cl-tooltip-bubble::after,
   .cl-tooltip--bottom .cl-tooltip-arrow { top: -3px; left: 50%; margin-left: -3px; }
   /* left */
-  .cl-tooltip-demo--left .cl-tooltip-bubble,
   .cl-tooltip--left { right: calc(100% + 8px); top: 50%; transform: translateY(-50%); }
-  .cl-tooltip-demo--left .cl-tooltip-bubble::after,
   .cl-tooltip--left .cl-tooltip-arrow { right: -3px; top: 50%; margin-top: -3px; }
 
   /* ═══════════════════════════════════════════════
