@@ -1,7 +1,7 @@
 ---
 name: hue
 description: "Meta-skill that generates new design language skills. Works on Claude Code and Codex. Use when the user says 'create a design skill', 'generate design language', 'new design system skill', 'design skill inspired by X', 'design skill from this screenshot', '/hue', or 'use hue'. Also triggers for 'remix my design skill' or 'make my skill more X'."
-version: 1.1.0
+version: 1.2.0
 ---
 
 # Design Skill Generator
