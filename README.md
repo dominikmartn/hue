@@ -74,3 +74,11 @@ each has a `design-model.yaml` + `landing-page.html`. ridge and stint also ship 
 ## license
 
 MIT. fork it, remix it, build your own.
+
+---
+
+made by [@dominikmartn](https://x.com/dominikmartn) · [dominikmart.in](https://dominikmart.in/?utm_source=github&utm_medium=readme&utm_campaign=hue). other projects:
+
+- **[ocelli](https://ocelli.app/?utm_source=github&utm_medium=readme&utm_campaign=hue)** · meeting notes and dictation for your mac
+- **[harp](https://github.com/dominikmartn/harp)** · many claude code and codex agents side by side, one sidebar tells you which one needs you
+- **[nothing-design-skill](https://github.com/dominikmartn/nothing-design-skill)** · ui in the nothing design language. monochrome, typographic, industrial
